@@ -30,15 +30,15 @@ class MY_Controller extends CI_Controller
 			$breadcrumbs = [
 				'uris' => $this->uri->segment_array()
 			];
-			$user_privilege = $this->base_model->get_row('user_privileges', ['user_id' => $_SESSION['auth']['id']]);
+			$user_privilege = $this->base_model->get_row('user_privileges', ['user_id' => $_SESSION['auth']['id']], []);
 			$menus = [
-				'menu_privileges' => $this->base_model->get_all('menu_privileges', ['privilege_id' => $user_privilege->privilege_id]),
-				'menu_level_ones' => $this->base_model->get_all('menus', ['level' => '0', 'modul' => $_SESSION['auth']['module']], ['order' => 'ASC']),
-				'menu_level_twos' => $this->base_model->get_all('menus', ['level' => '1', 'modul' => $_SESSION['auth']['module']], ['order' => 'ASC']),
-				'menu_level_threes' => $this->base_model->get_all('menus', ['level' => '2', 'modul' => $_SESSION['auth']['module']], ['order' => 'ASC']),
+				'menu_privileges' => $this->base_model->get_all('menu_privileges', ['privilege_id' => $user_privilege->privilege_id], []),
+				'menu_level_ones' => $this->base_model->get_all('menus', ['level' => '0', 'modul' => $_SESSION['auth']['module']], ['order' => 'ASC'], []),
+				'menu_level_twos' => $this->base_model->get_all('menus', ['level' => '1', 'modul' => $_SESSION['auth']['module']], ['order' => 'ASC'], []),
+				'menu_level_threes' => $this->base_model->get_all('menus', ['level' => '2', 'modul' => $_SESSION['auth']['module']], ['order' => 'ASC'], []),
 			];
 			$privilege = [
-				'user_privilege' => $this->base_model->get_row('privileges', ['id' => $user_privilege->privilege_id]),
+				'user_privilege' => $this->base_model->get_row('privileges', ['id' => $user_privilege->privilege_id], []),
 			];
 
 			$this->load->section('header', 'templates/components/header', $privilege);

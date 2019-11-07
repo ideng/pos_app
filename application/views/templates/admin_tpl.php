@@ -17,30 +17,28 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	<link rel="stylesheet" href="<?php echo base_url('assets/admin_lte/dist/css/skins/_all-skins.min.css'); ?>">
 
 	<?php
-	/** -- Copy from here -- */
-	if (!empty($meta)) {
-		foreach ($meta as $name => $content) {
-			echo "\n\t\t";
-			?>
+    /** -- Copy from here -- */
+    if (!empty($meta)) {
+        foreach ($meta as $name => $content) {
+            echo "\n\t\t"; ?>
 			<meta name="<?php echo $name; ?>" content="<?php echo $content; ?>" /><?php
-																						}
-																						echo "\n";
-																					}
-																					if (!empty($canonical)) {
-																						echo "\n\t\t";
-																						?>
-		<link rel="canonical" href="<?php echo $canonical ?>" /><?php
-																}
-																echo "\n\t";
+        }
+        echo "\n";
+    }
+    if (!empty($canonical)) {
+        echo "\n\t\t"; ?>
+		<link rel="canonical" href="<?php echo $canonical ?>" />
+		<?php
+    }
+    echo "\n\t";
 
-																foreach ($css as $file) {
-																	echo "\n\t\t";
-																	?>
+    foreach ($css as $file) {
+        echo "\n\t\t"; ?>
 		<link rel="stylesheet" href="<?php echo $file; ?>" type="text/css" /><?php
-																				}
-																				echo "\n\t";
-																				/** -- to here -- */
-																				?>
+    }
+    echo "\n\t";
+    /** -- to here -- */
+    ?>
 
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -80,12 +78,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	<script src="<?php echo base_url('assets/admin_lte/plugins/fastclick/fastclick.min.js'); ?>"></script>
 	<script src="<?php echo base_url('assets/admin_lte/dist/js/app.min.js'); ?>"></script>
 	<?php
-	foreach ($js as $file) {
-		echo "\n\t\t";
-		?><script src="<?php echo $file; ?>"></script><?php
-																}
-																echo "\n\t";
-																?>
+    foreach ($js as $file) {
+        echo "\n\t\t"; ?><script src="<?php echo $file; ?>"></script><?php
+    }
+    echo "\n\t";
+    ?>
 </body>
 
 </html>
