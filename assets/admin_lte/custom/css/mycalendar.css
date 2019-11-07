@@ -1,0 +1,26 @@
+td.fc-today {
+    border-color: #e2e2e2 !important;
+    background-color: #72afd2 !important;
+}
+
+td.fc-today > a.fc-day-number {
+    color: #ffffff !important;
+}
+
+td.fc-past {
+    border-color: #e2e2e2 !important;
+    background-color: #8c8c8c !important;
+}
+
+td.fc-past > a.fc-day-number {
+    color: #ffffff !important;
+}
+
+td.fc-future {
+    border-color: #b5b5b5 !important;
+    background-color: #e8e8e8 !important;
+}
+
+td.fc-future > a.fc-day-number {
+    color: #000000 !important;
+}

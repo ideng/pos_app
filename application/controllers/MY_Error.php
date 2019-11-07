@@ -1,0 +1,13 @@
+<?php
+defined('BASEPATH') or exit('No direct script access allowed!');
+
+class MY_Error extends MY_Controller {
+    public function __construct() {
+        parent::__construct();
+    }
+
+    public function index() {
+        parent::error_tpl();
+        $this->load->view('errors/html/error_page_404');
+    }
+}
