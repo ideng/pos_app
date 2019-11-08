@@ -23,8 +23,7 @@ foreach ($menu_privileges as $menu_privilege) {
             <li class="header">MAIN MENU</li>
             <?php
             foreach ($menu_level_ones as $menu_level_one) {
-                $is_active = '';
-                // $is_active = ($this->uri->segment(2) == $menu_level_one->link) || ($menu_level_one->link == 'home' && empty($this->uri->segment(2))) ? 'class=\'active\'' : '' ;
+                $is_active = ($this->uri->segment(2) == $menu_level_one->link) || ($menu_level_one->link == 'home' && empty($this->uri->segment(2))) ? 'class=\'active\'' : '' ;
                 if ($menu_level_one->is_global || isset($privilege[$menu_level_one->id])) {
                     if ($menu_level_one->link != '#') {
                         ?>
