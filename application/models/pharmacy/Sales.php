@@ -7,7 +7,7 @@ class Sales extends CI_Model
 	private $primary_key = 'id';
 	private $title = 'Penjualan Barang';
 
-	public function _get(string $name)
+	public function _get($name)
 	{
 		return isset($this->{$name}) ? $this->{$name} : 'Error, Property not defined!';
 	}
@@ -71,7 +71,7 @@ class Sales extends CI_Model
 		return $data;
 	}
 
-	private function tbl_btn(string $id, string $vars)
+	private function tbl_btn($id, $vars)
 	{
 		$this->load->helper(['btn_access_helper']);
 
@@ -115,7 +115,7 @@ class Sales extends CI_Model
 		return $data;
 	}
 
-	public function get_row(string $id)
+	public function get_row($id)
 	{
 		$columns = ['id', 'no_faktur', 'nama_barang', 'barcode', 'patient_id', 'patient_name', 'civilian_id_patient', 'total_price', 'created_at', 'updated_at'];
 		$this->db->select('a.id, a.no_faktur, a.patient_id, c.civilian_id AS civilian_id_patient, c.name AS patient_name, d.name AS nama_barang, d.barcode, d.sell_price, b.drug_id, b.quantity, b.subtotal, a.total_price, d.updated_at AS update_obat, a.created_at, a.updated_at')
@@ -139,7 +139,7 @@ class Sales extends CI_Model
 		return $data;
 	}
 
-	public function patient_drug(string $patient_id)
+	public function patient_drug($patient_id)
 	{
 		$this->db->select('c.name AS patient_name, a.total_price')
 			->from('sales a')
@@ -151,7 +151,7 @@ class Sales extends CI_Model
 		return $result;
 	}
 
-	public function delete_data(string $id)
+	public function delete_data($id)
 	{
 		$this->load->model(['base_model']);
 		$data = $this->base_model->delete_data($this->table, ['id' => $id], $this->title);

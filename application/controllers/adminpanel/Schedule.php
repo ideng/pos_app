@@ -14,7 +14,7 @@ class Schedule extends MY_Controller
         }
     }
 
-    public function _remap(string $method, array $args)
+    public function _remap($method, array $args = [])
     {
         if (method_exists($this, $method)) {
             $this->{$method}($args);
@@ -23,7 +23,7 @@ class Schedule extends MY_Controller
         }
     }
 
-    public function index(string $method)
+    public function index($method)
     {
         parent::admin_tpl();
         parent::datatables_assets();
@@ -73,10 +73,11 @@ class Schedule extends MY_Controller
         if ($page == 'gudang') {
             $page = $this->input->get('page');
             $this->load->model(['base_model', $this->class_name . '/' . $page]);
-            $id = empty($this->input->get('id')) ? '' : $this->input->get('id');
-            $id_mutasi = empty($this->input->get('id')) ? '' : $this->input->get('id');
-            $id_mutasi_jual = empty($this->input->get('id')) ? '' : $this->input->get('id');
-            $id_mutasi_checkup = empty($this->input->get('id')) ? '' : $this->input->get('id');
+            $id = $this->input->get('id');
+            $id = !empty($id) ? '' : $this->input->get('id');
+            $id_mutasi = empty($id) ? '' : $this->input->get('id');
+            $id_mutasi_jual = empty($id) ? '' : $this->input->get('id');
+            $id_mutasi_checkup = empty($id) ? '' : $this->input->get('id');
             $page_url = $this->input->get('page_url');
             $row = $this->{$page}->get_row($id);
         } else {

@@ -6,12 +6,12 @@ class Purchase_faktur extends CI_Model
     private $table = 'purchase_faktur';
     private $title = 'Faktur Pembelian Data';
 
-    public function _get(string $name)
+    public function _get($name)
     {
         return isset($this->{$name}) ? $this->{$name} : 'Error, Property not defined!';
     }
 
-    public function post_data_faktur(array $post_data, string $key)
+    public function post_data_faktur(array $post_data, $key)
     {
         $this->load->model(['base_model']);
         $delete_purchase_faktur = $this->base_model->delete_data($this->table, ['id_purchase' => $key], $this->title);

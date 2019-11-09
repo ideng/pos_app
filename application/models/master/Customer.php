@@ -7,7 +7,7 @@ class Customer extends CI_Model
 	private $primary_key = 'id';
 	private $title = 'Customer Data';
 
-	public function _get(string $name)
+	public function _get($name)
 	{
 		return isset($this->{$name}) ? $this->{$name} : 'Error, Property not defined!';
 	}
@@ -65,7 +65,7 @@ class Customer extends CI_Model
 		return $data;
 	}
 
-	private function tbl_btn(string $id, string $var)
+	private function tbl_btn($id, $var)
 	{
 		$this->load->helper(['btn_access_helper']);
 
@@ -141,7 +141,7 @@ class Customer extends CI_Model
 		return $data;
 	}
 
-	public function get_medical_histories(string $id)
+	public function get_medical_histories($id)
 	{
 		$this->load->model(['base_model']);
 		$this->db->select('a.id, a.medical_record_id, c.name AS poly_name, d.name AS doctor_name, a.date_in, a.complaint, b.id AS diagnose_id, b.date_in AS diagnose_date, b.description, b.total_price, b.flag')

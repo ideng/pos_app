@@ -1,7 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed!');
 
-class Auth_model extends CI_Model {
+class Auth_model extends CI_Model
+{
     public function form_rules()
     {
         $rules = [
@@ -15,7 +16,7 @@ class Auth_model extends CI_Model {
     public function verify_login(array $data)
     {
         $this->load->model(['base_model', 'setting/privileges']);
-        $user = $this->base_model->get_row('users', ['username' => $data['username']]);
+        $user = $this->base_model->get_row('users', ['username' => $data['username']], []);
         if ($user) {
             $user_pass = $user->password;
             $chk_pass = verify_hash($data['password'], $user_pass);

@@ -125,7 +125,7 @@ function format_phone($phone = '', $split_char = '-', $split = '4')
 	endif;
 }
 
-function indo_gender(string $gender)
+function indo_gender($gender)
 {
 	if ($gender == 'male') {
 		return 'Laki-Laki';
@@ -136,7 +136,7 @@ function indo_gender(string $gender)
 	}
 }
 
-function days_indo(int $day_number = 0)
+function days_indo(int $day_number)
 {
 	$days = ['senin', 'selasa', 'rabu', 'kamis', 'jum\'at', 'sabtu', 'minggu'];
 	if ($day_number == 0) {

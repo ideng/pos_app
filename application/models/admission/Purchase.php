@@ -7,7 +7,7 @@ class Purchase extends CI_Model
     private $primary_key = 'id';
     private $title = 'Pembelian Barang';
 
-    public function _get(string $name)
+    public function _get($name)
     {
         return isset($this->{$name}) ? $this->{$name} : 'Error, Property not defined!';
     }
@@ -71,7 +71,7 @@ class Purchase extends CI_Model
         return $data;
     }
 
-    private function tbl_btn(string $id, string $var)
+    private function tbl_btn($id, $var)
     {
         $this->load->helper(['btn_access_helper']);
 
@@ -99,7 +99,7 @@ class Purchase extends CI_Model
         //$this->form_validation->set_rules('supplier_name', 'Supplier Name', 'required');
     }
 
-    public function get_row(string $id)
+    public function get_row($id)
     {
         $columns = ['id', 'no_faktur', 'nama_obat', 'drug_id', 'barcode', 'supplier_code', 'supplier_id', 'supplier_name', 'total_bayar', 'created_at', 'updated_at'];
         $this->db->select('a.id, c.name AS nama_obat, b.drug_id, c.barcode, a.no_faktur, d.name AS supplier_name, d.supplier_code, b.price, b.quantity, b.subtotal, a.total_bayar, a.created_at, a.updated_at, a.supplier_id, d.supplier_code')
@@ -139,7 +139,7 @@ class Purchase extends CI_Model
         return $data;
     }
 
-    public function get_supplier(string $supplier_id, string $drug_id)
+    public function get_supplier($supplier_id, $drug_id)
     {
         $this->db->select('a.id, b.name AS supplier_name, d.barcode')
             ->from('purchase a')
@@ -154,7 +154,7 @@ class Purchase extends CI_Model
         return $result;
     }
 
-    public function delete_data(string $id)
+    public function delete_data($id)
     {
         $this->load->model(['base_model']);
         $data = $this->base_model->delete_data($this->table, ['id' => $id], $this->title);
@@ -163,7 +163,7 @@ class Purchase extends CI_Model
         return $data;
     }
 
-    public function get_barcode(string $drug_id)
+    public function get_barcode($drug_id)
     {
         $this->db->select('b.barcode')
             ->from('purchase_faktur a')

@@ -7,7 +7,7 @@ class Type_drugs extends CI_Model
     private $primary_key = 'id';
     private $title = 'Kategori Data';
 
-    public function _get(string $name)
+    public function _get($name)
     {
         return isset($this->{$name}) ? $this->{$name} : 'Error, Property not defined!';
     }
@@ -57,7 +57,7 @@ class Type_drugs extends CI_Model
         return $data;
     }
 
-    private function tbl_btn(string $id, string $var)
+    private function tbl_btn($id, $var)
     {
         $this->load->helper(['btn_access_helper']);
 
@@ -106,9 +106,6 @@ class Type_drugs extends CI_Model
 
     public function post_data(array $post_data)
     {
-        $this->load->model(['setting/code_generators']);
-        $supplier_code = empty($post_data['supplier_code']) ? $this->code_generators->generate_code('supplier') : $post_data['supplier_code'];
-
 
         $data = [
             'id' => $post_data['id'],

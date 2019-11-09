@@ -7,7 +7,7 @@ class Supplier extends CI_Model
     private $primary_key = 'id';
     private $title = 'Supplier Data';
 
-    public function _get(string $name)
+    public function _get($name)
     {
         return isset($this->{$name}) ? $this->{$name} : 'Error, Property not defined!';
     }
@@ -67,7 +67,7 @@ class Supplier extends CI_Model
         return $data;
     }
 
-    private function tbl_btn(string $id, string $var)
+    private function tbl_btn($id, $var)
     {
         $this->load->helper(['btn_access_helper']);
 
@@ -95,7 +95,7 @@ class Supplier extends CI_Model
         $this->form_validation->set_rules('city_name', 'City Name', 'required');
     }
 
-    public function get_row(string $id)
+    public function get_row($id)
     {
         $columns = ['id', 'supplier_code', 'city_id', 'city_name', 'address', 'supplier_name', 'created_at', 'updated_at'];
         $this->db->select('a.id, a.supplier_code, a.city_id, a.address, a.name AS supplier_name, b.name AS city_name, a.created_at, a.updated_at')
@@ -134,7 +134,7 @@ class Supplier extends CI_Model
         return $data;
     }
 
-    public function get_city(string $city_id)
+    public function get_city($city_id)
     {
         $this->db->select('b.name AS city_name')
             ->from('supplier a')

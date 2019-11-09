@@ -7,7 +7,7 @@ class Mutasi extends CI_Model
     private $primary_key = 'id';
     private $title = 'Mutasi Data';
 
-    public function _get(string $name)
+    public function _get($name)
     {
         return isset($this->{$name}) ? $this->{$name} : 'Error, Property not defined!';
     }
@@ -89,7 +89,7 @@ class Mutasi extends CI_Model
         return $data;
     }
 
-    private function tbl_btn(string $id, string $var)
+    private function tbl_btn($id, $var)
     {
         $this->load->helper(['btn_access_helper']);
 
@@ -110,7 +110,7 @@ class Mutasi extends CI_Model
         return $btn_group;
     }
 
-    public function get_mutasi_data(string $start, string $end, string $type = 'beli')
+    public function get_mutasi_data($start, $end, $type = 'beli')
     {
         $this->db->select('b.created_at AS tanggal, a.name AS nama_obat, b.no_faktur AS faktur_pembelian, e.name AS supplier_name, c.price AS harga_beli, COALESCE (c.quantity,0) AS jml_beli, COALESCE (d.quantity,0) AS jml_retur_beli, COALESCE (c.quantity,0) - COALESCE (d.quantity,0) AS jml_pembelian, COALESCE (c.subtotal,0) AS nominal_beli, c.price * COALESCE (d.quantity,0) AS nominal_retur_beli, COALESCE (c.subtotal,0) - (c.price * COALESCE (d.quantity,0)) AS nominal_pembelian');
         if ($type == 'beli') {
@@ -132,7 +132,7 @@ class Mutasi extends CI_Model
         return $result;
     }
 
-    public function get_mutasi_beli(string $start, string $end)
+    public function get_mutasi_beli($start, $end)
     {
         $this->db->select('b.created_at AS tanggal, a.name AS nama_obat, b.no_faktur AS faktur_pembelian,
         e.name AS supplier_name, c.price AS harga_beli, COALESCE (c.quantity,0) AS jml_beli, COALESCE (d.quantity,0) AS jml_retur_beli, COALESCE (c.quantity,0) - COALESCE (d.quantity,0) AS jml_pembelian,
@@ -149,7 +149,7 @@ class Mutasi extends CI_Model
         return $result;
     }
 
-    public function get_mutasi_jual(string $start, string $end)
+    public function get_mutasi_jual($start, $end)
     {
         $this->db->select('b.created_at AS tanggal,
         a.name AS nama_obat,
@@ -165,7 +165,7 @@ class Mutasi extends CI_Model
             ->from('gudang a')
             ->join('sales_item c', 'c.drug_id = a.id', 'left')
             ->join('sales b', 'b.id = c.drugpurchase_id', 'left')
-            ->join('gudang d', 'd.id = b.patient_id', 'left')
+            ->join('customer d', 'd.id = b.patient_id', 'left')
             ->join('sales_return e', 'e.drug_id = c.drug_id AND e.no_faktur_id = c.drugpurchase_id', 'left')
             ->where('DATE(b.created_at) BETWEEN "' . format_date($start, 'Y-m-d') . '" and "' . format_date($end, 'Y-m-d') . '"');
         $query = $this->db->get();
@@ -173,7 +173,7 @@ class Mutasi extends CI_Model
         return $result;
     }
 
-    public function get_mutasi_pembelian(string $start, string $end)
+    public function get_mutasi_pembelian($start, $end)
     {
         $this->db->select('SUM(c.subtotal) AS nominal_beli,
         SUM(c.price * d.quantity) AS nominal_retur_beli,
@@ -188,7 +188,7 @@ class Mutasi extends CI_Model
         return $result;
     }
 
-    public function get_mutasi_penjualan(string $start, string $end)
+    public function get_mutasi_penjualan($start, $end)
     {
         $this->db->select('SUM(c.subtotal) AS nominal_jual,
         COALESCE(SUM(c.price * e.quantity),0) AS numinal_retur,

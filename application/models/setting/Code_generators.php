@@ -7,7 +7,7 @@ class Code_generators extends CI_Model
 	private $primary_key = 'id';
 	private $title = 'Code Generator Data';
 
-	public function _get(string $name)
+	public function _get($name)
 	{
 		return isset($this->{$name}) ? $this->{$name} : 'Error, Property not defined!';
 	}
@@ -23,7 +23,7 @@ class Code_generators extends CI_Model
 		return $opts;
 	}
 
-	public function code_column(string $table)
+	public function code_column($table)
 	{
 		if ($table == 'customer') {
 			$column = 'patient_code';
@@ -110,7 +110,7 @@ class Code_generators extends CI_Model
 		return $data;
 	}
 
-	public function post_child_data(array $post_data, string $master_key)
+	public function post_child_data(array $post_data, $master_key)
 	{
 		$code_format = '';
 		$total = count($post_data['code_part']);
@@ -134,7 +134,7 @@ class Code_generators extends CI_Model
 		return ['submit' => $data, 'code_format' => $code_format];
 	}
 
-	private function render_code_part(string $code_part, string $code_unique)
+	private function render_code_part($code_part, $code_unique)
 	{
 		$this->load->helper(['number']);
 
@@ -162,7 +162,7 @@ class Code_generators extends CI_Model
 		return $code;
 	}
 
-	public function generate_code(string $table)
+	public function generate_code($table)
 	{
 		$this->load->model(['base_model']);
 		$code_generator = $this->base_model->get_row('code_generators', ['table' => $table]);

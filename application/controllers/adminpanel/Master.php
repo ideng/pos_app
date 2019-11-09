@@ -14,7 +14,7 @@ class Master extends MY_Controller
         }
     }
 
-    public function _remap(string $method, array $args)
+    public function _remap($method, array $args = [])
     {
         if (method_exists($this, $method)) {
             $this->{$method}($args);
@@ -23,7 +23,7 @@ class Master extends MY_Controller
         }
     }
 
-    public function index(string $method)
+    public function index($method)
     {
         parent::admin_tpl();
         parent::datatables_assets();

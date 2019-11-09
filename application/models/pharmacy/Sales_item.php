@@ -6,12 +6,12 @@ class Sales_item extends CI_Model
     private $table = 'sales_item';
     private $title = 'Barang';
 
-    public function _get(string $name)
+    public function _get($name)
     {
         return isset($this->{$name}) ? $this->{$name} : 'Error, Property not defined!';
     }
 
-    public function post_data_drugs(array $post_data, string $key)
+    public function post_data_drugs(array $post_data, $key)
     {
         $this->load->model(['base_model']);
         $delete_purchase_drug = $this->base_model->delete_data($this->table, ['drugpurchase_id' => $key], $this->title);

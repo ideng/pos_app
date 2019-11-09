@@ -7,7 +7,7 @@ class Mutasi_checkup extends CI_Model
     private $primary_key = 'id';
     private $title = 'Mutasi Jual Data';
 
-    public function _get(string $name)
+    public function _get($name)
     {
         return isset($this->{$name}) ? $this->{$name} : 'Error, Property not defined!';
     }
@@ -63,7 +63,7 @@ class Mutasi_checkup extends CI_Model
         return $data;
     }
 
-    private function tbl_btn(string $id, string $var)
+    private function tbl_btn($id, $var)
     {
         $this->load->helper(['btn_access_helper']);
 

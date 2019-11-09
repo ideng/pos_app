@@ -7,7 +7,7 @@ class Purchase_return extends CI_Model
     private $primary_key = 'id';
     private $title = 'Retur Pembelian';
 
-    public function _get(string $name)
+    public function _get($name)
     {
         return isset($this->{$name}) ? $this->{$name} : 'Error, Property not defined!';
     }
@@ -74,7 +74,7 @@ class Purchase_return extends CI_Model
         return $data;
     }
 
-    private function tbl_btn(string $id, string $var)
+    private function tbl_btn($id, $var)
     {
         $this->load->helper(['btn_access_helper']);
 
@@ -102,7 +102,7 @@ class Purchase_return extends CI_Model
         $this->form_validation->set_rules('description', 'Description', 'required');
     }
 
-    public function get_row(string $id)
+    public function get_row($id)
     {
         $columns = ['id', 'no_retur', 'no_faktur', 'no_faktur_id', 'drug_id', 'drug_name', 'quantity', 'description', 'created_at', 'updated_at'];
         $this->db->select('a.id, a.no_retur, b.no_faktur, a.no_faktur_id, a.drug_id, a.quantity, a.description, a.created_at, a.updated_at, c.name AS drug_name')
@@ -142,7 +142,7 @@ class Purchase_return extends CI_Model
         return $data;
     }
 
-    public function get_faktur(string $no_faktur_id)
+    public function get_faktur($no_faktur_id)
     {
         $this->db->select('b.no_faktur')
             ->from('purchase_return a')

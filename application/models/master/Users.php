@@ -1,14 +1,15 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed!');
 
-class Users extends CI_Model {
-    private $table = 'users';
-    private $primary_key = 'id';
+class Users extends CI_Model
+{
+	private $table = 'users';
+	private $primary_key = 'id';
 	private $title = 'Users Data';
 
-	public function _get(string $name)
+	public function _get($name)
 	{
-		return isset($this->{$name}) ? $this->{$name} : 'Error, Property not defined!' ;
+		return isset($this->{$name}) ? $this->{$name} : 'Error, Property not defined!';
 	}
 
 	public function ssp_table()
@@ -18,27 +19,33 @@ class Users extends CI_Model {
 
 		$data['table'] = $this->table;
 
-		$data['primaryKey'] = 'a.'.$this->primary_key;
+		$data['primaryKey'] = 'a.' . $this->primary_key;
 
 		$data['columns'] = array(
-            array( 'db' => 'a.'.$this->primary_key, 'dt' => 1, 'field' => $this->primary_key,
-                'formatter' => function($d, $row) {
+			array(
+				'db' => 'a.' . $this->primary_key, 'dt' => 1, 'field' => $this->primary_key,
+				'formatter' => function ($d, $row) {
 
 					return $this->tbl_btn($d, $row[2]);
-				} ),
-			array( 'db' => 'a.'.$this->primary_key, 'dt' => 2, 'field' => $this->primary_key ),
-			array( 'db' => 'a.username', 'dt' => 3, 'field' => 'username' ),
-			array( 'db' => 'a.name', 'dt' => 4, 'field' => 'name' ),
-			array( 'db' => 'c.name AS privilege_name', 'dt' => 5, 'field' => 'privilege_name' ),
-            array( 'db' => 'a.created_at', 'dt' => 6, 'field' => 'created_at',
-                'formatter' => function($d) {
-                    return format_date($d, 'd-m-Y H:i:s');
-                } ),
-            array( 'db' => 'a.updated_at', 'dt' => 7, 'field' => 'updated_at',
-                'formatter' => function($d) {
-					$date = empty($d) ? empty_string($d, '-') : format_date($d, 'd-m-Y H:i:s') ;
-                    return $date;
-                } ),
+				}
+			),
+			array('db' => 'a.' . $this->primary_key, 'dt' => 2, 'field' => $this->primary_key),
+			array('db' => 'a.username', 'dt' => 3, 'field' => 'username'),
+			array('db' => 'a.name', 'dt' => 4, 'field' => 'name'),
+			array('db' => 'c.name AS privilege_name', 'dt' => 5, 'field' => 'privilege_name'),
+			array(
+				'db' => 'a.created_at', 'dt' => 6, 'field' => 'created_at',
+				'formatter' => function ($d) {
+					return format_date($d, 'd-m-Y H:i:s');
+				}
+			),
+			array(
+				'db' => 'a.updated_at', 'dt' => 7, 'field' => 'updated_at',
+				'formatter' => function ($d) {
+					$date = empty($d) ? empty_string($d, '-') : format_date($d, 'd-m-Y H:i:s');
+					return $date;
+				}
+			),
 		);
 
 		$data['sql_details'] = sql_connect();
@@ -50,7 +57,7 @@ class Users extends CI_Model {
 		return $data;
 	}
 
-	private function tbl_btn(string $id, string $var)
+	private function tbl_btn($id, $var)
 	{
 		$this->load->helper(['btn_access_helper']);
 
@@ -59,11 +66,13 @@ class Users extends CI_Model {
 		$delete_access = true;
 
 		$btns = [];
-		$btns[] = get_btn(['access' => $read_access, 'title' => 'Detail '.$this->title, 'icon' => 'search', 'onclick' => 'view_detail(\''.$id.'\')']);
-		$btns[] = get_btn(['access' => $update_access, 'title' => 'Ubah Data', 'icon' => 'pencil', 'onclick' => 'load_form(\''.$id.'\')']);
+		$btns[] = get_btn(['access' => $read_access, 'title' => 'Detail ' . $this->title, 'icon' => 'search', 'onclick' => 'view_detail(\'' . $id . '\')']);
+		$btns[] = get_btn(['access' => $update_access, 'title' => 'Ubah Data', 'icon' => 'pencil', 'onclick' => 'load_form(\'' . $id . '\')']);
 		$btns[] = get_btn_divider();
-		$btns[] = get_btn(['access' => $delete_access, 'title' => 'Hapus Data', 'icon' => 'trash',
-			'onclick' => 'return confirm(\'Apakah Anda yakin untuk menghapus '.$this->title.' = '.$var.'?\')?delete_data(\''.$id.'\'):false']);
+		$btns[] = get_btn([
+			'access' => $delete_access, 'title' => 'Hapus Data', 'icon' => 'trash',
+			'onclick' => 'return confirm(\'Apakah Anda yakin untuk menghapus ' . $this->title . ' = ' . $var . '?\')?delete_data(\'' . $id . '\'):false'
+		]);
 		$btn_group = group_btns($btns);
 
 		return $btn_group;
@@ -74,13 +83,15 @@ class Users extends CI_Model {
 		$this->form_validation->set_rules('username', 'Username', ['required', ['chk_username', [$this->users, 'chk_username']]]);
 		$this->form_validation->set_rules('name', 'Name', 'required');
 		$this->form_validation->set_rules('privilege_id', 'Privilege', 'required');
-		if (empty($this->input->post('id')) || !empty($this->input->post('password'))) {
+		$id = $this->input->post('id');
+		$password = $this->input->post('password');
+		if (!empty($id) || !empty($password)) {
 			$this->form_validation->set_rules('password', 'Password', 'required');
 			$this->form_validation->set_rules('password_confirm', 'Password Confirm', 'required|matches[password]');
 		}
 	}
 
-	public function chk_username(string $str)
+	public function chk_username($str)
 	{
 		$this->load->model(['base_model']);
 		if ($str == 'test') {
@@ -111,7 +122,7 @@ class Users extends CI_Model {
 		return $data;
 	}
 
-	public function get_row(string $id)
+	public function get_row($id)
 	{
 		$columns = ['id', 'username', 'name', 'privilege_name', 'created_at', 'updated_at'];
 		$this->db->select('a.id, a.username, a.name, c.name AS privilege_name, a.created_at, a.updated_at')
@@ -122,16 +133,16 @@ class Users extends CI_Model {
 		$query = $this->db->get();
 		$row = $query->row();
 		$data = new stdClass();
-        foreach ($columns as $column) {
-            $data->{$column} = '';
-        }
-        if (!empty($row)) {
-            foreach ($columns as $column) {
-                $data->{$column} = $row->{$column};
-            }
-        }
+		foreach ($columns as $column) {
+			$data->{$column} = '';
+		}
+		if (!empty($row)) {
+			foreach ($columns as $column) {
+				$data->{$column} = $row->{$column};
+			}
+		}
 
-        return $data;
+		return $data;
 	}
 
 	public function submit_userdata(array $post_data)
@@ -175,13 +186,15 @@ class Users extends CI_Model {
 	{
 		$this->form_validation->set_rules('username', 'Username', ['required', ['chk_username_external', [$this->users, 'chk_username_external']]]);
 		$this->form_validation->set_rules('privilege_id', 'User Privilege', 'required');
-		if (empty($this->input->post('user_id')) || !empty($this->input->post('password'))) {
+		$id = $this->input->post('id');
+		$password = $this->input->post('password');
+		if (!empty($id) || !empty($password)) {
 			$this->form_validation->set_rules('password', 'Password', 'required');
 			$this->form_validation->set_rules('password_confirm', 'Password Confirmation', 'required|matches[password]');
 		}
 	}
 
-	public function chk_username_external(string $str)
+	public function chk_username_external($str)
 	{
 		$this->load->model(['base_model']);
 		if ($str == 'test') {

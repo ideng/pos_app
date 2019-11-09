@@ -1,14 +1,15 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed!');
 
-class Privileges extends CI_Model {
-    private $table = 'privileges';
-    private $primary_key = 'id';
+class Privileges extends CI_Model
+{
+	private $table = 'privileges';
+	private $primary_key = 'id';
 	private $title = 'Privileges Data';
 
-	public function _get(string $name)
+	public function _get($name)
 	{
-		return isset($this->{$name}) ? $this->{$name} : 'Error, Property not defined!' ;
+		return isset($this->{$name}) ? $this->{$name} : 'Error, Property not defined!';
 	}
 
 	public function ssp_table()
@@ -18,27 +19,35 @@ class Privileges extends CI_Model {
 		$data['primaryKey'] = $this->primary_key;
 
 		$data['columns'] = array(
-            array( 'db' => $this->primary_key, 'dt' => 1, 'field' => $this->primary_key,
-                'formatter' => function($d, $row) {
+			array(
+				'db' => $this->primary_key, 'dt' => 1, 'field' => $this->primary_key,
+				'formatter' => function ($d, $row) {
 
 					return $this->tbl_btn($d, $row[3]);
-				} ),
-			array( 'db' => $this->primary_key, 'dt' => 2, 'field' => $this->primary_key ),
-			array( 'db' => 'name', 'dt' => 3, 'field' => 'name' ),
-			array( 'db' => 'level', 'dt' => 4, 'field' => 'level' ),
-			array( 'db' => 'module', 'dt' => 5, 'field' => 'module',
-				'formatter' => function($d) {
+				}
+			),
+			array('db' => $this->primary_key, 'dt' => 2, 'field' => $this->primary_key),
+			array('db' => 'name', 'dt' => 3, 'field' => 'name'),
+			array('db' => 'level', 'dt' => 4, 'field' => 'level'),
+			array(
+				'db' => 'module', 'dt' => 5, 'field' => 'module',
+				'formatter' => function ($d) {
 					return empty_string(ucwords($d), '-');
-				} ),
-            array( 'db' => 'created_at', 'dt' => 6, 'field' => 'created_at',
-                'formatter' => function($d) {
-                    return format_date($d, 'd-m-Y H:i:s');
-                } ),
-            array( 'db' => 'updated_at', 'dt' => 7, 'field' => 'updated_at',
-                'formatter' => function($d) {
-					$date = empty($d) ? empty_string($d, '-') : format_date($d, 'd-m-Y H:i:s') ;
-                    return $date;
-                } ),
+				}
+			),
+			array(
+				'db' => 'created_at', 'dt' => 6, 'field' => 'created_at',
+				'formatter' => function ($d) {
+					return format_date($d, 'd-m-Y H:i:s');
+				}
+			),
+			array(
+				'db' => 'updated_at', 'dt' => 7, 'field' => 'updated_at',
+				'formatter' => function ($d) {
+					$date = empty($d) ? empty_string($d, '-') : format_date($d, 'd-m-Y H:i:s');
+					return $date;
+				}
+			),
 		);
 
 		$data['sql_details'] = sql_connect();
@@ -50,7 +59,7 @@ class Privileges extends CI_Model {
 		return $data;
 	}
 
-	private function tbl_btn(string $id, string $var)
+	private function tbl_btn($id, $var)
 	{
 		$this->load->helper(['btn_access_helper']);
 
@@ -59,12 +68,14 @@ class Privileges extends CI_Model {
 		$delete_access = true;
 
 		$btns = [];
-		$btns[] = get_btn(['access' => $read_access, 'title' => 'Detail '.$this->title, 'icon' => 'search', 'onclick' => 'view_detail(\''.$id.'\')']);
-		$btns[] = get_btn(['access' => $update_access, 'title' => 'Edit', 'icon' => 'pencil', 'onclick' => 'load_form(\''.$id.'\')']);
-		$btns[] = get_btn(['access' => $update_access, 'title' => 'Set Menus', 'icon' => 'list', 'onclick' => 'load_form_menu(\''.$id.'\')']);
+		$btns[] = get_btn(['access' => $read_access, 'title' => 'Detail ' . $this->title, 'icon' => 'search', 'onclick' => 'view_detail(\'' . $id . '\')']);
+		$btns[] = get_btn(['access' => $update_access, 'title' => 'Edit', 'icon' => 'pencil', 'onclick' => 'load_form(\'' . $id . '\')']);
+		$btns[] = get_btn(['access' => $update_access, 'title' => 'Set Menus', 'icon' => 'list', 'onclick' => 'load_form_menu(\'' . $id . '\')']);
 		$btns[] = get_btn_divider();
-		$btns[] = get_btn(['access' => $delete_access, 'title' => 'Delete', 'icon' => 'trash',
-			'onclick' => 'return confirm(\'Are you sure to delete '.$this->title.' = '.$var.'?\')?delete_data(\''.$id.'\'):false']);
+		$btns[] = get_btn([
+			'access' => $delete_access, 'title' => 'Delete', 'icon' => 'trash',
+			'onclick' => 'return confirm(\'Are you sure to delete ' . $this->title . ' = ' . $var . '?\')?delete_data(\'' . $id . '\'):false'
+		]);
 		$btn_group = group_btns($btns);
 
 		return $btn_group;
@@ -170,7 +181,7 @@ class Privileges extends CI_Model {
 		return $master;
 	}
 
-	public function get_user_privilege(string $user_id)
+	public function get_user_privilege($user_id)
 	{
 		$this->load->model(['base_model']);
 		$columns = ['id', 'name', 'level'];
@@ -182,10 +193,10 @@ class Privileges extends CI_Model {
 		$row = $query->row();
 		$data = $this->base_model->render_column_object($columns, $row);
 
-        return $data;
+		return $data;
 	}
 
-	public function get_user_privileges(string $user_id)
+	public function get_user_privileges($user_id)
 	{
 		$columns = ['module'];
 		$this->db->select('b.module')

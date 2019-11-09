@@ -1,8 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed!');
 
-class Base_model extends CI_Model {
-	public function get_all(string $tbl, array $params = [], array $orders = [])
+class Base_model extends CI_Model
+{
+	public function get_all($tbl, array $params = [], array $orders = [])
 	{
 		$this->db->from($tbl);
 		if (count($params) > 0) :
@@ -18,7 +19,7 @@ class Base_model extends CI_Model {
 		return $result;
 	}
 
-	public function get_row(string $table, array $params, array $orders = [])
+	public function get_row($table, array $params = [], array $orders = [])
 	{
 		$this->db->from($table)
 			->where($params);
@@ -34,7 +35,7 @@ class Base_model extends CI_Model {
 		return $data;
 	}
 
-	public function count_data(string $tbl, array $params = [])
+	public function count_data($tbl, array $params = [])
 	{
 		$this->db->from($tbl)
 			->where($params);
@@ -43,15 +44,15 @@ class Base_model extends CI_Model {
 		return $num;
 	}
 
-	public function submit_data(string $tbl_name, string $p_key, string $title_name, array $data)
+	public function submit_data($tbl_name, $p_key, $title_name, array $data)
 	{
 		if (!empty($data[$p_key])) :
-			$label = 'Mengubah '.$title_name;
+			$label = 'Mengubah ' . $title_name;
 			$submit = array_merge($data, ['updated_at' => date('Y-m-d H:i:s')]);
 			$where = [$p_key => $data[$p_key]];
 			$act = $this->db->update($tbl_name, $submit, $where);
 		else :
-			$label = 'Menambahkan '.$title_name;
+			$label = 'Menambahkan ' . $title_name;
 			$submit = array_merge($data, ['created_at' => date('Y-m-d H:i:s')]);
 			$act = $this->db->insert($tbl_name, $submit);
 			$data[$p_key] = $this->db->insert_id();
@@ -60,36 +61,36 @@ class Base_model extends CI_Model {
 		return $str;
 	}
 
-	public function delete_data(string $tbl_name, array $data, string $title_name = '')
+	public function delete_data($tbl_name, array $data, $title_name)
 	{
 		$act = $this->db->delete($tbl_name, $data);
-		$str = get_report($act, 'Delete '.$title_name, $data);
+		$str = get_report($act, 'Delete ' . $title_name, $data);
 		return $str;
 	}
 
-	public function soft_delete(string $tbl_name, array $data, string $title_name = '')
+	public function soft_delete($tbl_name, array $data, $title_name)
 	{
 		$act = $this->db->update($tbl_name, ['is_deleted' => 1], $data);
-		$str = get_report($act, 'Delete '.$title_name, $data);
+		$str = get_report($act, 'Delete ' . $title_name, $data);
 		return $str;
 	}
 
-	public function submit_batch(string $tbl_name, string $title_name = '', array $data = [])
+	public function submit_batch($tbl_name, $title_name, array $data = [])
 	{
 		$act = $this->db->insert_batch($tbl_name, $data);
-		$str = get_report($act, 'Menambahkan '.$title_name, $data);
+		$str = get_report($act, 'Menambahkan ' . $title_name, $data);
 		return $str;
 	}
 
-	public function edit_batch(string $tbl_name, string $title_name, array $data, string $key_row = '')
+	public function edit_batch($tbl_name, $title_name, array $data, $key_row)
 	{
 		$N_row = $this->db->update_batch($tbl_name, $data, $key_row);
-		$act = $N_row > 0?TRUE:FALSE;
-		$str = get_report($act, 'Update '.$title_name, $data);
+		$act = $N_row > 0 ? true : false;
+		$str = get_report($act, 'Update ' . $title_name, $data);
 		return $str;
 	}
 
-	public function form_errs(string $tbl_name, string $column = '')
+	public function form_errs($tbl_name, $column)
 	{
 		$form_errs = [];
 		$this->db->select($column)
@@ -97,12 +98,12 @@ class Base_model extends CI_Model {
 		$query = $this->db->get();
 		$result = $query->result();
 		foreach ($result as $row) :
-			$form_errs[] = 'idErr'.$row->{$column};
+			$form_errs[] = 'idErr' . $row->{$column};
 		endforeach;
 		return $form_errs;
 	}
 
-	public function delete_unused_files(string $file_path, string $file_tbl, string $file_column, array $params = [])
+	public function delete_unused_files($file_path, $file_tbl, $file_column, array $params = [])
 	{
 		$arr_file = [];
 		$arr_file_table = [];
@@ -135,38 +136,40 @@ class Base_model extends CI_Model {
 		$this->db->trans_complete();
 	}
 
-	public function define_container(string $class_link, string $box_type)
+	public function define_container($class_link, $box_type)
 	{
 		$data['class_link'] = $class_link;
-		$data['box_id'] = 'idBox'.$box_type;
-		$data['box_alert_id'] = 'idAlertBox'.$box_type;
-		$data['box_loader_id'] = 'idLoaderBox'.$box_type;
-		$data['box_content_id'] = 'idContentBox'.$box_type;
-		$data['btn_hide_id'] = 'idBtnHide'.$box_type;
-		$data['btn_add_id'] = 'idBtnAdd'.$box_type;
-		$data['btn_close_id'] = 'idBtnClose'.$box_type;
+		$data['box_id'] = 'idBox' . $box_type;
+		$data['box_alert_id'] = 'idAlertBox' . $box_type;
+		$data['box_loader_id'] = 'idLoaderBox' . $box_type;
+		$data['box_content_id'] = 'idContentBox' . $box_type;
+		$data['btn_hide_id'] = 'idBtnHide' . $box_type;
+		$data['btn_add_id'] = 'idBtnAdd' . $box_type;
+		$data['btn_close_id'] = 'idBtnClose' . $box_type;
 		return $data;
 	}
 
-    public function form_warning(array $inputs)
-    {
-        foreach ($inputs as $input => $value) {
-            if ($input != 'url' || $input != 'page' || $input != 'id') {
-                $str[] = !empty(form_error($input))? form_error($input, '<li>', '</li>') : '' ;
-            }
-        }
+	public function form_warning(array $inputs)
+	{
+		foreach ($inputs as $input => $value) {
+			if ($input != 'url' || $input != 'page' || $input != 'id') {
+				$form_error = form_error($input);
+				$str[] = !empty($form_error) ? form_error($input, '<li>', '</li>') : '';
+			}
+		}
 
-        return $str;
+		return $str;
 	}
 
-	public function upload_file($file, string $path, array $exts, string $max_name = '50')
+	public function upload_file($file, $path, array $exts, $max_name)
 	{
+		$max_name = empty($max_name) ? '50' : $max_name;
 		$exts = implode('|', $exts);
 		$config['upload_path'] = $path;
 		$config['allowed_types'] = $exts;
-		$config['encrypt_name'] = TRUE;
+		$config['encrypt_name'] = true;
 		$config['max_filename'] = $max_name;
-		$config['detect_mime'] = TRUE;
+		$config['detect_mime'] = true;
 
 		$this->load->library('upload', $config);
 		$this->load->helper(['alert_helper']);
@@ -179,33 +182,33 @@ class Base_model extends CI_Model {
 		return $data;
 	}
 
-	public function manipulate_image(string $path, string $width)
+	public function manipulate_image($path, $width)
 	{
 		$config['image_library'] = 'gd2';
 		$config['source_image'] = $path;
-		$config['maintain_ratio'] = TRUE;
+		$config['maintain_ratio'] = true;
 		$config['width'] = $width;
 		$this->load->library('image_lib', $config);
 
 		$this->image_lib->resize();
 	}
 
-	public function render_column_object(array $columns, stdClass $result = NULL)
+	public function render_column_object(array $columns, stdClass $result = null)
 	{
 		$data = new stdClass();
-        foreach ($columns as $column) {
-            $data->{$column} = '';
-        }
-        if (!empty($result)) {
-            foreach ($columns as $column) {
-                $data->{$column} = $result->{$column};
-            }
-        }
+		foreach ($columns as $column) {
+			$data->{$column} = '';
+		}
+		if (!empty($result)) {
+			foreach ($columns as $column) {
+				$data->{$column} = $result->{$column};
+			}
+		}
 
-        return $data;
+		return $data;
 	}
 
-	public function render_table_column(string $table, stdClass $row = NULL)
+	public function render_table_column($table, stdClass $row = null)
 	{
 		$columns = $this->db->list_fields($table);
 		$data = new stdClass();
@@ -214,7 +217,7 @@ class Base_model extends CI_Model {
 		}
 		if (!empty($row)) {
 			foreach ($columns as $column) {
-				$data->{$column} = $column == 'created_at' || $column == 'updated_at' ? format_date($row->{$column}, 'd-m-Y H:i:s') : $row->{$column} ;
+				$data->{$column} = $column == 'created_at' || $column == 'updated_at' ? format_date($row->{$column}, 'd-m-Y H:i:s') : $row->{$column};
 			}
 		}
 		return $data;

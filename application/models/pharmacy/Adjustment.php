@@ -7,7 +7,7 @@ class Adjustment extends CI_Model
     private $primary_key = 'id';
     private $title = 'adjustment Data';
 
-    public function _get(string $name)
+    public function _get($name)
     {
         return isset($this->{$name}) ? $this->{$name} : 'Error, Property not defined!';
     }
@@ -72,7 +72,7 @@ class Adjustment extends CI_Model
         return $data;
     }
 
-    private function tbl_btn(string $id, string $var)
+    private function tbl_btn($id, $var)
     {
         $this->load->helper(['btn_access_helper']);
 
@@ -98,7 +98,7 @@ class Adjustment extends CI_Model
         $this->form_validation->set_rules('quantity', 'Quantity', 'required');
     }
 
-    public function get_row(string $id)
+    public function get_row($id)
     {
         $columns = ['id', 'drug_id', 'nama_obat', 'purchase_price', 'quantity', 'subtotal', 'created_at', 'updated_at'];
         $this->db->select('a.id, a.drug_id, b.name AS nama_obat, b.purchase_price, a.quantity, a.subtotal, a.created_at, a.updated_at')

@@ -7,7 +7,7 @@ class Gudang extends CI_Model
     private $primary_key = 'id';
     private $title = 'Data Gudang';
 
-    public function _get(string $name)
+    public function _get($name)
     {
         return isset($this->{$name}) ? $this->{$name} : 'Error, Property not defined!';
     }
@@ -134,7 +134,7 @@ class Gudang extends CI_Model
         return $data;
     }
 
-    private function tbl_btn(string $id, string $var)
+    private function tbl_btn($id, $var)
     {
         $this->load->helper(['btn_access_helper']);
 
@@ -207,7 +207,7 @@ class Gudang extends CI_Model
     }
 
 
-    public function get_type(string $type_id)
+    public function get_type($type_id)
     {
         $this->db->select('b.name AS type_name, b.id')
             ->from('gudang a')

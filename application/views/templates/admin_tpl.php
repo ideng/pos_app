@@ -20,22 +20,20 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	/** -- Copy from here -- */
 	if (!empty($meta)) {
 		foreach ($meta as $name => $content) {
-			echo "\n\t\t";
-			?>
+			echo "\n\t\t"; ?>
 			<meta name="<?php echo $name; ?>" content="<?php echo $content; ?>" /><?php
 																						}
 																						echo "\n";
 																					}
 																					if (!empty($canonical)) {
-																						echo "\n\t\t";
-																						?>
-		<link rel="canonical" href="<?php echo $canonical ?>" /><?php
-																}
-																echo "\n\t";
+																						echo "\n\t\t"; ?>
+		<link rel="canonical" href="<?php echo $canonical ?>" />
+	<?php
+	}
+	echo "\n\t";
 
-																foreach ($css as $file) {
-																	echo "\n\t\t";
-																	?>
+	foreach ($css as $file) {
+		echo "\n\t\t"; ?>
 		<link rel="stylesheet" href="<?php echo $file; ?>" type="text/css" /><?php
 																				}
 																				echo "\n\t";
@@ -81,11 +79,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	<script src="<?php echo base_url('assets/admin_lte/dist/js/app.min.js'); ?>"></script>
 	<?php
 	foreach ($js as $file) {
-		echo "\n\t\t";
-		?><script src="<?php echo $file; ?>"></script><?php
-																}
-																echo "\n\t";
-																?>
+		echo "\n\t\t"; ?><script src="<?php echo $file; ?>"></script><?php
+																		}
+																		echo "\n\t";
+																		?>
 </body>
 
 </html>
