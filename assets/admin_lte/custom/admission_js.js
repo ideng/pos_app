@@ -34,30 +34,30 @@ $(document).off('click', '.btn-remove-payment').on('click', '.btn-remove-payment
 	});
 });
 
-$(document).off('keyup', 'input[name=\'drug_price[]\']').on('keyup', 'input[name=\'drug_price[]\']', function () {
+$(document).off('keyup', 'input[name=\'payment_price[]\']').on('keyup', 'input[name=\'payment_price[]\']', function () {
 	let price = $(this).val();
 	let quantity = $(this).parents('.payment-price').siblings('.payment-quantity').find('input[name=\'payment_quantity[]\']').val();
 	let subtotal = count_subtotal(price, quantity);
 	$(this).parents('.payment-price').siblings('.payment-subtotal').find('.payment-subtotal-text').html(subtotal);
-	$(this).parents('.payment-price').siblings('.payment-subtotal').find('input[name=\'drug_subtotal[]\']').val(subtotal);
+	$(this).parents('.payment-price').siblings('.payment-subtotal').find('input[name=\'payment_subtotal[]\']').val(subtotal);
 
 	let total = 0;
-	$('input[name=\'drug_subtotal[]\']').each(function () {
+	$('input[name=\'payment_subtotal[]\']').each(function () {
 		total += parseInt($(this).val());
 	});
 	$('input[name=\'total_price\']').val(total);
 	$('#total-payment').html(total);
 });
 
-$(document).off('keyup', 'input[name=\'drug_quantity[]\']').on('keyup', 'input[name=\'drug_quantity[]\']', function () {
+$(document).off('keyup', 'input[name=\'payment_quantity[]\']').on('keyup', 'input[name=\'payment_quantity[]\']', function () {
 	let price = $(this).parents('.payment-quantity').siblings('.payment-price').find('input[name=\'payment_price[]\']').val();
 	let quantity = $(this).val();
 	let subtotal = count_subtotal(price, quantity);
 	$(this).parents('.payment-quantity').siblings('.payment-subtotal').find('.payment-subtotal-text').html(subtotal);
-	$(this).parents('.payment-quantity').siblings('.payment-subtotal').find('input[name=\'drug_subtotal[]\']').val(subtotal);
+	$(this).parents('.payment-quantity').siblings('.payment-subtotal').find('input[name=\'payment_subtotal[]\']').val(subtotal);
 
 	let total = 0;
-	$('input[name=\'drug_subtotal[]\']').each(function () {
+	$('input[name=\'payment_subtotal[]\']').each(function () {
 		total += parseInt($(this).val());
 	});
 	$('input[name=\'total_price\']').val(total);
@@ -73,7 +73,7 @@ function count_subtotal(price, quantity) {
 }
 
 function add_payment() {
-	get_page(base_url + '/adminpanel/admission/add_drug_form_purchase', {
+	get_page(base_url + '/adminpanel/admission/add_drug_form', {
 			drug_view: 'add_payment'
 		})
 		.done(function (html) {

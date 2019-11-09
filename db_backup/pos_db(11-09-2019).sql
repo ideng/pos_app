@@ -5,17 +5,37 @@
  Source Server Type    : MySQL
  Source Server Version : 50724
  Source Host           : localhost:3306
- Source Schema         : simmedik_db
+ Source Schema         : pos_db
 
  Target Server Type    : MySQL
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 29/10/2019 06:12:51
+ Date: 09/11/2019 09:58:30
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for adjustment
+-- ----------------------------
+DROP TABLE IF EXISTS `adjustment`;
+CREATE TABLE `adjustment`  (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `drug_id` int(10) NULL DEFAULT NULL,
+  `quantity` int(10) NULL DEFAULT NULL,
+  `subtotal` decimal(17, 2) NULL DEFAULT NULL,
+  `created_at` timestamp(0) NULL DEFAULT NULL,
+  `updated_at` timestamp(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of adjustment
+-- ----------------------------
+INSERT INTO `adjustment` VALUES (19, 8, 3, 75000.00, '2019-11-01 12:17:28', '2019-11-08 09:55:30');
+INSERT INTO `adjustment` VALUES (20, 2, 3, 30000.00, '2019-11-04 10:27:36', '2019-11-04 10:55:27');
 
 -- ----------------------------
 -- Table structure for checkups
@@ -34,7 +54,7 @@ CREATE TABLE `checkups`  (
   `created_at` timestamp(0) NULL DEFAULT NULL,
   `updated_at` timestamp(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of checkups
@@ -55,6 +75,7 @@ INSERT INTO `checkups` VALUES (14, 'XIX.IX.XXX.00001', 1, 1, 2, '2019-09-30 09:0
 INSERT INTO `checkups` VALUES (17, 'XIX.X.XXIV.00001', 1, 1, 2, '2019-10-24 20:59:00', 'f', 1, 'inline', '2019-10-24 21:00:01', '2019-10-25 00:00:10');
 INSERT INTO `checkups` VALUES (18, 'XIX.X.XXV.00001', 1, 1, 2, '2019-10-25 00:01:00', 'cfbh', 1, 'inline', '2019-10-25 00:01:40', '2019-10-25 12:32:57');
 INSERT INTO `checkups` VALUES (20, 'XIX.X.XXIX.00001', 5, 5, 2, '2019-10-29 05:37:00', 'fd', 1, 'diagnose', '2019-10-29 05:38:00', '2019-10-29 06:10:45');
+INSERT INTO `checkups` VALUES (21, 'XIX.X.XXX.00001', 1, 1, 2, '2019-10-30 10:25:00', 'mn', 1, 'inline', '2019-10-30 10:25:28', '2019-10-30 10:47:55');
 
 -- ----------------------------
 -- Table structure for city
@@ -158,8 +179,39 @@ INSERT INTO `code_generators` VALUES (4, 'Format Code Pegawai', 'employees', 'em
 INSERT INTO `code_generators` VALUES (7, 'Kode Supplier', 'supplier', 'supplier_code', 'yy.mm.dd.urutan_angka[1]', 'year', '2019-09-19 10:35:16', '2019-09-19 11:00:50');
 INSERT INTO `code_generators` VALUES (8, 'No Retur', 'purchase_return', 'no_retur', 'yyyy.mm.dd.urutan_angka[1].', 'day', '2019-09-19 10:37:42', '2019-09-19 10:38:13');
 INSERT INTO `code_generators` VALUES (9, 'No Faktur', 'purchase', 'no_faktur', 'yy_roman.mm.dd_roman.urutan_angka[01]', 'day', '2019-09-19 11:27:10', '2019-09-19 11:27:10');
-INSERT INTO `code_generators` VALUES (10, 'No Faktur', 'drug_purchase', 'no_faktur', 'yy_roman.mm.dd_roman.urutan_angka[001]', 'day', '2019-09-25 19:05:52', '2019-09-25 19:05:52');
+INSERT INTO `code_generators` VALUES (10, 'No Faktur', 'sales', 'no_faktur', 'yy_roman.mm.dd_roman.urutan_angka[001]', 'day', '2019-09-25 19:05:52', '2019-09-25 19:05:52');
 INSERT INTO `code_generators` VALUES (11, 'No Retur', 'sales_return', 'no_retur', 'yy.mm.dd.urutan_angka[01]', 'day', '2019-09-26 16:20:12', '2019-09-26 16:20:39');
+
+-- ----------------------------
+-- Table structure for customer
+-- ----------------------------
+DROP TABLE IF EXISTS `customer`;
+CREATE TABLE `customer`  (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) NULL DEFAULT NULL,
+  `civilian_id` varchar(100) CHARACTER SET latin1 COLLATE latin1_general_ci NULL DEFAULT NULL,
+  `patient_code` varchar(255) CHARACTER SET latin1 COLLATE latin1_general_ci NULL DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET latin1 COLLATE latin1_general_ci NULL DEFAULT NULL,
+  `gender` char(15) CHARACTER SET latin1 COLLATE latin1_general_ci NULL DEFAULT NULL,
+  `address` varchar(255) CHARACTER SET latin1 COLLATE latin1_general_ci NULL DEFAULT NULL,
+  `religion` varchar(100) CHARACTER SET latin1 COLLATE latin1_general_ci NULL DEFAULT NULL,
+  `place_of_birth` varchar(255) CHARACTER SET latin1 COLLATE latin1_general_ci NULL DEFAULT NULL,
+  `date_of_birth` date NULL DEFAULT NULL,
+  `telephone` varchar(255) CHARACTER SET latin1 COLLATE latin1_general_ci NULL DEFAULT NULL,
+  `email` varchar(255) CHARACTER SET latin1 COLLATE latin1_general_ci NULL DEFAULT NULL,
+  `blood_type` char(5) CHARACTER SET latin1 COLLATE latin1_general_ci NULL DEFAULT NULL,
+  `image` varchar(255) CHARACTER SET latin1 COLLATE latin1_general_ci NULL DEFAULT NULL,
+  `created_at` timestamp(0) NULL DEFAULT NULL,
+  `updated_at` timestamp(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of customer
+-- ----------------------------
+INSERT INTO `customer` VALUES (1, 6, '39061114575001', '2019.07.24.00001', 'test', 'male', 'test', 'test', 'Test', '1913-02-04', '564', NULL, 'a', '4ff33b9c68b1c70053f9107e41ab973c.jpg', '2019-07-11 11:12:23', '2019-08-07 17:49:01');
+INSERT INTO `customer` VALUES (2, 7, '2019.8.8.00001', '2019.08.08.00002', 'noname', 'female', 'Sidoarjo', 'Islam', 'Sidoarjo', '1991-12-19', '0852', 'nn@mail.com', 'a', 'b3503b9c4d088875064e903ce321092c.jpg', '2019-08-08 08:33:20', '2019-08-21 12:23:31');
+INSERT INTO `customer` VALUES (7, 15, '0919081291', '2019.11.07.00003', 'mawar', 'female', 'kediri', 'islam', 'kediri', '1999-12-19', '0852', 'mawar@gmail.com', 'b', 'a82989ec3d9ee157f7fd22f6457f6d8f.png', '2019-11-07 13:07:45', '2019-11-07 13:08:26');
 
 -- ----------------------------
 -- Table structure for daily_schedules
@@ -175,7 +227,7 @@ CREATE TABLE `daily_schedules`  (
   `created_at` timestamp(0) NULL DEFAULT NULL,
   `updated_at` timestamp(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1070 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1071 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of daily_schedules
@@ -298,6 +350,7 @@ INSERT INTO `daily_schedules` VALUES (1066, 1, 1, '2019-09-24', '16:43:00', '16:
 INSERT INTO `daily_schedules` VALUES (1067, 1, 1, '2019-10-24', '10:55:00', '23:56:00', '2019-10-24 10:56:07', '2019-10-24 20:56:33');
 INSERT INTO `daily_schedules` VALUES (1068, 1, 1, '2019-10-25', '00:01:00', '23:01:00', '2019-10-25 00:01:11', NULL);
 INSERT INTO `daily_schedules` VALUES (1069, 5, 5, '2019-10-29', '05:28:00', '23:00:00', '2019-10-29 05:29:13', NULL);
+INSERT INTO `daily_schedules` VALUES (1070, 1, 1, '2019-10-30', '10:24:00', '22:24:00', '2019-10-30 10:25:01', NULL);
 
 -- ----------------------------
 -- Table structure for diagnose_drugs
@@ -477,42 +530,9 @@ CREATE TABLE `drug_purchase`  (
 -- ----------------------------
 -- Records of drug_purchase
 -- ----------------------------
-INSERT INTO `drug_purchase` VALUES (20, 'XIX.09.XXV.001', NULL, 2, 80000.00, '2019-09-20 15:28:19', '2019-10-29 05:45:45');
+INSERT INTO `drug_purchase` VALUES (20, 'XIX.09.XXV.001', NULL, 2, 92500.00, '2019-09-20 15:28:19', '2019-10-31 10:58:04');
 INSERT INTO `drug_purchase` VALUES (21, 'XIX.10.IX.001', NULL, 1, 120000.00, '2019-10-09 16:17:27', '2019-10-24 21:28:10');
 INSERT INTO `drug_purchase` VALUES (28, 'XIX.10.XXIX.001', 28, 2, 60000.00, '2019-10-29 06:10:45', NULL);
-
--- ----------------------------
--- Table structure for drugs
--- ----------------------------
-DROP TABLE IF EXISTS `drugs`;
-CREATE TABLE `drugs`  (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET latin1 COLLATE latin1_general_ci NULL DEFAULT NULL,
-  `type_id` int(10) NULL DEFAULT NULL,
-  `sell_price` decimal(17, 2) NULL DEFAULT NULL,
-  `purchase_price` decimal(17, 2) NULL DEFAULT NULL,
-  `description` varchar(255) CHARACTER SET latin1 COLLATE latin1_general_ci NULL DEFAULT NULL,
-  `created_at` timestamp(0) NULL DEFAULT NULL,
-  `updated_at` timestamp(0) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of drugs
--- ----------------------------
-INSERT INTO `drugs` VALUES (2, 'Obat A', 2, 15000.00, 10000.00, 'Ini Obat A', '2019-09-28 11:30:12', '2019-09-28 11:30:15');
-INSERT INTO `drugs` VALUES (3, 'Obat B', 3, 20000.00, 15000.00, 'Ini Obat B', '2019-07-17 12:17:26', '2019-09-28 06:39:44');
-INSERT INTO `drugs` VALUES (4, 'Obat C', 1, 12500.00, 10000.00, 'Ini Obat C', '2019-07-17 12:17:43', '2019-09-18 12:26:00');
-INSERT INTO `drugs` VALUES (5, 'Obat D', 2, 15000.00, 10000.00, 'Ini Obat D', '2019-08-09 10:28:25', '2019-09-18 12:17:03');
-INSERT INTO `drugs` VALUES (6, 'Obat E', 1, 20000.00, 15000.00, 'Ini Obat E', '2019-08-09 10:28:45', '2019-09-18 12:17:38');
-INSERT INTO `drugs` VALUES (7, 'Obat F', 2, 25000.00, 20000.00, 'Ini Obat F', '2019-08-09 10:29:22', '2019-09-18 12:17:51');
-INSERT INTO `drugs` VALUES (8, 'Obat G', 1, 30000.00, 25000.00, 'Ini Obat G', '2019-08-09 10:29:43', '2019-09-18 12:18:01');
-INSERT INTO `drugs` VALUES (9, 'Obat H', 2, 35000.00, 30000.00, 'Ini Obat H', '2019-08-09 10:29:57', '2019-09-18 12:18:13');
-INSERT INTO `drugs` VALUES (10, 'Obat I', 1, 40000.00, 35000.00, 'Ini Obat I', '2019-08-09 10:32:06', '2019-09-18 12:18:24');
-INSERT INTO `drugs` VALUES (11, 'Obat J', 2, 45000.00, 40000.00, 'Ini Obat J', '2019-08-09 10:32:31', '2019-09-18 12:18:36');
-INSERT INTO `drugs` VALUES (12, 'Obat K', 1, 50000.00, 45000.00, 'Ini Obat K', '2019-08-09 10:32:54', '2019-09-18 12:18:47');
-INSERT INTO `drugs` VALUES (13, 'Obat L', 2, 55000.00, 50000.00, 'Ini Obat K', '2019-08-09 10:33:27', '2019-09-18 12:24:33');
-INSERT INTO `drugs` VALUES (14, 'Obat M', 1, 60000.00, 55000.00, 'Ini Obat M', '2019-09-27 20:21:53', '2019-09-18 12:25:35');
 
 -- ----------------------------
 -- Table structure for employees
@@ -558,6 +578,40 @@ INSERT INTO `fixed_schedules` VALUES (1, '1', 1, 1, '08:00:00', '12:00:00', '201
 INSERT INTO `fixed_schedules` VALUES (2, '2', 3, 2, '08:00:00', '12:00:00', '2019-08-08 08:54:25');
 
 -- ----------------------------
+-- Table structure for gudang
+-- ----------------------------
+DROP TABLE IF EXISTS `gudang`;
+CREATE TABLE `gudang`  (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `barcode` char(13) CHARACTER SET latin1 COLLATE latin1_general_ci NULL DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET latin1 COLLATE latin1_general_ci NULL DEFAULT NULL,
+  `type_id` int(10) NULL DEFAULT NULL,
+  `sell_price` decimal(17, 2) NULL DEFAULT NULL,
+  `purchase_price` decimal(17, 2) NULL DEFAULT NULL,
+  `description` varchar(255) CHARACTER SET latin1 COLLATE latin1_general_ci NULL DEFAULT NULL,
+  `created_at` timestamp(0) NULL DEFAULT NULL,
+  `updated_at` timestamp(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of gudang
+-- ----------------------------
+INSERT INTO `gudang` VALUES (2, '3800065711131', 'Barang A', 2, 15000.00, 10000.00, 'Ini Obat A', '2019-09-28 11:30:12', '2019-11-09 09:00:58');
+INSERT INTO `gudang` VALUES (3, '3800065711132', 'Barang B', 3, 20000.00, 15000.00, 'Ini Obat B', '2019-07-17 12:17:26', '2019-11-04 19:31:28');
+INSERT INTO `gudang` VALUES (4, '3800065711133', 'Barang C', 1, 12500.00, 10000.00, 'Ini Obat C', '2019-07-17 12:17:43', '2019-11-04 19:31:40');
+INSERT INTO `gudang` VALUES (5, '3800065711134', 'Barang D', 2, 15000.00, 10000.00, 'Ini Obat D', '2019-08-09 10:28:25', '2019-11-04 19:31:51');
+INSERT INTO `gudang` VALUES (6, '3800065711135', 'Barang E', 2, 20000.00, 15000.00, 'Ini Obat E', '2019-08-09 10:28:45', '2019-11-07 11:46:05');
+INSERT INTO `gudang` VALUES (7, '3800065711136', 'Barang F', 2, 25000.00, 20000.00, 'Ini Obat F', '2019-08-09 10:29:22', '2019-11-04 19:32:12');
+INSERT INTO `gudang` VALUES (8, '3800065711137', 'Barang G', 1, 30000.00, 25000.00, 'Ini Obat G', '2019-08-09 10:29:43', '2019-11-04 19:32:24');
+INSERT INTO `gudang` VALUES (9, '3800065711138', 'Barang H', 2, 35000.00, 30000.00, 'Ini Obat H', '2019-08-09 10:29:57', '2019-11-04 19:32:36');
+INSERT INTO `gudang` VALUES (10, '3800065711139', 'Barang I', 1, 40000.00, 35000.00, 'Ini Obat I', '2019-08-09 10:32:06', '2019-11-04 19:32:47');
+INSERT INTO `gudang` VALUES (11, '3800065711140', 'Barang J', 2, 45000.00, 40000.00, 'Ini Obat J', '2019-08-09 10:32:31', '2019-11-04 19:33:10');
+INSERT INTO `gudang` VALUES (12, '3800065711141', 'Barang K', 1, 50000.00, 45000.00, 'Ini Obat K', '2019-08-09 10:32:54', '2019-11-04 19:33:27');
+INSERT INTO `gudang` VALUES (13, '3800065711142', 'Barang L', 2, 55000.00, 50000.00, 'Ini Obat K', '2019-08-09 10:33:27', '2019-11-04 19:33:45');
+INSERT INTO `gudang` VALUES (14, '3800065711143', 'Barang M', 1, 60000.00, 55000.00, 'Ini Obat M', '2019-09-27 20:21:53', '2019-11-04 19:34:03');
+
+-- ----------------------------
 -- Table structure for kategori
 -- ----------------------------
 DROP TABLE IF EXISTS `kategori`;
@@ -589,48 +643,37 @@ CREATE TABLE `menu_privileges`  (
   `delete_access` char(1) CHARACTER SET latin1 COLLATE latin1_general_ci NULL DEFAULT NULL,
   `created_at` timestamp(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 693 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 940 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of menu_privileges
 -- ----------------------------
 INSERT INTO `menu_privileges` VALUES (194, 5, 24, '1', '1', '1', '1', '2019-08-14 19:29:11');
 INSERT INTO `menu_privileges` VALUES (195, 5, 26, '1', '1', '1', '1', '2019-08-14 19:29:11');
-INSERT INTO `menu_privileges` VALUES (658, 2, 1, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (659, 2, 3, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (660, 2, 2, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (661, 2, 4, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (662, 2, 5, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (663, 2, 6, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (664, 2, 7, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (665, 2, 9, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (666, 2, 8, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (667, 2, 11, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (668, 2, 10, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (669, 2, 12, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (670, 2, 15, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (671, 2, 13, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (672, 2, 27, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (673, 2, 28, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (674, 2, 32, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (675, 2, 33, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (676, 2, 35, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (677, 2, 37, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (678, 2, 38, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (679, 2, 39, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (680, 2, 41, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (681, 2, 18, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (682, 2, 17, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (683, 2, 19, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (684, 2, 20, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (685, 2, 21, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (686, 2, 29, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (687, 2, 30, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (688, 2, 31, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (689, 2, 34, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (690, 2, 36, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (691, 2, 22, '1', '1', '1', '1', '2019-10-18 13:30:06');
-INSERT INTO `menu_privileges` VALUES (692, 2, 16, '1', '1', '1', '1', '2019-10-18 13:30:06');
+INSERT INTO `menu_privileges` VALUES (916, 2, 1, '1', '1', '1', '1', '2019-11-09 09:49:08');
+INSERT INTO `menu_privileges` VALUES (917, 2, 3, '1', '1', '1', '1', '2019-11-09 09:49:08');
+INSERT INTO `menu_privileges` VALUES (918, 2, 2, '1', '1', '1', '1', '2019-11-09 09:49:08');
+INSERT INTO `menu_privileges` VALUES (919, 2, 5, '1', '1', '1', '1', '2019-11-09 09:49:08');
+INSERT INTO `menu_privileges` VALUES (920, 2, 7, '1', '1', '1', '1', '2019-11-09 09:49:08');
+INSERT INTO `menu_privileges` VALUES (921, 2, 9, '1', '1', '1', '1', '2019-11-09 09:49:08');
+INSERT INTO `menu_privileges` VALUES (922, 2, 8, '1', '1', '1', '1', '2019-11-09 09:49:08');
+INSERT INTO `menu_privileges` VALUES (923, 2, 42, '1', '1', '1', '1', '2019-11-09 09:49:08');
+INSERT INTO `menu_privileges` VALUES (924, 2, 11, '1', '1', '1', '1', '2019-11-09 09:49:08');
+INSERT INTO `menu_privileges` VALUES (925, 2, 10, '1', '1', '1', '1', '2019-11-09 09:49:08');
+INSERT INTO `menu_privileges` VALUES (926, 2, 12, '1', '1', '1', '1', '2019-11-09 09:49:08');
+INSERT INTO `menu_privileges` VALUES (927, 2, 43, '1', '1', '1', '1', '2019-11-09 09:49:08');
+INSERT INTO `menu_privileges` VALUES (928, 2, 27, '1', '1', '1', '1', '2019-11-09 09:49:08');
+INSERT INTO `menu_privileges` VALUES (929, 2, 13, '1', '1', '1', '1', '2019-11-09 09:49:08');
+INSERT INTO `menu_privileges` VALUES (930, 2, 37, '1', '1', '1', '1', '2019-11-09 09:49:08');
+INSERT INTO `menu_privileges` VALUES (931, 2, 39, '1', '1', '1', '1', '2019-11-09 09:49:08');
+INSERT INTO `menu_privileges` VALUES (932, 2, 29, '1', '1', '1', '1', '2019-11-09 09:49:08');
+INSERT INTO `menu_privileges` VALUES (933, 2, 17, '1', '1', '1', '1', '2019-11-09 09:49:08');
+INSERT INTO `menu_privileges` VALUES (934, 2, 30, '1', '1', '1', '1', '2019-11-09 09:49:08');
+INSERT INTO `menu_privileges` VALUES (935, 2, 31, '1', '1', '1', '1', '2019-11-09 09:49:08');
+INSERT INTO `menu_privileges` VALUES (936, 2, 34, '1', '1', '1', '1', '2019-11-09 09:49:08');
+INSERT INTO `menu_privileges` VALUES (937, 2, 36, '1', '1', '1', '1', '2019-11-09 09:49:08');
+INSERT INTO `menu_privileges` VALUES (938, 2, 22, '1', '1', '1', '1', '2019-11-09 09:49:08');
+INSERT INTO `menu_privileges` VALUES (939, 2, 16, '1', '1', '1', '1', '2019-11-09 09:49:08');
 
 -- ----------------------------
 -- Table structure for menus
@@ -650,24 +693,24 @@ CREATE TABLE `menus`  (
   `created_at` timestamp(0) NULL DEFAULT NULL,
   `updated_at` timestamp(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 44 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of menus
 -- ----------------------------
 INSERT INTO `menus` VALUES (1, NULL, 'home', 'home', 'Home', 'fa fa-dashboard', 0, '1', 'adminpanel', '1', '2019-07-25 12:22:33', NULL);
-INSERT INTO `menus` VALUES (2, NULL, 'master', '#', 'Master', 'fa fa-archive', 0, '2', 'adminpanel', '0', '2019-07-25 12:23:24', NULL);
+INSERT INTO `menus` VALUES (2, NULL, 'master', '#', 'Admin', 'fa fa-user-circle-o ', 0, '2', 'adminpanel', '0', '2019-07-25 12:23:24', NULL);
 INSERT INTO `menus` VALUES (3, 2, 'users', 'users', 'User', NULL, 1, '1', 'adminpanel', '0', '2019-07-25 12:26:00', NULL);
 INSERT INTO `menus` VALUES (4, 2, 'polies', 'polies', 'Poli', NULL, 1, '2', 'adminpanel', '0', '2019-07-25 12:27:03', NULL);
-INSERT INTO `menus` VALUES (5, 2, 'doctors', 'doctors', 'Dokter', NULL, 1, '3', 'adminpanel', '0', '2019-07-25 12:27:29', NULL);
+INSERT INTO `menus` VALUES (5, 2, 'supplier', 'supplier', 'Supplier', NULL, 1, '3', 'adminpanel', '0', '2019-07-25 12:27:29', NULL);
 INSERT INTO `menus` VALUES (6, 2, 'employees', 'employees', 'Pegawai', NULL, 1, '4', 'adminpanel', '0', '2019-07-25 12:28:03', NULL);
-INSERT INTO `menus` VALUES (7, 2, 'patients', 'patients', 'Pasien', NULL, 1, '5', 'adminpanel', '0', '2019-07-25 12:28:32', NULL);
-INSERT INTO `menus` VALUES (8, NULL, 'schedule', '#', 'Penjadwalan', 'fa fa-calendar', 0, '3', 'adminpanel', '0', '2019-07-25 12:29:23', NULL);
-INSERT INTO `menus` VALUES (9, 8, 'doctor_schedules', 'doctors', 'Jadwal Dokter', NULL, 1, '1', 'adminpanel', '0', '2019-07-25 12:31:12', NULL);
-INSERT INTO `menus` VALUES (10, NULL, 'admission', '#', 'Administrasi', 'fa fa-address-book-o', 0, '4', 'adminpanel', '0', '2019-07-25 12:32:33', NULL);
-INSERT INTO `menus` VALUES (11, 10, 'checkup', 'checkups', 'Checkup', NULL, 1, '1', 'adminpanel', '0', '2019-07-25 12:33:06', NULL);
-INSERT INTO `menus` VALUES (12, 10, 'diagnose', 'diagnoses', 'Diagnosa', NULL, 1, '2', 'adminpanel', '0', '2019-07-25 12:35:19', NULL);
-INSERT INTO `menus` VALUES (13, NULL, 'pharmacy', '#', 'Apotek', 'fa fa-hospital-o', 0, '5', 'adminpanel', '0', '2019-07-25 12:36:07', NULL);
+INSERT INTO `menus` VALUES (7, 2, 'customer', 'customer', 'customer', NULL, 1, '5', 'adminpanel', '0', '2019-07-25 12:28:32', NULL);
+INSERT INTO `menus` VALUES (8, NULL, 'schedule', '#', 'Master', 'fa fa-archive', 0, '3', 'adminpanel', '0', '2019-07-25 12:29:23', NULL);
+INSERT INTO `menus` VALUES (9, 8, 'type_drugs', 'type_drugs', 'Kategori', NULL, 1, '1', 'adminpanel', '0', '2019-07-25 12:31:12', NULL);
+INSERT INTO `menus` VALUES (10, NULL, 'admission', '#', 'Pembelian', 'fa fa-shopping-cart', 0, '4', 'adminpanel', '0', '2019-07-25 12:32:33', NULL);
+INSERT INTO `menus` VALUES (11, 10, 'mutasi', 'mutasi', 'Mutasi Pembelian', NULL, 1, '1', 'adminpanel', '0', '2019-07-25 12:33:06', NULL);
+INSERT INTO `menus` VALUES (12, 10, 'purchase', 'purchase', 'Pembelian', NULL, 1, '2', 'adminpanel', '0', '2019-07-25 12:35:19', NULL);
+INSERT INTO `menus` VALUES (13, NULL, 'pharmacy', '#', 'Penjualan', 'fa fa-money', 0, '5', 'adminpanel', '0', '2019-07-25 12:36:07', NULL);
 INSERT INTO `menus` VALUES (14, 13, 'drugs', 'drugs', 'Data Obat', NULL, 1, '2', 'adminpanel', '0', '2019-07-25 12:36:28', NULL);
 INSERT INTO `menus` VALUES (15, 13, 'drug_store', 'drug_sales', 'Pembayaran', NULL, 1, '7', 'adminpanel', '0', '2019-07-25 12:36:55', NULL);
 INSERT INTO `menus` VALUES (16, NULL, 'setting', '#', 'Setting', 'fa fa-cogs', 0, '6', 'adminpanel', '0', '2019-07-25 12:37:42', NULL);
@@ -679,20 +722,18 @@ INSERT INTO `menus` VALUES (21, 17, 'medical_record', 'checkups', 'No. Rekam Med
 INSERT INTO `menus` VALUES (22, 16, 'privilege', 'privilege', 'Hak Akses', NULL, 1, '2', 'adminpanel', '0', '2019-07-26 12:46:44', NULL);
 INSERT INTO `menus` VALUES (24, NULL, 'home', 'home', 'Home', 'fa fa-dashboard', 0, '1', 'patients', '1', '2019-08-12 21:22:53', NULL);
 INSERT INTO `menus` VALUES (26, 8, 'booking_checkup', 'booking', 'Booking Checkup', 'fa fa-calendar', 0, '2', 'patients', '1', '2019-08-14 16:21:52', NULL);
-INSERT INTO `menus` VALUES (27, 13, 'drug_purchase', 'drug_purchase', 'Penjualan', '', 1, '6', 'adminpanel', '0', '2019-09-14 10:35:35', NULL);
-INSERT INTO `menus` VALUES (28, 13, 'supplier', 'supplier', 'Supplier', NULL, 1, '1', 'adminpanel', '0', '2019-09-18 13:23:26', NULL);
+INSERT INTO `menus` VALUES (27, 13, 'sales', 'sales', 'Penjualan', '', 1, '6', 'adminpanel', '0', '2019-09-14 10:35:35', NULL);
 INSERT INTO `menus` VALUES (29, 17, 'supplier', 'supplier', 'Supplier', NULL, 2, '5', 'adminpanel', '0', '2019-09-19 10:21:55', NULL);
 INSERT INTO `menus` VALUES (30, 17, 'purchase_return', 'purchase_return', 'Purchase Return', NULL, 2, '6', 'adminpanel', '0', '2019-09-19 10:23:22', NULL);
 INSERT INTO `menus` VALUES (31, 17, 'purchase', 'purchase', 'purchase', NULL, 2, '7', 'adminpanel', '0', '2019-09-19 11:24:07', NULL);
-INSERT INTO `menus` VALUES (32, 13, 'purchase', 'purchase', 'Pembelian', NULL, 1, '5', 'adminpanel', '0', '2019-09-19 13:34:08', NULL);
-INSERT INTO `menus` VALUES (33, 13, 'purchase_return', 'purchase_return', 'Retur Pembelian', NULL, 1, '8', 'adminpanel', '0', '2019-09-24 23:52:12', NULL);
-INSERT INTO `menus` VALUES (34, 17, 'drug_purchase', 'drug_purchase', 'Drug Purchase', NULL, 2, '8', 'adminpanel', '0', '2019-09-25 19:03:03', NULL);
-INSERT INTO `menus` VALUES (35, 13, 'drugs', 'drugs', 'Master', NULL, 1, '3', 'adminpanel', '0', '2019-09-25 21:15:27', NULL);
+INSERT INTO `menus` VALUES (34, 17, 'sales', 'sales', 'Sales', NULL, 2, '8', 'adminpanel', '0', '2019-09-25 19:03:03', NULL);
 INSERT INTO `menus` VALUES (36, 17, 'sales_return', 'sales_return', 'Sales Return', NULL, 2, '9', 'adminpanel', '0', '2019-09-26 16:18:14', NULL);
 INSERT INTO `menus` VALUES (37, 13, 'sales_return', 'sales_return', 'Retur Penjualan', NULL, 1, '9', 'adminpanel', '0', '2019-09-26 16:23:57', NULL);
-INSERT INTO `menus` VALUES (38, 13, 'type_drugs', 'type_drugs', 'Kategori', NULL, 1, '4', 'adminpanel', '0', '2019-09-28 06:11:54', NULL);
-INSERT INTO `menus` VALUES (39, 13, 'mutasi', 'mutasi', 'Mutasi', NULL, 1, '10', 'adminpanel', '0', '2019-10-09 10:18:57', NULL);
+INSERT INTO `menus` VALUES (39, 13, 'mutasi', 'mutasi', 'Mutasi Penjualan', NULL, 1, '10', 'adminpanel', '0', '2019-10-09 10:18:57', NULL);
 INSERT INTO `menus` VALUES (40, 13, 'mutasi_jual', 'mutasi_jual', 'Mutasi Jual', NULL, 1, '11', 'adminpanel', '0', '2019-10-10 10:04:04', NULL);
+INSERT INTO `menus` VALUES (41, 13, 'adjustment', 'adjustment', 'Adjustment', NULL, 1, '9', 'adminpanel', '0', '2019-10-31 14:15:15', NULL);
+INSERT INTO `menus` VALUES (42, 8, 'gudang', 'gudang', 'Gudang', NULL, 1, '2', 'adminpanel', '0', '2019-11-09 08:46:36', NULL);
+INSERT INTO `menus` VALUES (43, 10, 'purchase_return', 'purchase_return', 'Retur Pembelian', NULL, 1, '3', 'adminpanel', '0', '2019-11-09 09:45:30', NULL);
 
 -- ----------------------------
 -- Table structure for patients
@@ -780,15 +821,13 @@ CREATE TABLE `purchase`  (
   `created_at` timestamp(0) NULL DEFAULT NULL,
   `updated_at` timestamp(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 33 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of purchase
 -- ----------------------------
-INSERT INTO `purchase` VALUES (29, 'XIX.09.XXIV.01', '19.09.19.1', 1185000, '2019-09-24 19:13:07', '2019-09-28 12:43:58');
-INSERT INTO `purchase` VALUES (30, 'XIX.09.XXIV.02', '19.09.20.2', 2550000, '2019-09-24 19:14:56', '2019-09-26 22:25:07');
-INSERT INTO `purchase` VALUES (31, 'XIX.09.XXX.01', '19.09.19.1', 50000, '2019-09-30 11:50:33', NULL);
-INSERT INTO `purchase` VALUES (32, 'XIX.10.VII.01', '19.09.20.2', 75000, '2019-10-07 15:08:27', NULL);
+INSERT INTO `purchase` VALUES (39, 'XIX.11.VII.01', '19.09.20.2', 610000, '2019-11-07 05:57:50', '2019-11-09 07:29:43');
+INSERT INTO `purchase` VALUES (40, 'XIX.11.IX.01', '19.09.19.1', 70000, '2019-11-09 09:42:35', '2019-11-09 09:42:55');
 
 -- ----------------------------
 -- Table structure for purchase_faktur
@@ -798,31 +837,25 @@ CREATE TABLE `purchase_faktur`  (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `id_purchase` int(10) NULL DEFAULT NULL,
   `drug_id` int(10) NULL DEFAULT NULL,
+  `barcode` char(13) CHARACTER SET latin1 COLLATE latin1_general_ci NULL DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET latin1 COLLATE latin1_general_ci NULL DEFAULT NULL,
   `price` decimal(17, 2) NULL DEFAULT NULL,
   `quantity` int(10) NULL DEFAULT NULL,
   `subtotal` decimal(17, 2) NULL DEFAULT NULL,
   `created_at` timestamp(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 102 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 141 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of purchase_faktur
 -- ----------------------------
-INSERT INTO `purchase_faktur` VALUES (81, 30, 9, 30000.00, 10, 300000.00, '2019-09-26 22:25:08');
-INSERT INTO `purchase_faktur` VALUES (82, 30, 10, 35000.00, 10, 350000.00, '2019-09-26 22:25:08');
-INSERT INTO `purchase_faktur` VALUES (83, 30, 11, 40000.00, 10, 400000.00, '2019-09-26 22:25:08');
-INSERT INTO `purchase_faktur` VALUES (84, 30, 12, 45000.00, 10, 450000.00, '2019-09-26 22:25:08');
-INSERT INTO `purchase_faktur` VALUES (85, 30, 13, 50000.00, 10, 500000.00, '2019-09-26 22:25:08');
-INSERT INTO `purchase_faktur` VALUES (86, 30, 14, 55000.00, 10, 550000.00, '2019-09-26 22:25:08');
-INSERT INTO `purchase_faktur` VALUES (93, 29, 3, 15000.00, 19, 285000.00, '2019-09-28 12:43:58');
-INSERT INTO `purchase_faktur` VALUES (94, 29, 4, 10000.00, 10, 100000.00, '2019-09-28 12:43:58');
-INSERT INTO `purchase_faktur` VALUES (95, 29, 5, 10000.00, 10, 100000.00, '2019-09-28 12:43:58');
-INSERT INTO `purchase_faktur` VALUES (96, 29, 6, 15000.00, 10, 150000.00, '2019-09-28 12:43:58');
-INSERT INTO `purchase_faktur` VALUES (97, 29, 7, 20000.00, 10, 200000.00, '2019-09-28 12:43:58');
-INSERT INTO `purchase_faktur` VALUES (98, 29, 8, 25000.00, 10, 250000.00, '2019-09-28 12:43:58');
-INSERT INTO `purchase_faktur` VALUES (99, 29, 2, 10000.00, 10, 100000.00, '2019-09-28 12:43:58');
-INSERT INTO `purchase_faktur` VALUES (100, 31, 2, 10000.00, 5, 50000.00, '2019-10-01 11:50:34');
-INSERT INTO `purchase_faktur` VALUES (101, 32, 3, 15000.00, 5, 75000.00, '2019-10-07 15:08:27');
+INSERT INTO `purchase_faktur` VALUES (132, 39, 2, '3800065711131', 'Barang A', 10000.00, 11, 110000.00, '2019-11-09 07:29:43');
+INSERT INTO `purchase_faktur` VALUES (133, 39, 3, '3800065711132', 'Barang B', 15000.00, 10, 150000.00, '2019-11-09 07:29:43');
+INSERT INTO `purchase_faktur` VALUES (134, 39, 4, '3800065711133', 'Barang C', 10000.00, 10, 100000.00, '2019-11-09 07:29:43');
+INSERT INTO `purchase_faktur` VALUES (135, 39, 5, '3800065711134', 'Barang D', 10000.00, 10, 100000.00, '2019-11-09 07:29:43');
+INSERT INTO `purchase_faktur` VALUES (136, 39, 6, '3800065711135', 'Barang E', 15000.00, 10, 150000.00, '2019-11-09 07:29:43');
+INSERT INTO `purchase_faktur` VALUES (139, 40, 6, '3800065711135', 'Barang E', 15000.00, 2, 30000.00, '2019-11-09 09:42:55');
+INSERT INTO `purchase_faktur` VALUES (140, 40, 7, '3800065711136', 'Barang F', 20000.00, 2, 40000.00, '2019-11-09 09:42:55');
 
 -- ----------------------------
 -- Table structure for purchase_return
@@ -838,37 +871,12 @@ CREATE TABLE `purchase_return`  (
   `created_at` timestamp(0) NULL DEFAULT NULL,
   `updated_at` timestamp(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of purchase_return
 -- ----------------------------
-INSERT INTO `purchase_return` VALUES (2, '2019.09.25.1.', 29, 4, 2, 'rusak', '2019-09-25 11:05:30', NULL);
-INSERT INTO `purchase_return` VALUES (5, '2019.09.30.1.', 31, 2, 2, 'kadaluarsa', '2019-10-01 11:51:20', NULL);
-INSERT INTO `purchase_return` VALUES (6, '2019.10.09.1.', 32, 3, 1, 'sobek', '2019-10-09 08:48:17', NULL);
-
--- ----------------------------
--- Table structure for purchasedrug_sales
--- ----------------------------
-DROP TABLE IF EXISTS `purchasedrug_sales`;
-CREATE TABLE `purchasedrug_sales`  (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `drugpurchase_id` int(10) NULL DEFAULT NULL,
-  `drug_id` int(10) NULL DEFAULT NULL,
-  `price` decimal(17, 2) NULL DEFAULT NULL,
-  `quantity` int(10) NULL DEFAULT NULL,
-  `subtotal` decimal(17, 2) NULL DEFAULT NULL,
-  `created_at` timestamp(0) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 91 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of purchasedrug_sales
--- ----------------------------
-INSERT INTO `purchasedrug_sales` VALUES (79, 21, 8, 30000.00, 4, 120000.00, '2019-10-24 21:28:10');
-INSERT INTO `purchasedrug_sales` VALUES (87, 20, 2, 15000.00, 2, 30000.00, '2019-10-29 05:45:45');
-INSERT INTO `purchasedrug_sales` VALUES (88, 20, 4, 12500.00, 4, 50000.00, '2019-10-29 05:45:45');
-INSERT INTO `purchasedrug_sales` VALUES (90, 28, 6, 20000.00, 3, 60000.00, '2019-10-29 06:10:45');
+INSERT INTO `purchase_return` VALUES (10, '2019.11.07.1.', 39, 3, 1, 'Rusak ya', '2019-11-07 05:59:05', '2019-11-09 09:47:01');
 
 -- ----------------------------
 -- Table structure for sale
@@ -887,6 +895,50 @@ CREATE TABLE `sale`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for sales
+-- ----------------------------
+DROP TABLE IF EXISTS `sales`;
+CREATE TABLE `sales`  (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `no_faktur` varchar(255) CHARACTER SET latin1 COLLATE latin1_general_ci NULL DEFAULT NULL,
+  `diagnose_id_purchase` int(10) NULL DEFAULT NULL,
+  `patient_id` int(10) NULL DEFAULT NULL,
+  `total_price` decimal(17, 2) NULL DEFAULT NULL,
+  `created_at` timestamp(0) NULL DEFAULT NULL,
+  `updated_at` timestamp(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 55 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sales
+-- ----------------------------
+INSERT INTO `sales` VALUES (54, 'XIX.11.VII.001', NULL, 2, 82500.00, '2019-11-07 05:58:28', '2019-11-09 07:21:50');
+
+-- ----------------------------
+-- Table structure for sales_item
+-- ----------------------------
+DROP TABLE IF EXISTS `sales_item`;
+CREATE TABLE `sales_item`  (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `drugpurchase_id` int(10) NULL DEFAULT NULL,
+  `drug_id` int(10) NULL DEFAULT NULL,
+  `barcode` char(13) CHARACTER SET latin1 COLLATE latin1_general_ci NULL DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET latin1 COLLATE latin1_general_ci NULL DEFAULT NULL,
+  `price` decimal(17, 2) NULL DEFAULT NULL,
+  `quantity` int(10) NULL DEFAULT NULL,
+  `subtotal` decimal(17, 2) NULL DEFAULT NULL,
+  `created_at` timestamp(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 114 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sales_item
+-- ----------------------------
+INSERT INTO `sales_item` VALUES (111, 54, 2, '3800065711131', 'Barang A', 15000.00, 2, 30000.00, '2019-11-09 07:21:50');
+INSERT INTO `sales_item` VALUES (112, 54, 3, '3800065711132', 'Barang B', 20000.00, 2, 40000.00, '2019-11-09 07:21:50');
+INSERT INTO `sales_item` VALUES (113, 54, 4, '3800065711133', 'Barang C', 12500.00, 1, 12500.00, '2019-11-09 07:21:50');
+
+-- ----------------------------
 -- Table structure for sales_return
 -- ----------------------------
 DROP TABLE IF EXISTS `sales_return`;
@@ -900,12 +952,12 @@ CREATE TABLE `sales_return`  (
   `created_at` timestamp(0) NULL DEFAULT NULL,
   `updated_at` timestamp(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sales_return
 -- ----------------------------
-INSERT INTO `sales_return` VALUES (1, '19.09.26.01', 20, 7, 1, 'kadaluarsa', '2019-09-26 19:33:27', NULL);
+INSERT INTO `sales_return` VALUES (4, '19.11.07.02', 54, 2, 1, 'kadaluarsa', '2019-11-07 06:08:49', '2019-11-07 06:09:19');
 
 -- ----------------------------
 -- Table structure for supplier
@@ -920,7 +972,7 @@ CREATE TABLE `supplier`  (
   `created_at` timestamp(0) NULL DEFAULT NULL,
   `updated_at` timestamp(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of supplier
@@ -928,6 +980,7 @@ CREATE TABLE `supplier`  (
 INSERT INTO `supplier` VALUES (5, '19.09.19.1', 'Agus', 'Jl. Sama aku, nikah sama dia', 1, '2019-09-19 11:04:48', '2019-09-19 13:28:03');
 INSERT INTO `supplier` VALUES (7, '19.09.20.2', 'Budi', 'jl. pattimura', 2, '2019-09-20 07:43:52', NULL);
 INSERT INTO `supplier` VALUES (10, '19.09.25.3', 'nn', 'jl. jalan', 3, '2019-09-25 03:02:26', NULL);
+INSERT INTO `supplier` VALUES (11, '19.11.09.4', 'Mawar', 'mboh', 1, '2019-11-09 07:59:22', NULL);
 
 -- ----------------------------
 -- Table structure for type_drugs
@@ -944,9 +997,9 @@ CREATE TABLE `type_drugs`  (
 -- ----------------------------
 -- Records of type_drugs
 -- ----------------------------
-INSERT INTO `type_drugs` VALUES (1, 'Syrup', '2019-09-28 06:08:54', '2019-09-28 06:39:01');
-INSERT INTO `type_drugs` VALUES (2, 'Tablet', '2019-09-28 06:08:56', '2019-09-28 06:39:06');
-INSERT INTO `type_drugs` VALUES (3, 'Generik', '2019-09-28 06:35:43', '2019-09-28 06:39:12');
+INSERT INTO `type_drugs` VALUES (1, 'makanan', '2019-09-28 06:08:54', '2019-11-09 08:45:29');
+INSERT INTO `type_drugs` VALUES (2, 'minuman', '2019-09-28 06:08:56', '2019-11-09 07:28:30');
+INSERT INTO `type_drugs` VALUES (3, 'obat', '2019-09-28 06:35:43', '2019-11-09 07:28:41');
 
 -- ----------------------------
 -- Table structure for user_privileges
@@ -959,7 +1012,7 @@ CREATE TABLE `user_privileges`  (
   `created_at` timestamp(0) NULL DEFAULT NULL,
   `updated_at` timestamp(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_privileges
@@ -972,6 +1025,7 @@ INSERT INTO `user_privileges` VALUES (6, 6, 5, '2019-08-01 21:50:32', '2019-08-0
 INSERT INTO `user_privileges` VALUES (7, 7, 5, '2019-08-08 08:33:20', '2019-08-21 12:23:31');
 INSERT INTO `user_privileges` VALUES (8, 8, 3, '2019-08-13 23:32:42', NULL);
 INSERT INTO `user_privileges` VALUES (9, 9, 2, '2019-08-13 23:39:28', NULL);
+INSERT INTO `user_privileges` VALUES (10, 15, 5, '2019-11-09 07:09:20', NULL);
 
 -- ----------------------------
 -- Table structure for users
@@ -985,18 +1039,14 @@ CREATE TABLE `users`  (
   `created_at` timestamp(0) NULL DEFAULT NULL,
   `updated_at` timestamp(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = latin1 COLLATE = latin1_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
 INSERT INTO `users` VALUES (1, 'admin', '$2y$12$OQ05G2OY0I0Uk9qdAEEINOMXe3MMjd/OoClBT6xyATQo4kZk0w/jW', 'Admin', '2019-06-24 23:05:12', '2019-07-26 13:14:32');
 INSERT INTO `users` VALUES (3, 'admin_test', '$2y$12$tIzzpMrOxs1sjn5eAU6xb.tOt7cJ.mUzZt91BtdqrTBPPU7bmF8yC', 'Admin Test', '2019-06-30 22:06:57', '2019-07-26 13:14:45');
-INSERT INTO `users` VALUES (4, 'doctor_susan', '$2y$12$WZKX1KtZiDQKicbgn8f1fOcifZzB.aqoYE48p7kycdmLRuQZIGIQq', 'Dr. Susan', '2019-07-31 14:45:06', '2019-08-20 12:51:40');
-INSERT INTO `users` VALUES (5, 'dokter_susita', '$2y$12$90r8nQResnI0XNSc7SYOr.zcxk88Vjg0KVoQHUbQj/UaT6BBp3RPa', 'Drs. Susita', '2019-08-01 13:04:30', NULL);
-INSERT INTO `users` VALUES (6, 'pasien_test', '$2y$12$WmVVvHe4x4ekYEZ.mPthkewOjawCQPSBW9qzCm9Jl5kK4S1vs2whW', 'test', '2019-08-01 21:50:32', '2019-08-07 17:49:01');
-INSERT INTO `users` VALUES (7, 'noname', '$2y$12$u4S1M5f4j6iCsDLxkn4cwu1WwCQouTFiQ27jLzAaZGUTxmT6ZvqZK', 'noname', '2019-08-08 08:33:20', '2019-08-21 12:23:31');
-INSERT INTO `users` VALUES (8, 'nn', '$2y$12$FGFV6xg7nWWqiN7Op0FJmORZ0XLtRfHNFWhUL2A8UlBanFFqeSW9K', 'nn', '2019-08-13 23:32:41', NULL);
-INSERT INTO `users` VALUES (9, 'ririn', '$2y$12$2QkhceMiODZDk2fRbBvw8e20IIBMdaHbV9YVB6tBf.XY.2BdMMocu', 'Dr. Ririn', '2019-08-13 23:39:28', NULL);
+INSERT INTO `users` VALUES (10, 'noname', '$2y$12$KO0nEJFZhTnDKi5pEUF2BOtcZZJm49MR1XmG8qb2tXGW1zmhv77VW', 'Noname', '2019-11-05 09:12:07', '2019-11-05 11:58:03');
+INSERT INTO `users` VALUES (15, 'mawar', '$2y$12$8vzRC9T5c7laDE2I3nsUSuxgnGI2saShilWUllSFTi1l1TNO7vD0O', 'mawar', '2019-11-07 13:07:44', '2019-11-09 07:09:20');
 
 SET FOREIGN_KEY_CHECKS = 1;

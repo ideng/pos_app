@@ -27,6 +27,7 @@ class Master extends MY_Controller
     {
         parent::admin_tpl();
         parent::datatables_assets();
+        parent::typeahead_assets();
         parent::moment_assets();
         parent::datetimepicker_assets();
         $data = [
@@ -84,13 +85,15 @@ class Master extends MY_Controller
 
     public function load_form()
     {
+        $page = $this->input->get('page');
         $this->load->helper(['form']);
-        $this->load->model(['base_model']);
+        $this->load->model(['base_model', $this->class_name . '/' . $page]);
         $id = $this->input->get('id');
         $page_url = $this->input->get('page_url');
-        $page = $this->input->get('page');
         $row = $this->base_model->get_row($page, ['id' => $id]);
-
+        if ($page == 'supplier') {
+            $row = $this->{$page}->get_row($id);
+        }
         $data = [
             'csrf_name' => $this->security->get_csrf_token_name(),
             'csrf_value' => $this->security->get_csrf_hash(),
@@ -106,6 +109,10 @@ class Master extends MY_Controller
             if ($page == 'doctors' || $page == 'employees' || $page == 'customer') {
                 $data['user'] = $this->base_model->get_row('users', ['id' => $row->user_id]);
                 $data['user_privilege'] = $this->base_model->get_row('user_privileges', ['user_id' => $row->user_id]);
+            } elseif ($page == 'supplier') {
+                $this->load->model(['master/supplier']);
+                $supplier = $this->supplier->get_city($row->city_id);
+                $data = array_merge($data, ['supplier' => $supplier]);
             }
         }
         $this->load->view('pages/' . $page_url . '/form', $data);

@@ -71,7 +71,7 @@ function count_subtotal(price, quantity) {
 }
 
 function add_payment() {
-	get_page(base_url + '/adminpanel/pharmacy/add_form_purchase', {
+	get_page(base_url + '/adminpanel/admission/add_form_purchase', {
 			drug_view: 'add_payment'
 		})
 		.done(function (html) {

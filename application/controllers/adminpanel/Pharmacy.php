@@ -37,13 +37,6 @@ class Pharmacy extends MY_Controller
         ];
         $this->load->js('assets/admin_lte/custom/custom_js.js');
         $this->load->js('assets/admin_lte/custom/master_js.js');
-        if ($method == 'purchase') {
-            $this->load->js('assets/admin_lte/custom/purchase_js.js');
-            $this->load->js('js/config_purchase.js');
-        }
-        if ($method == 'drug_sales') {
-            $this->load->js('assets/admin_lte/custom/pharmacy_js.js');
-        }
         if ($method == 'sales') {
             $this->load->js('assets/admin_lte/custom/sales_js.js');
             $this->load->js('js/config_sales.js');
