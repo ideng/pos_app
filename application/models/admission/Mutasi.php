@@ -75,12 +75,12 @@ class Mutasi extends CI_Model
         FROM
         purchase a
         LEFT JOIN purchase_faktur b ON b.id_purchase = a.id
-        LEFT JOIN supplier c ON c.supplier_code = a.supplier_id
+        LEFT JOIN supplier c ON c.id = a.supplier_id
         LEFT JOIN gudang d ON d.id = b.drug_id
         LEFT JOIN purchase_return e ON e.drug_id = b.drug_id AND e.no_faktur_id = b.id_purchase
         ';
 
-        $data['where'] = '';
+        $data['where'] = 'CURDATE() = DATE(a.created_at)';
 
         $data['group_by'] = '';
 

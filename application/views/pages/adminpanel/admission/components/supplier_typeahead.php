@@ -31,6 +31,6 @@
 
     $('#supplier_name').bind('typeahead:select', function(obj, selected) {
         $('#code_supplier_id').val(selected.supplier_code);
-        $('#supplier_id').val(selected.supplier_code);
+        $('#supplier_id').val(selected.id);
     });
 </script>

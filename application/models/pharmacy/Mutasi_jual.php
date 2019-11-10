@@ -20,7 +20,12 @@ class Mutasi_jual extends CI_Model
 
         $data['columns'] = array(
 
-            array('db' => 'a.created_at AS tgl_penjualan', 'dt' => 1, 'field' => 'tgl_penjualan'),
+            array(
+                'db' => 'a.created_at AS tgl_penjualan', 'dt' => 1, 'field' => 'tgl_penjualan',
+                'formatter' => function ($d) {
+                    return format_date($d, 'd-m-Y');
+                }
+            ),
             array('db' => 'a.' . $this->primary_key, 'dt' => 2, 'field' => $this->primary_key),
             array('db' => 'a.no_faktur AS faktur_jual', 'dt' => 3, 'field' => 'faktur_jual'),
             array('db' => 'c.name AS nama_pasien', 'dt' => 4, 'field' => 'nama_pasien'),
@@ -80,7 +85,7 @@ class Mutasi_jual extends CI_Model
         LEFT JOIN gudang e ON e.id = b.drug_id
         ';
 
-        $data['where'] = '';
+        $data['where'] = 'CURDATE() = DATE(a.created_at)';
 
         $data['group_by'] = '';
 

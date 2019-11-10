@@ -1,7 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed!');
 
-class Code_generator extends MY_Controller {
+class Code_generator extends MY_Controller
+{
 	private $class_name = 'code_generator';
 	private $class_link = 'adminpanel/setting/code_generator';
 
@@ -10,25 +11,25 @@ class Code_generator extends MY_Controller {
 		parent::__construct();
 	}
 
-    public function _remap(string $method, array $args)
-    {
-        if (method_exists($this, $method)) {
-            $this->{$method}($args);
-        } else {
-            $this->index($method);
-        }
-	}
-	
-	public function index(string $method)
+	public function _remap($method, array $args = [])
 	{
-        parent::admin_tpl();
-        $data = [
-            'class_link' => $this->class_link,
-            'page' => $method
-        ];
+		if (method_exists($this, $method)) {
+			$this->{$method}($args);
+		} else {
+			$this->index($method);
+		}
+	}
+
+	public function index($method)
+	{
+		parent::admin_tpl();
+		$data = [
+			'class_link' => $this->class_link,
+			'page' => $method
+		];
 		$this->load->js('assets/admin_lte/custom/custom_js.js');
 		$this->load->js('assets/admin_lte/custom/code_generator_js.js');
-        $this->load->view('pages/' . $this->class_link . '/index', $data);
+		$this->load->view('pages/' . $this->class_link . '/index', $data);
 	}
 
 	public function load_view()
@@ -41,24 +42,24 @@ class Code_generator extends MY_Controller {
 			'row' => $row,
 			'code_sample' => $code_sample,
 		];
-		
+
 		$this->load->view('pages/' . $this->class_link . '/code_generator_view', $data);
 	}
 
 	public function load_form()
 	{
-        $this->load->model(['base_model', 'setting/code_generators']);
-        $page = $this->input->get('page');
-        $row = $this->base_model->get_row('code_generators', ['table' => $page]);
-        
-        $data = [
-            'csrf_name' => $this->security->get_csrf_token_name(),
-            'csrf_value' => $this->security->get_csrf_hash(),
-            'class_link' => $this->class_link,
-            'page' => $page,
+		$this->load->model(['base_model', 'setting/code_generators']);
+		$page = $this->input->get('page');
+		$row = $this->base_model->get_row('code_generators', ['table' => $page]);
+
+		$data = [
+			'csrf_name' => $this->security->get_csrf_token_name(),
+			'csrf_value' => $this->security->get_csrf_hash(),
+			'class_link' => $this->class_link,
+			'page' => $page,
 			'row' => $row,
 			'code_reset_opts' => $this->code_generators->code_reset_opts(),
-        ];
+		];
 		$this->load->view('pages/' . $this->class_link . '/form', $data);
 	}
 
@@ -81,7 +82,7 @@ class Code_generator extends MY_Controller {
 		if (!empty($code_parts)) {
 			foreach ($code_parts as $code_part) {
 				$no++;
-				$data['button'] = $no > 1 ? 'minus' : $data['button'] ;
+				$data['button'] = $no > 1 ? 'minus' : $data['button'];
 				$data['code_part'] = $code_part->code_part;
 				$data['code_unique'] = $code_part->code_unique;
 				$data['code_separator'] = $code_part->code_separator;
@@ -91,7 +92,6 @@ class Code_generator extends MY_Controller {
 		} else {
 			$this->load->view('pages/' . $this->class_link . '/code_part_form', $data);
 		}
-
 	}
 
 	public function add_code_format_form()
@@ -123,7 +123,7 @@ class Code_generator extends MY_Controller {
 			$data['msg'] = build_alert('warning', 'Warning!', implode('', $msgs));
 			$data['status'] = 'error';
 		} else {
-            $master = $this->code_generators->post_data($this->input->post());
+			$master = $this->code_generators->post_data($this->input->post());
 			$data = $this->base_model->submit_data('code_generators', 'id', $title, $master);
 			if ($data['status'] == 'error') {
 				$this->output

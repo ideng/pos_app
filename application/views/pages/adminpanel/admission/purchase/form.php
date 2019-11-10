@@ -23,6 +23,7 @@ $data = ['id' => $row->id, 'drug_view' => 'form', 'detail'];
                 <input type="hidden" name="url" value="<?php echo base_url($class_link . '/submit_form'); ?>">
                 <input type="hidden" name="page" value="<?php echo $page; ?>">
                 <input type="hidden" name="id" value="<?php echo $row->id; ?>">
+
                 <div class="row">
                     <div class="col-md-8 col-xs-12">
                         <div class="col-md-7" style="margin-top: 15px;">

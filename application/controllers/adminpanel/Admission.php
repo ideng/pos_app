@@ -165,7 +165,7 @@ class Admission extends MY_Controller
             $data = array_merge($data, ['supplier' => $supplier]);
         } elseif ($page == 'purchase') {
             $this->load->model(['admission/purchase']);
-            $purchase = $this->purchase->get_supplier($row->supplier_id, $row->drug_id);
+            $purchase = $this->purchase->get_supplier($row->supplier_id);
             $data = array_merge($data, ['purchase' => $purchase]);
         } elseif ($page == 'purchase_return') {
             $this->load->model(['admission/purchase_return']);
@@ -340,7 +340,7 @@ class Admission extends MY_Controller
         $this->load->model(['base_model']);
         $drugs = $this->base_model->get_all('gudang');
         $get_drug = $this->input->get('drug_view');
-        $drug_view = !empty($get_drug) ? 'form' : $this->input->get('drug_view');
+        $drug_view = empty($get_drug) ? 'form' : $this->input->get('drug_view');
         $data = [
             'drugs' => $drugs,
             'drug_view' => $drug_view,
@@ -490,7 +490,7 @@ class Admission extends MY_Controller
         $this->load->model(['base_model']);
         $drugs = $this->base_model->get_all('gudang');
         $get_drug = $this->input->get('drug_view');
-        $drug_view = !empty($get_drug) ? 'form' : $this->input->get('drug_view');
+        $drug_view = empty($get_drug) ? 'form' : $this->input->get('drug_view');
         $data = [
             'drugs' => $drugs,
             'drug_view' => $drug_view,

@@ -59,7 +59,7 @@ class Purchase extends CI_Model
 
         $data['joinQuery'] = '
             FROM purchase AS a
-            LEFT JOIN supplier AS b ON b.supplier_code = a.supplier_id
+            LEFT JOIN supplier AS b ON b.id = a.supplier_id
         ';
 
         $data['where'] = '';
@@ -105,7 +105,7 @@ class Purchase extends CI_Model
         $this->db->select('a.id, c.name AS nama_obat, b.drug_id, c.barcode, a.no_faktur, d.name AS supplier_name, d.supplier_code, b.price, b.quantity, b.subtotal, a.total_bayar, a.created_at, a.updated_at, a.supplier_id, d.supplier_code')
             ->from('purchase a')
             ->join('purchase_faktur b', 'b.id_purchase = a.id', 'left')
-            ->join('supplier d', 'd.supplier_code = a.supplier_id', 'left')
+            ->join('supplier d', 'd.id = a.supplier_id', 'left')
             ->join('gudang c', 'c.id = b.drug_id', 'left')
             ->where(['a.id' => $id]);
         $query = $this->db->get();
@@ -128,7 +128,6 @@ class Purchase extends CI_Model
         $this->load->model(['setting/code_generators']);
         $no_faktur = empty($post_data['no_faktur']) ? $this->code_generators->generate_code('purchase') : $post_data['no_faktur'];
 
-
         $data = [
             'id' => $post_data['id'],
             'no_faktur' => $no_faktur,
@@ -139,15 +138,12 @@ class Purchase extends CI_Model
         return $data;
     }
 
-    public function get_supplier($supplier_id, $drug_id)
+    public function get_supplier($supplier_id)
     {
-        $this->db->select('a.id, b.name AS supplier_name, d.barcode')
+        $this->db->select('b.name AS supplier_name, b.supplier_code, a.total_bayar')
             ->from('purchase a')
-            ->join('supplier b', 'b.supplier_code = a.supplier_id')
-            ->join('purchase_faktur c', 'c.id_purchase = a.id')
-            ->join('gudang d', 'd.id = c.drug_id')
-            ->where(['a.supplier_id' => $supplier_id])
-            ->where(['c.drug_id' => $drug_id]);
+            ->join('supplier b', 'b.id = a.supplier_id')
+            ->where(['a.supplier_id' => $supplier_id]);
         $query = $this->db->get();
         $result = $query->result();
 
