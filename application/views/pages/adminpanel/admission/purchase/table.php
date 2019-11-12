@@ -14,7 +14,6 @@ defined('BASEPATH') or exit('No direct script access allowed!');
 		text-align: left;
 	}
 </style>
-
 <table class="table table-bordered table-striped table-hover" style="width: 100%;">
 	<thead>
 		<tr>

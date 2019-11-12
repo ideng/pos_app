@@ -35,7 +35,7 @@ class Master extends MY_Controller
             'page' => $method
         ];
         $this->load->js('assets/admin_lte/custom/custom_js.js');
-        $this->load->js('assets/admin_lte/custom/master_js.js');
+        $this->load->js('assets/admin_lte/custom/masters_js.js');
         $this->load->view('pages/' . $this->class_link . '/index', $data);
     }
 
@@ -132,6 +132,7 @@ class Master extends MY_Controller
             $data['status'] = 'error';
         } else {
             $submit = $this->{$page}->post_data($this->input->post());
+            print_r($submit);
             if (isset($submit['status']) && $submit['status'] == 'error') {
                 $data['msg'] = $submit['msg'];
                 $data['status'] = $submit['status'];

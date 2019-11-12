@@ -39,13 +39,6 @@ $(document).off('keyup', 'input[name=\'drug_price[]\']').on('keyup', 'input[name
 	let quantity = $(this).parents('.drug-price').siblings('.drug-quantity').find('input[name=\'drug_quantity[]\']').val();
 	let subtotal = count_subtotal(price, quantity);
 	$(this).parents('.drug-price').siblings('.drug-subtotal').find('input[name=\'drug_subtotal[]\']').val(subtotal);
-
-	let total = 0;
-	$('input[name=\'drug_subtotal[]\']').each(function () {
-		total += parseInt($(this).val());
-	});
-	$('input[name=\'drug_bayar\']').val(total);
-	$('#drug-payment').html(total);
 });
 
 $(document).off('keyup', 'input[name=\'drug_quantity[]\']').on('keyup', 'input[name=\'drug_quantity[]\']', function () {

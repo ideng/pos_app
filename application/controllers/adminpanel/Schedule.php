@@ -36,7 +36,7 @@ class Schedule extends MY_Controller
             'page' => $method,
         ];
         $this->load->js('assets/admin_lte/custom/custom_js.js');
-        $this->load->js('assets/admin_lte/custom/master_js.js');
+        $this->load->js('assets/admin_lte/custom/masters_js.js');
         $this->load->view('pages/' . $this->class_link . '/index', $data);
     }
 

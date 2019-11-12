@@ -74,7 +74,7 @@ $data = ['id' => $row->id, 'drug_view' => 'form', 'detail'];
                 <div class="row">
                     <label for="drug_bayar" class="col-xs-2">Total Pembayaran :</label>
                     <div class="col-xs-10">
-                        <input type="hidden" name="drug_bayar" value="<?php echo $row->total_bayar; ?>">
+                        <input type="hidden" name="drug_bayar" id="drug_bayar" class="form-control" value="<?php echo $row->total_bayar; ?>">
                         <div id="drug-payment" class="drug-payment"><?php echo $row->total_bayar; ?></div>
                     </div>
                 </div>

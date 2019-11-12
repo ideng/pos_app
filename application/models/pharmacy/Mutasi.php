@@ -173,21 +173,6 @@ class Mutasi extends CI_Model
         return $result;
     }
 
-    public function get_mutasi_pembelian($start, $end)
-    {
-        $this->db->select('SUM(c.subtotal) AS nominal_beli,
-        SUM(c.price * d.quantity) AS nominal_retur_beli,
-        (SUM(c.subtotal) - SUM(c.price * d.quantity)) AS nominal_pembelian')
-            ->from('gudang a')
-            ->join('purchase_faktur c', 'c.drug_id = a.id', 'left')
-            ->join('purchase b', 'b.id = c.id_purchase', 'left')
-            ->join('purchase_return d', 'd.drug_id = c.drug_id AND d.no_faktur_id = c.id_purchase', 'left')
-            ->where('DATE(b.created_at) BETWEEN "' . format_date($start, 'Y-m-d') . '" and "' . format_date($end, 'Y-m-d') . '"');
-        $query = $this->db->get();
-        $result = $query->row();
-        return $result;
-    }
-
     public function get_mutasi_penjualan($start, $end)
     {
         $this->db->select('SUM(c.subtotal) AS nominal_jual,
@@ -197,6 +182,19 @@ class Mutasi extends CI_Model
             ->join('sales b', 'b.id = c.drugpurchase_id', 'left')
             ->join('sales_return e', 'e.drug_id = c.drug_id AND e.no_faktur_id = c.drugpurchase_id', 'left')
             ->where('DATE(b.created_at) BETWEEN "' . format_date($start, 'Y-m-d') . '" and "' . format_date($end, 'Y-m-d') . '"');
+        $query = $this->db->get();
+        $result = $query->row();
+        return $result;
+    }
+    public function get_mutasi_penjualan_now()
+    {
+        $this->db->select('SUM(c.subtotal) AS nominal_jual,
+        COALESCE(SUM(c.price * e.quantity),0) AS numinal_retur,
+        (SUM(c.subtotal) - COALESCE(SUM(c.price * e.quantity),0)) AS nominal_penjualan')
+            ->from('sales_item c')
+            ->join('sales b', 'b.id = c.drugpurchase_id', 'left')
+            ->join('sales_return e', 'e.drug_id = c.drug_id AND e.no_faktur_id = c.drugpurchase_id', 'left')
+            ->where('CURDATE() = DATE(b.created_at)');
         $query = $this->db->get();
         $result = $query->row();
         return $result;

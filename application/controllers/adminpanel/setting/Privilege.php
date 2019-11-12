@@ -1,17 +1,18 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed!');
 
-class Privilege extends MY_Controller {
+class Privilege extends MY_Controller
+{
     private $class_name = 'privilege';
     private $class_link = 'adminpanel/setting/privilege';
 
-	public function __construct()
-	{
-		parent::__construct();
-	}
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
-	public function index()
-	{
+    public function index()
+    {
         parent::admin_tpl();
         parent::datatables_assets();
         parent::icheck_assets();
@@ -19,7 +20,7 @@ class Privilege extends MY_Controller {
             'class_link' => $this->class_link,
         ];
         $this->load->js('assets/admin_lte/custom/custom_js.js');
-        $this->load->js('assets/admin_lte/custom/master_js.js');
+        $this->load->js('assets/admin_lte/custom/masters_js.js');
         $this->load->js('assets/admin_lte/custom/privilege_js.js');
         $this->load->view('pages/' . $this->class_link . '/index', $data);
     }
@@ -39,7 +40,7 @@ class Privilege extends MY_Controller {
 
         $data = $this->privileges->ssp_table();
         $this->output->set_output(json_encode(
-			Custom_ssp::simple( $_GET, $data['sql_details'], $data['table'], $data['primaryKey'], $data['columns'], $data['joinQuery'], $data['where'] )
+            Custom_ssp::simple($_GET, $data['sql_details'], $data['table'], $data['primaryKey'], $data['columns'], $data['joinQuery'], $data['where'])
         ));
     }
 
@@ -51,7 +52,7 @@ class Privilege extends MY_Controller {
         $data = [
             'row' => $this->base_model->get_row('privileges', ['id' => $id]),
         ];
-		$this->load->view('pages/' . $this->class_link . '/detail', $data);
+        $this->load->view('pages/' . $this->class_link . '/detail', $data);
     }
 
     public function load_form()
@@ -66,7 +67,7 @@ class Privilege extends MY_Controller {
             'class_link' => $this->class_link,
             'row' => $this->base_model->get_row('privileges', ['id' => $id]),
         ];
-		$this->load->view('pages/' . $this->class_link . '/form', $data);
+        $this->load->view('pages/' . $this->class_link . '/form', $data);
     }
 
     public function submit_form()
@@ -78,7 +79,7 @@ class Privilege extends MY_Controller {
         $this->privileges->form_rules();
         if ($this->form_validation->run() == FALSE) {
             $msgs = $this->base_model->form_warning($this->input->post());
-			$data['msg'] = build_alert('warning', 'Warning!', implode('', $msgs));
+            $data['msg'] = build_alert('warning', 'Warning!', implode('', $msgs));
             $data['status'] = 'error';
         } else {
             $submit = $this->privileges->post_data($this->input->post());
@@ -126,7 +127,7 @@ class Privilege extends MY_Controller {
                 'level_three_menus' => $this->base_model->get_all('menus', ['level' => '2', 'modul' => $row->module]),
             ]);
         }
-		$this->load->view('pages/' . $this->class_link . '/form_menu', $data);
+        $this->load->view('pages/' . $this->class_link . '/form_menu', $data);
     }
 
     public function submit_form_menu()

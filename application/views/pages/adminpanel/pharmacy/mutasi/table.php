@@ -46,11 +46,11 @@ defined('BASEPATH') or exit('No direct script access allowed!');
 	</div>
 	<div class="col-md-3">
 		<label for="">Tanggal Awal</label>
-		<input type="text" name='start_date' id='start_date' class="form-control date-picker" required>
+		<input type="text" name='start_date' id='start_date' class="form-control date-picker" value="<?php echo date('d-m-Y') ?>" required>
 	</div>
 	<div class="col-md-3">
 		<label for="">Tanggal Akhir</label>
-		<input type="text" name='end_date' id='end_date' class="form-control date-picker" required>
+		<input type="text" name='end_date' id='end_date' class="form-control date-picker" value="<?php echo date('d-m-Y') ?>" required>
 	</div>
 	<div class="col-md-4">
 		<label for="">&nbsp</label>
@@ -74,7 +74,7 @@ defined('BASEPATH') or exit('No direct script access allowed!');
 </div>
 <hr>
 <div>
-	<H3 style="text-align:center">Mutasi Data Penjualan</H3>
+	<H3 style="text-align:center">Mutasi Data Penjualan Hari ini</H3>
 </div>
 <table class="table table-bordered table-striped table-hover table3" style="width: 100%;">
 	<thead>
@@ -94,6 +94,24 @@ defined('BASEPATH') or exit('No direct script access allowed!');
 			<th>Total Penjualan</th>
 		</tr>
 	</thead>
+</table>
+<table class="table table-bordered table-striped table-hover" style="width: 100%;">
+	<thead>
+		<tr>
+			<th colspan="9"></th>
+			<th>Nominal Jual</th>
+			<th>Nominal Retur Jual</th>
+			<th>Total Penjualan</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td colspan="9"><span style="font-weight:bold">Total Penjualan Hari ini</span></td>
+			<td><?php echo number_format(empty_string($mutasi_penjualan_now->nominal_jual, '0'), 2, ',', '.'); ?></td>
+			<td><?php echo number_format(empty_string($mutasi_penjualan_now->numinal_retur, '0'), 2, ',', '.'); ?></td>
+			<td><?php echo number_format(empty_string($mutasi_penjualan_now->nominal_penjualan, '0'), 2, ',', '.'); ?></td>
+		</tr>
+	</tbody>
 </table>
 
 <script>

@@ -96,7 +96,7 @@ class Purchase extends CI_Model
     {
 
         $this->form_validation->set_rules('code_supplier_id', 'Code Supplier ID', 'required');
-        //$this->form_validation->set_rules('supplier_name', 'Supplier Name', 'required');
+        $this->form_validation->set_rules('supplier_name', 'Supplier Name', 'required');
     }
 
     public function get_row($id)
@@ -123,7 +123,7 @@ class Purchase extends CI_Model
         return $data;
     }
 
-    public function post_data(array $post_data)
+    public function post_data($post_data)
     {
         $this->load->model(['setting/code_generators']);
         $no_faktur = empty($post_data['no_faktur']) ? $this->code_generators->generate_code('purchase') : $post_data['no_faktur'];
@@ -140,7 +140,7 @@ class Purchase extends CI_Model
 
     public function get_supplier($supplier_id)
     {
-        $this->db->select('b.name AS supplier_name, b.supplier_code, a.total_bayar')
+        $this->db->select('b.name AS supplier_name, a.total_bayar')
             ->from('purchase a')
             ->join('supplier b', 'b.id = a.supplier_id')
             ->where(['a.supplier_id' => $supplier_id]);

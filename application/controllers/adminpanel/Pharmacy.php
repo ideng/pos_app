@@ -49,11 +49,14 @@ class Pharmacy extends MY_Controller
 
     public function load_table()
     {
+        $this->load->model(['pharmacy/mutasi']);
         $page = $this->input->get('page');
         $page_url = $this->input->get('page_url');
+        $m = $this->mutasi->get_mutasi_penjualan_now();
         $data = [
             'class_link' => $this->class_link,
             'page' => $page,
+            'mutasi_penjualan_now' => $m
         ];
 
         $this->load->view('pages/' . $page_url . '/table', $data);
@@ -67,7 +70,6 @@ class Pharmacy extends MY_Controller
         $end = $this->input->get('end');
         $data['mutasi_belis'] = $this->mutasi->get_mutasi_beli($start, $end);
         $data['mutasi_juals'] = $this->mutasi->get_mutasi_jual($start, $end);
-        $data['mutasi_pembelian'] = $this->mutasi->get_mutasi_pembelian($start, $end);
         $data['mutasi_penjualan'] = $this->mutasi->get_mutasi_penjualan($start, $end);
         $this->load->view('pages/' . $page_url . '/report', $data);
     }
@@ -105,7 +107,7 @@ class Pharmacy extends MY_Controller
         if ($page == 'drug_sales') {
             $this->load->model(['admission/diagnoses']);
             $row = $this->diagnoses->get_row($id);
-        } else if ($page == 'purchase' || $page == 'purchase_return' || $page == 'sales_return' || $page == 'sales' || $page == 'gudang' || $page == 'adjustment') {
+        } else if ($page == 'sales_return' || $page == 'sales' || $page == 'gudang' || $page == 'adjustment') {
             $page = $this->input->get('page');
             $this->load->model(['base_model', $this->class_name . '/' . $page]);
             $id = $this->input->get('id');
@@ -145,7 +147,7 @@ class Pharmacy extends MY_Controller
         $id = $this->input->get('id');
         $page_url = $this->input->get('page_url');
         $row = $this->base_model->get_row($page, ['id' => $id]);
-        if ($page == 'drug_sales' || $page == 'supplier' || $page == 'purchase' || $page == 'purchase_return' || $page == 'sales_return' || $page == 'sales' || $page == 'adjustment' || $page == 'gudang') {
+        if ($page == 'drug_sales' || $page == 'supplier' || $page == 'sales_return' || $page == 'sales' || $page == 'adjustment' || $page == 'gudang') {
             $row = $this->{$page}->get_row($id);
         }
         $data = [
@@ -163,15 +165,6 @@ class Pharmacy extends MY_Controller
             $this->load->model(['pharmacy/supplier']);
             $supplier = $this->supplier->get_city($row->city_id);
             $data = array_merge($data, ['supplier' => $supplier]);
-        } elseif ($page == 'purchase') {
-            $this->load->model(['pharmacy/purchase']);
-            $purchase = $this->purchase->get_supplier($row->supplier_id, $row->drug_id);
-            $data = array_merge($data, ['purchase' => $purchase]);
-        } elseif ($page == 'purchase_return') {
-            $this->load->model(['pharmacy/purchase_return']);
-            $data['drugs'] = $this->purchase_return->get_drug();
-            $purchase_return = $this->purchase_return->get_faktur($row->no_faktur_id);
-            $data = array_merge($data, ['purchase_return' => $purchase_return]);
         } elseif ($page == 'sales_return') {
             $this->load->model(['pharmacy/sales_return']);
             $data['drugs'] = $this->sales_return->get_drug();
@@ -216,28 +209,6 @@ class Pharmacy extends MY_Controller
         echo json_encode($callback); // konversi varibael $callback menjadi JSON
     }
 
-    public function search_purchase()
-    {
-        // Ambil data NIS yang dikirim via ajax post
-        $barcode = $this->input->get('barcode');
-        $this->load->model(['pharmacy/purchase']);
-        $gudang = $this->purchase->viewByBarcode($barcode);
-
-        if (!empty($gudang)) { // Jika data siswa ada/ditemukan
-            // Buat sebuah array
-            $callback = array(
-                'status' => 'success', // Set array status dengan success
-                'id' => $gudang->id,
-                'name' => $gudang->name, // Set array nama dengan isi kolom nama pada tabel siswa
-                'purchase_price' => $gudang->purchase_price,
-            );
-        } else {
-            $callback = array('status' => 'failed'); // set array status dengan failed
-        }
-
-        echo json_encode($callback); // konversi varibael $callback menjadi JSON
-    }
-
     public function submit_form()
     {
         $page = $this->input->post('page');
@@ -257,11 +228,7 @@ class Pharmacy extends MY_Controller
                 $data['status'] = $submit['status'];
             } else {
                 $data = $this->base_model->submit_data($page, 'id', $title, $submit);
-                if ($page == 'purchase' && $data['status'] == 'success') {
-                    $this->load->model($this->class_name . '/Purchase_faktur');
-                    $master_key = $data['key'];
-                    $data = $this->Purchase_faktur->post_data_faktur($this->input->post(), $master_key);
-                } elseif ($page == 'sales' && $data['status'] == 'success') {
+                if ($page == 'sales' && $data['status'] == 'success') {
                     $this->load->model($this->class_name . '/sales_item');
                     $master_key = $data['key'];
                     $data = $this->sales_item->post_data_drugs($this->input->post(), $master_key);
@@ -366,7 +333,7 @@ class Pharmacy extends MY_Controller
         $title = $this->{$page}->_get('title');
 
         $data = $this->base_model->delete_data($page, ['id' => $id], $title);
-        if ($page == 'purchase' || $page == 'sales') {
+        if ($page == 'sales') {
             $page = $this->input->get('page');
             $this->load->model([$this->class_name . '/' . $page]);
             $id = $this->input->get('id');
@@ -398,26 +365,6 @@ class Pharmacy extends MY_Controller
         $this->load->view('pages/' . $this->class_link . '/drug_sales/payment_form', $data);
     }
 
-    public function drug_purchase_payment()
-    {
-        $this->load->model(['base_model', 'pharmacy/purchase']);
-        $id = $this->input->get('id');
-        $purchase = $this->purchase->get_row($id);
-        $purchase_faktur = $this->base_model->get_all('purchase_faktur', ['id_purchase' => $id]);
-
-        $data = [
-            'id' => $id,
-            'purchase' => $purchase,
-            'purchase_faktur' => $purchase_faktur,
-            'class_link' => $this->class_link,
-            'page' => 'purchase',
-            'csrf_name' => $this->security->get_csrf_token_name(),
-            'csrf_value' => $this->security->get_csrf_hash(),
-        ];
-
-        $this->load->view('pages/' . $this->class_link . '/purchase/form', $data);
-    }
-
     public function submit_payment()
     {
         $this->load->model(['base_model', 'admission/diagnoses', 'pharmacy/drug_sales']);
@@ -444,65 +391,5 @@ class Pharmacy extends MY_Controller
         $this->output
             ->set_content_type('application/json', 'utf-8')
             ->set_output(json_encode($data));
-    }
-
-    public function load_form_purchase()
-    {
-        $this->load->model(['base_model']);
-        $id = $this->input->get('id');
-        $drugs = $this->base_model->get_all('gudang');
-        $purchase = $this->base_model->get_all('purchase_faktur', ['id_purchase' => $id]);
-        $data = [
-            'drug_view' => $this->input->get('drug_view'),
-            'purchase' => $purchase,
-            'drugs' => $drugs,
-            'drug_id' => '',
-            'barcode' => '',
-            'name' => '',
-            'price' => '',
-            'quantity' => '',
-            'subtotal' => '',
-            'btn' => 'plus',
-            'is_hidden' => false,
-        ];
-
-        if (!empty($purchase)) {
-            $no = 0;
-            foreach ($purchase as $purchases) {
-                $no++;
-                $data['drug_id'] = $purchases->drug_id;
-                $data['barcode'] = $purchases->barcode;
-                $data['name'] = $purchases->name;
-                $data['price'] = $purchases->price;
-                $data['quantity'] = $purchases->quantity;
-                $data['subtotal'] = $purchases->subtotal;
-                $data['btn'] = $no > 1 ? 'minus' : $data['btn'];
-                $data['is_hidden'] = $no > 1 ? true : false;
-                $this->load->view('pages/' . $this->class_link . '/purchase/drug_form', $data);
-            }
-        } else {
-            $this->load->view('pages/' . $this->class_link . '/purchase/drug_form', $data);
-        }
-    }
-
-    public function add_form_purchase()
-    {
-        $this->load->model(['base_model']);
-        $drugs = $this->base_model->get_all('gudang');
-        $data_drug = $this->input->get('drug_view');
-        $drug_view = empty($data_drug) ? 'form' : $this->input->get('drug_view');
-        $data = [
-            'drugs' => $drugs,
-            'drug_view' => $drug_view,
-            'drug_id' => '',
-            'barcode' => '',
-            'name' => '',
-            'price' => '',
-            'quantity' => '',
-            'subtotal' => '',
-            'btn' => 'minus',
-            'is_hidden' => true,
-        ];
-        $this->load->view('pages/' . $this->class_link . '/purchase/drug_form', $data);
     }
 }
