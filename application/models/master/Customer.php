@@ -99,7 +99,6 @@ class Customer extends CI_Model
 		$this->form_validation->set_rules('date_of_birth', 'Date of Birth', 'required');
 		$this->form_validation->set_rules('telephone', 'Telephone', 'required');
 		$this->form_validation->set_rules('email', 'Email', 'valid_email');
-		$this->users->external_form_rules();
 	}
 
 	public function post_data(array $post_data)
@@ -107,8 +106,8 @@ class Customer extends CI_Model
 		$this->load->model(['base_model', 'setting/code_generators', 'master/users']);
 		$file_img = $_FILES['image'];
 		if (!empty($file_img['name'])) {
-			$path = 'assets/uploads/img/patients/';
-			$upload = $this->base_model->upload_file('image', $path, ['jpg', 'png', 'gif', 'jpeg']);
+			$path = 'assets/uploads/img/customer/';
+			$upload = $this->base_model->upload_file('image', $path, ['jpg', 'png', 'gif', 'jpeg'], '150');
 			if (isset($upload['status']) && $upload['status'] == 'error') {
 				return $upload;
 			} else {
@@ -135,8 +134,6 @@ class Customer extends CI_Model
 		if (isset($image)) {
 			$data = array_merge($data, ['image' => $image]);
 		}
-		$user_id = $this->users->submit_userdata($post_data);
-		$data = array_merge($data, ['user_id' => $user_id]);
 
 		return $data;
 	}

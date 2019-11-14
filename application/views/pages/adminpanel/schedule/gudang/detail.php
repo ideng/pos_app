@@ -35,11 +35,11 @@ $title = isset($page) ? ucwords($page) : 'Master';
                 </div>
                 <div class="row">
                     <label for="sell_price" class="col-xs-2">Harga Jual : </label>
-                    <div class="col-xs-10"><?php echo number_format($row->sell_price, '2', ',', '.'); ?></div>
+                    <div class="col-xs-10"><?php echo number_format(empty_string($row->sell_price, '0'), 2, ',', '.'); ?></div>
                 </div>
                 <div class="row">
                     <label for="purchase_price" class="col-xs-2">Harga Beli : </label>
-                    <div class="col-xs-10"><?php echo number_format($row->purchase_price, '2', ',', '.'); ?></div>
+                    <div class="col-xs-10"><?php echo number_format(empty_string($row->purchase_price, '0'), 2, ',', '.'); ?></div>
                 </div>
                 <div class="row">
                     <label for="description" class="col-xs-2">Deskripsi :</label>

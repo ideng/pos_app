@@ -74,7 +74,7 @@ class Schedule extends MY_Controller
             $page = $this->input->get('page');
             $this->load->model(['base_model', $this->class_name . '/' . $page]);
             $id = $this->input->get('id');
-            $id = !empty($id) ? '' : $this->input->get('id');
+            $id = empty($id) ? '' : $this->input->get('id');
             $id_mutasi = empty($id) ? '' : $this->input->get('id');
             $id_mutasi_jual = empty($id) ? '' : $this->input->get('id');
             $id_mutasi_checkup = empty($id) ? '' : $this->input->get('id');

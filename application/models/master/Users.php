@@ -85,7 +85,7 @@ class Users extends CI_Model
 		$this->form_validation->set_rules('privilege_id', 'Privilege', 'required');
 		$id = $this->input->post('id');
 		$password = $this->input->post('password');
-		if (!empty($id) || !empty($password)) {
+		if (empty($id) || !empty($password)) {
 			$this->form_validation->set_rules('password', 'Password', 'required');
 			$this->form_validation->set_rules('password_confirm', 'Password Confirm', 'required|matches[password]');
 		}
@@ -115,7 +115,7 @@ class Users extends CI_Model
 			'username' => $post_data['username'],
 			'name' => $post_data['name'],
 		];
-		if (!empty($post_data['password'])) {
+		if (empty($post_data['password'])) {
 			$data = array_merge($data, ['password' => hash_text($post_data['password'])]);
 		}
 
@@ -153,7 +153,7 @@ class Users extends CI_Model
 			'username' => $post_data['username'],
 			'name' => $post_data['name']
 		];
-		if (!empty($post_data['password'])) {
+		if (empty($post_data['password'])) {
 			$user_data = array_merge($user_data, ['password' => hash_text($post_data['password'])]);
 		}
 		$submit = $this->base_model->submit_data('users', 'id', $this->title, $user_data);
@@ -188,7 +188,7 @@ class Users extends CI_Model
 		$this->form_validation->set_rules('privilege_id', 'User Privilege', 'required');
 		$id = $this->input->post('id');
 		$password = $this->input->post('password');
-		if (!empty($id) || !empty($password)) {
+		if (empty($id) || !empty($password)) {
 			$this->form_validation->set_rules('password', 'Password', 'required');
 			$this->form_validation->set_rules('password_confirm', 'Password Confirmation', 'required|matches[password]');
 		}

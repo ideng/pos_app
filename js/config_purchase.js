@@ -1,7 +1,9 @@
 function search(element, barcode) {
-	let drug_id = $(element).siblings('.nama').find('input[name=\'drug_id[]\']');
-	let nama = $(element).siblings('.nama').find('input[name=\'nama[]\']');
+	let drug_id = $(element).siblings('.name').find('input[name=\'drug_id[]\']');
+	let name = $(element).siblings('.name').find('input[name=\'name[]\']');
+	let select = $(element).siblings('.select').find('select[name=\'select[]\']');
 	let drug_price = $(element).siblings('.drug-price').find('input[name=\'drug_price[]\']');
+
 	get_page(url + '/search_purchase', {
 			barcode: barcode
 		})
@@ -9,8 +11,10 @@ function search(element, barcode) {
 			const result = JSON.parse(response);
 			if (result.status === "success") {
 				drug_id.val(result.id);
-				nama.val(result.name);
+				name.val(result.name);
+				select.val(result.name);
 				drug_price.val(result.purchase_price);
+
 			} else {
 				alert("Data Tidak Ditemukan");
 			}

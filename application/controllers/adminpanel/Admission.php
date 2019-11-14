@@ -40,6 +40,7 @@ class Admission extends MY_Controller
         if ($method == 'purchase') {
             $this->load->js('assets/admin_lte/custom/purchase_js.js');
             $this->load->js('js/config_purchase.js');
+            //$this->load->js('js/config_purchase_barang.js');
         }
         if ($method == 'mutasi') {
             $this->load->js('assets/admin_lte/custom/mutasi_beli_js.js');
@@ -180,12 +181,34 @@ class Admission extends MY_Controller
         $this->load->model(['admission/purchase']);
         $gudang = $this->purchase->viewByBarcode($barcode);
 
-        if (!empty($gudang)) { // Jika data siswa ada/ditemukan
+        if (!empty($gudang)) { // Jika data barcode ada/ditemukan
             // Buat sebuah array
             $callback = array(
                 'status' => 'success', // Set array status dengan success
                 'id' => $gudang->id,
-                'name' => $gudang->name, // Set array nama dengan isi kolom nama pada tabel siswa
+                'name' => $gudang->name,
+                'purchase_price' => $gudang->purchase_price,
+            );
+        } else {
+            $callback = array('status' => 'failed'); // set array status dengan failed
+        }
+
+        echo json_encode($callback); // konversi varibael $callback menjadi JSON
+    }
+
+    public function search_purchase_barang()
+    {
+        // Ambil data NIS yang dikirim via ajax post
+        $name = $this->input->get('name');
+        $this->load->model(['admission/purchase']);
+        $gudang = $this->purchase->viewByName($name);
+
+        if (!empty($gudang)) { // Jika data name ada/ditemukan
+            // Buat sebuah array
+            $callback = array(
+                'status' => 'success', // Set array status dengan success
+                'id' => $gudang->id,
+                'barcode' => $gudang->barcode,
                 'purchase_price' => $gudang->purchase_price,
             );
         } else {

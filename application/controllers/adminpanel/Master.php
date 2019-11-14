@@ -101,15 +101,12 @@ class Master extends MY_Controller
             'page' => $page,
             'row' => $row,
         ];
-        if ($page == 'users' || $page == 'doctors' || $page == 'employees' || $page == 'customer') {
+        if ($page == 'users') {
             $this->load->model(['setting/privileges']);
             $user_privilege = $this->privileges->get_user_privilege($_SESSION['auth']['id']);
             $data['privileges'] = $this->base_model->get_all('privileges', ['level >=' => $user_privilege->level]);
             $data['user_privilege'] = $this->base_model->get_row('user_privileges', ['user_id' => $id]);
-            if ($page == 'doctors' || $page == 'employees' || $page == 'customer') {
-                $data['user'] = $this->base_model->get_row('users', ['id' => $row->user_id]);
-                $data['user_privilege'] = $this->base_model->get_row('user_privileges', ['user_id' => $row->user_id]);
-            } elseif ($page == 'supplier') {
+            if ($page == 'supplier') {
                 $this->load->model(['master/supplier']);
                 $supplier = $this->supplier->get_city($row->city_id);
                 $data = array_merge($data, ['supplier' => $supplier]);
@@ -132,7 +129,6 @@ class Master extends MY_Controller
             $data['status'] = 'error';
         } else {
             $submit = $this->{$page}->post_data($this->input->post());
-            print_r($submit);
             if (isset($submit['status']) && $submit['status'] == 'error') {
                 $data['msg'] = $submit['msg'];
                 $data['status'] = $submit['status'];

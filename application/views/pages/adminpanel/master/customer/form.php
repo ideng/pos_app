@@ -149,44 +149,6 @@ $title = isset($page) ? ucwords($page) : 'Master';
                 </div>
                 <hr>
                 <div class="row">
-                    <div class="col-xs-12">
-                        <div class="col-xs-8">
-                            <div class="form-group">
-                                <label for="username">Username</label>
-                                <input type="hidden" name="user_id" value="<?php echo $row->user_id; ?>">
-                                <input type="text" name="username" id="username" class="form-control" value="<?php echo $user->username; ?>" placeholder="Username" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="privilege_id">Hak Akses</label>
-                                <input type="hidden" name="user_privilege_id" value="<?php echo $user_privilege->id; ?>">
-                                <select name="privilege_id" id="privilege" class="form-control" required>
-                                    <option value="">-- Pilih Hak Akses --</option>
-                                    <?php
-                                    foreach ($privileges as $privilege) {
-                                        $selected = $privilege->id == $user_privilege->privilege_id ? 'selected' : '';
-                                        echo '<option value=\'' . $privilege->id . '\' ' . $selected . '>' . $privilege->name . '</option>';
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                            <?php
-                            if (!empty($user->password)) {
-                                echo build_alert('warning', 'Peringatan!', 'Kosongkan kolom password jika tidak diubah!');
-                            }
-                            ?>
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                <input type="password" name="password" id="password" class="form-control" placeholder="Password">
-                            </div>
-                            <div class="form-group">
-                                <label for="password_confirm">Konfirmasi Password</label>
-                                <input type="password" name="password_confirm" id="password_confirm" class="form-control" placeholder="Konfirmasi Password">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
                     <div class="col-xs-2 col-xs-offset-10">
                         <div class="form-group">
                             <button type="reset" class="btn btn-warning btn-flat">Reset</button>

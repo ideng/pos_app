@@ -179,6 +179,14 @@ class Purchase extends CI_Model
         return $result;
     }
 
+    public function viewByName($name)
+    {
+        $this->db->where('name', $name);
+        $result = $this->db->get('gudang')->row(); // Tampilkan data siswa berdasarkan NIS
+
+        return $result;
+    }
+
     // public function get_drugs(string $drug_id)
     // {
     //     $this->db->select('a.id, b.name AS drug_name')

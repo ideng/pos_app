@@ -1,5 +1,5 @@
 <script>
-    var City = new Bloodhound({
+    var Gudang = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         url: '<?php echo base_url('autocomplete/search_data'); ?>',
@@ -9,7 +9,7 @@
                 settings.type = 'GET';
                 settings.contentType = 'application/json; charset=UTF-8';
                 settings.data = {
-                    'table': 'drugs',
+                    'table': 'gudang',
                     'columns': 'name',
                     'values': query
                 };
@@ -20,16 +20,16 @@
         }
     });
 
-    $('#drug_name').typeahead(null, {
+    $('input[name=\'name[]\']').typeahead(null, {
         limit: 50,
         minLength: 1,
-        name: 'drug_search',
+        name: 'gudang_search',
         display: 'name',
-        valueKey: 'get_drugs',
-        source: City.ttAdapter()
+        valueKey: 'get_gudang',
+        source: Gudang.ttAdapter()
     });
 
-    $('#drug_name').bind('typeahead:select', function(obj, selected) {
-        $('#drug_id').val(selected.id);
+    $('.name').bind('typeahead:select', function(obj, selected) {
+        $('input[name=\'drug_id[]\']').val(selected.id);
     });
 </script>
