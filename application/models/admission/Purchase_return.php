@@ -33,23 +33,17 @@ class Purchase_return extends CI_Model
                     return empty_string($d, '-');
                 }
             ),
+            array('db' => 'c.name AS drug_name', 'dt' => 4, 'field' => 'drug_name'),
+            array('db' => 'a.quantity', 'dt' => 5, 'field' => 'quantity'),
+            array('db' => 'a.description', 'dt' => 6, 'field' => 'description'),
             array(
-                'db' => 'b.no_faktur', 'dt' => 4, 'field' => 'no_faktur',
-                'formatter' => function ($d) {
-                    return empty_string($d, '-');
-                }
-            ),
-            array('db' => 'c.name AS drug_name', 'dt' => 5, 'field' => 'drug_name'),
-            array('db' => 'a.quantity', 'dt' => 6, 'field' => 'quantity'),
-            array('db' => 'a.description', 'dt' => 7, 'field' => 'description'),
-            array(
-                'db' => 'a.created_at', 'dt' => 8, 'field' => 'created_at',
+                'db' => 'a.created_at', 'dt' => 7, 'field' => 'created_at',
                 'formatter' => function ($d) {
                     return format_date($d, 'd-m-Y H:i:s');
                 }
             ),
             array(
-                'db' => 'a.updated_at', 'dt' => 9, 'field' => 'updated_at',
+                'db' => 'a.updated_at', 'dt' => 8, 'field' => 'updated_at',
                 'formatter' => function ($d) {
                     $date = empty($d) ? empty_string($d, '-') : format_date($d, 'd-m-Y H:i:s');
                     return $date;
@@ -97,17 +91,15 @@ class Purchase_return extends CI_Model
 
     public function form_rules()
     {
-        $this->form_validation->set_rules('no_faktur', 'No faktur', 'required');
         $this->form_validation->set_rules('quantity', 'Quantity', 'required');
         $this->form_validation->set_rules('description', 'Description', 'required');
     }
 
     public function get_row($id)
     {
-        $columns = ['id', 'no_retur', 'no_faktur', 'no_faktur_id', 'drug_id', 'drug_name', 'quantity', 'description', 'created_at', 'updated_at'];
-        $this->db->select('a.id, a.no_retur, b.no_faktur, a.no_faktur_id, a.drug_id, a.quantity, a.description, a.created_at, a.updated_at, c.name AS drug_name')
+        $columns = ['id', 'no_retur', 'drug_id', 'drug_name', 'quantity', 'description', 'created_at', 'updated_at'];
+        $this->db->select('a.id, a.no_retur, a.drug_id, a.quantity, a.description, a.created_at, a.updated_at, c.name AS drug_name')
             ->from('purchase_return a')
-            ->join('purchase b', 'b.id = a.no_faktur_id', 'left')
             ->join('gudang c', 'c.id = a.drug_id', 'left')
             ->where(['a.id' => $id]);
         $query = $this->db->get();
@@ -133,7 +125,6 @@ class Purchase_return extends CI_Model
         $data = [
             'id' => $post_data['id'],
             'no_retur' => $no_retur,
-            'no_faktur_id' => $post_data['no_faktur_id'],
             'drug_id' => $post_data['drug_id'],
             'quantity' => $post_data['quantity'],
             'description' => $post_data['description'],

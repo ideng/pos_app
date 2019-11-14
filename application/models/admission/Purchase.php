@@ -62,7 +62,7 @@ class Purchase extends CI_Model
             LEFT JOIN supplier AS b ON b.id = a.supplier_id
         ';
 
-        $data['where'] = '';
+        $data['where'] = 'CURDATE() = DATE(a.created_at)';
 
         $data['group_by'] = '';
 

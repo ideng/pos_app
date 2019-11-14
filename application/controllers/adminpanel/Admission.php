@@ -55,10 +55,12 @@ class Admission extends MY_Controller
         $page = $this->input->get('page');
         $page_url = $this->input->get('page_url');
         $m = $this->mutasi->get_mutasi_pembelian_now();
+        $n = $this->mutasi->get_mutasi_retur_beli_now();
         $data = [
             'class_link' => $this->class_link,
             'page' => $page,
-            'mutasi_pembelian_now' => $m
+            'mutasi_pembelian_now' => $m,
+            'mutasi_retur_now' => $n
         ];
 
 
@@ -168,8 +170,6 @@ class Admission extends MY_Controller
         } elseif ($page == 'purchase_return') {
             $this->load->model(['admission/purchase_return']);
             $data['drugs'] = $this->purchase_return->get_drug();
-            $purchase_return = $this->purchase_return->get_faktur($row->no_faktur_id);
-            $data = array_merge($data, ['purchase_return' => $purchase_return]);
         }
         $this->load->view('pages/' . $page_url . '/form', $data);
     }

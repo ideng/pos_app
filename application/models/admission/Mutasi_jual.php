@@ -3,9 +3,9 @@ defined('BASEPATH') or exit('No direct script access allowed!');
 
 class Mutasi_jual extends CI_Model
 {
-    private $table = 'sales';
+    private $table = 'purchase_return';
     private $primary_key = 'id';
-    private $title = 'Mutasi Jual Data';
+    private $title = 'Retur Pembelian';
 
     public function _get($name)
     {
@@ -19,94 +19,49 @@ class Mutasi_jual extends CI_Model
         $data['primaryKey'] = 'a.' . $this->primary_key;
 
         $data['columns'] = array(
-
-            array('db' => 'a.created_at AS tgl_penjualan', 'dt' => 1, 'field' => 'tgl_penjualan'),
+            array(
+                'db' => 'a.created_at', 'dt' => 1, 'field' => 'created_at',
+                'formatter' => function ($d) {
+                    return format_date($d, 'd-m-Y H:i:s');
+                }
+            ),
             array('db' => 'a.' . $this->primary_key, 'dt' => 2, 'field' => $this->primary_key),
-            array('db' => 'a.no_faktur AS faktur_jual', 'dt' => 3, 'field' => 'faktur_jual'),
-            array('db' => 'c.name AS nama_pasien', 'dt' => 4, 'field' => 'nama_pasien'),
-            array('db' => 'e.name AS nama_obat', 'dt' => 5, 'field' => 'nama_obat'),
             array(
-                'db' => 'b.price AS harga_jual', 'dt' => 6, 'field' => 'harga_jual',
+                'db' => 'a.no_retur', 'dt' => 3, 'field' => 'no_retur',
+                'formatter' => function ($d) {
+                    return empty_string($d, '-');
+                }
+            ),
+            array('db' => 'c.name AS drug_name', 'dt' => 4, 'field' => 'drug_name'),
+            array(
+                'db' => 'c.purchase_price AS purchase_price', 'dt' => 5, 'field' => 'purchase_price',
                 'formatter' => function ($d) {
                     return number_format(empty_string($d, '0'), 2, ',', '.');
                 }
             ),
+            array('db' => 'a.quantity', 'dt' => 6, 'field' => 'quantity'),
             array(
-                'db' => 'COALESCE (b.quantity,0) AS jml_jual', 'dt' => 7, 'field' => 'jml_jual',
-                'formatter' => function ($d) {
-                    return empty_string($d, '0');
-                }
-            ),
-            array(
-                'db' => 'COALESCE (d.quantity,0) AS jml_retur', 'dt' => 8, 'field' => 'jml_retur',
-                'formatter' => function ($d) {
-                    return empty_string($d, '0');
-                }
-            ),
-            array(
-                'db' => 'COALESCE (b.quantity,0) - COALESCE (d.quantity,0) AS jml_penjualan', 'dt' => 9, 'field' => 'jml_penjualan',
-                'formatter' => function ($d) {
-                    return empty_string($d, '0');
-                }
-            ),
-            array(
-                'db' => 'b.subtotal AS nominal_jual', 'dt' => 10, 'field' => 'nominal_jual',
+                'db' => 'c.purchase_price * a.quantity AS total_purchase_price', 'dt' => 7, 'field' => 'total_purchase_price',
                 'formatter' => function ($d) {
                     return number_format(empty_string($d, '0'), 2, ',', '.');
                 }
             ),
-            array(
-                'db' => 'b.price * COALESCE (d.quantity,0) AS nominal_retur', 'dt' => 11, 'field' => 'nominal_retur',
-                'formatter' => function ($d) {
-                    return number_format(empty_string($d, '0'), 2, ',', '.');
-                }
-            ),
-            array(
-                'db' => 'b.subtotal - (b.price * COALESCE (d.quantity,0)) AS nominal_penjualan', 'dt' => 12, 'field' => 'nominal_penjualan',
-                'formatter' => function ($d) {
-                    return number_format(empty_string($d, '0'), 2, ',', '.');
-                }
-            ),
+            array('db' => 'a.description', 'dt' => 8, 'field' => 'description'),
         );
 
         $data['sql_details'] = sql_connect();
 
         $data['joinQuery'] = '
-        FROM
-        sales a
-        LEFT JOIN sales_item b ON b.drugpurchase_id = a.id
-        LEFT JOIN customer c ON c.id = a.patient_id
-        LEFT JOIN sales_return d ON d.drug_id = b.drug_id AND d.no_faktur_id = b.drugpurchase_id
-        LEFT JOIN gudang e ON e.id = b.drug_id
+            FROM purchase_return AS a
+            JOIN gudang AS c ON c.id = a.drug_id
         ';
 
-        $data['where'] = '';
+        $data['where'] = 'CURDATE() = DATE(a.created_at)';
 
         $data['group_by'] = '';
 
         $data['having'] = '';
 
         return $data;
-    }
-
-    private function tbl_btn($id, $var)
-    {
-        $this->load->helper(['btn_access_helper']);
-
-        $read_access = true;
-        $update_access = true;
-        $delete_access = true;
-
-        $btns = [];
-        $btns[] = get_btn(['access' => $read_access, 'title' => 'Detail ' . $this->title, 'icon' => 'search', 'onclick' => 'view_detail(\'' . $id . '\')']);
-        $btns[] = get_btn(['access' => $update_access, 'title' => 'Ubah Data', 'icon' => 'pencil', 'onclick' => 'load_form(\'' . $id . '\')']);
-        $btns[] = get_btn_divider();
-        $btns[] = get_btn([
-            'access' => $delete_access, 'title' => 'Hapus Data', 'icon' => 'trash',
-            'onclick' => 'return confirm(\'Apakah Anda yakin untuk menghapus ' . $this->title . ' = ' . $var . '?\')?delete_data(\'' . $id . '\'):false'
-        ]);
-        $btn_group = group_btns($btns);
-
-        return $btn_group;
     }
 }

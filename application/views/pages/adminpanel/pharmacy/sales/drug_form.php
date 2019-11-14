@@ -12,25 +12,17 @@ $drug_view = isset($drug_view) ? $drug_view : 'form';
                     <input type="text" id="barcode" name="barcode[]" class="form-control" placeholder="Barcode" value="<?php echo $barcode; ?>" required>
                 </div>
             </div>
-            <div class="col-xs-2 nama">
+            <div class="col-xs-1 select">
                 <div class="form-group">
-                    <input type="text" id="nama" name="nama[]" class="form-control" placeholder="Nama Barang" value="<?php echo $name; ?>" required readonly>
-                    <input type="hidden" id="drug_id" name="drug_id[]" class="form-control" placeholder="id" value="<?php echo $drug_id; ?>" required>
-                </div>
-            </div>
-            <div class="col-xs-2 drug-price">
-                <div class="form-group">
-                    <input type="number" id="drug_price" name="drug_price[]" class="form-control" step="500" placeholder="Price" value="<?php echo $price; ?>" required readonly>
-                </div>
-            </div>
-            <div class="col-xs-2 drug-quantity">
-                <div class="form-group">
-                    <input type="number" id="drug_quantity" name="drug_quantity[]" class="form-control" min="0" step="1" placeholder="Quantity" value="<?php echo $quantity; ?>" required>
-                </div>
-            </div>
-            <div class="col-xs-2 drug-subtotal">
-                <div class="form-group">
-                    <input type="number" id="drug_subtotal" name="drug_subtotal[]" class="form-control" step="500" placeholder="Subtotal" value="<?php echo $subtotal; ?>" required readonly>
+                    <select id="select" name="select[]" class="form-control">
+                        <option value="">-Nama Barang-</option>
+                        <?php
+                            foreach ($drugs as $drug) {
+                                $selected = $drug->id == $drug_id ? 'selected' : '';
+                                echo '<option value=\'' . $drug->id . '\' data-sell-price=\'' . $drug->sell_price . '\' data-barcode=\'' . $drug->barcode . '\' data-name=\'' . $drug->name . '\' data-id=\'' . $drug->id . '\' ' . $selected . '>' . $drug->name . '</option>';
+                            }
+                            ?>
+                    </select>
                 </div>
             </div>
             <div class="col-xs-1">
@@ -53,6 +45,27 @@ $drug_view = isset($drug_view) ? $drug_view : 'form';
                 <?php
                     }
                     ?>
+            </div>
+            <div class="col-xs-2 name">
+                <div class="form-group">
+                    <input type="text" id="name" name="name[]" class="form-control" placeholder="Nama Barang" value="<?php echo $name; ?>" required readonly>
+                    <input type="hidden" id="drug_id" name="drug_id[]" class="form-control" placeholder="id" value="<?php echo $drug_id; ?>" required>
+                </div>
+            </div>
+            <div class="col-xs-2 drug-price">
+                <div class="form-group">
+                    <input type="number" id="drug_price" name="drug_price[]" class="form-control" step="500" placeholder="Price" value="<?php echo $price; ?>" required readonly>
+                </div>
+            </div>
+            <div class="col-xs-2 drug-quantity">
+                <div class="form-group">
+                    <input type="number" id="drug_quantity" name="drug_quantity[]" class="form-control" min="0" step="1" placeholder="Quantity" value="<?php echo $quantity; ?>" required>
+                </div>
+            </div>
+            <div class="col-xs-2 drug-subtotal">
+                <div class="form-group">
+                    <input type="number" id="drug_subtotal" name="drug_subtotal[]" class="form-control" step="500" placeholder="Subtotal" value="<?php echo $subtotal; ?>" required readonly>
+                </div>
             </div>
         <?php
         } elseif ($drug_view == 'payment_form') {

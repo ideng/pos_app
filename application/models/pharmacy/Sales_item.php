@@ -29,7 +29,7 @@ class Sales_item extends CI_Model
                     'drugpurchase_id' => $key,
                     'drug_id' => $post_data['drug_id'][$i],
                     'barcode' => $post_data['barcode'][$i],
-                    'name' => $post_data['nama'][$i],
+                    'name' => $post_data['name'][$i],
                     'price' => $post_data['drug_price'][$i],
                     'quantity' => $post_data['drug_quantity'][$i],
                     'subtotal' => $post_data['drug_subtotal'][$i],

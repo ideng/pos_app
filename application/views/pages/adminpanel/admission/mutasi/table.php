@@ -86,30 +86,43 @@ defined('BASEPATH') or exit('No direct script access allowed!');
 			<th>Nama Supplier</th>
 			<th>Nama Barang</th>
 			<th>Harga Beli</th>
-			<th>Jml Beli</th>
-			<th>Retur Beli</th>
-			<th>Total Beli</th>
-			<th>Nominal Beli</th>
-			<th>Nominal Retur</th>
+			<th>Jumlah Pembelian</th>
 			<th>Nominal Pembelian</th>
+		</tr>
+	</thead>
+</table>
+<hr>
+<div>
+	<H3 style="text-align:center">Mutasi Data Retur Hari Ini</H3>
+</div>
+<table class="table table-bordered table-striped table-hover table3" style="width: 100%;">
+	<thead>
+		<tr>
+			<th>No</th>
+			<th>Tanggal Retur</th>
+			<th>ID</th>
+			<th>No Retur</th>
+			<th>Nama Barang</th>
+			<th>Harga</th>
+			<th>Jumlah</th>
+			<th>Total</th>
+			<th>Keterangan</th>
 		</tr>
 	</thead>
 </table>
 <table class="table table-bordered table-striped table-hover" style="width: 100%;">
 	<thead>
 		<tr>
-			<th colspan="9"></th>
-			<th>Nominal Beli</th>
-			<th>Nominal Retur Beli</th>
-			<th>Total Pembelian</th>
+			<th colspan="11"></th>
+			<th>Nominal Retur Pembelian</th>
+			<th>Nominal Pembelian</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td colspan="9"><span style="font-weight:bold">Total Pembelian Hari ini</span></td>
+			<td colspan="11"><span style="font-weight:bold">Total Pembelian Hari ini</span></td>
+			<td><?php echo number_format(empty_string($mutasi_retur_now->nominal_retur_beli, '0'), 2, ',', '.'); ?></td>
 			<td><?php echo number_format(empty_string($mutasi_pembelian_now->nominal_beli, '0'), 2, ',', '.'); ?></td>
-			<td><?php echo number_format(empty_string($mutasi_pembelian_now->nominal_retur_beli, '0'), 2, ',', '.'); ?></td>
-			<td><?php echo number_format(empty_string($mutasi_pembelian_now->nominal_pembelian, '0'), 2, ',', '.'); ?></td>
 		</tr>
 	</tbody>
 </table>
@@ -138,7 +151,74 @@ defined('BASEPATH') or exit('No direct script access allowed!');
 		window.print();
 	}
 </script>
-
+<script type="text/javascript">
+	$.fn.dataTableExt.oApi.fnPagingInfo = function(oSettings) {
+		return {
+			"iStart": oSettings._iDisplayStart,
+			"iEnd": oSettings.fnDisplayEnd(),
+			"iLength": oSettings._iDisplayLength,
+			"iTotal": oSettings.fnRecordsTotal(),
+			"iFilteredTotal": oSettings.fnRecordsDisplay(),
+			"iPage": Math.ceil(oSettings._iDisplayStart / oSettings._iDisplayLength),
+			"iTotalPages": Math.ceil(oSettings.fnRecordsDisplay() / oSettings._iDisplayLength)
+		};
+	};
+	var table = $('.table3').DataTable({
+		"processing": true,
+		"serverSide": true,
+		"ordering": true,
+		"ajax": {
+			"url": "<?php echo base_url($class_link . '/table_datas'); ?>",
+			"type": "GET",
+			"data": {
+				"page": "<?php echo $page; ?>"
+			}
+		},
+		"language": {
+			"lengthMenu": "Tampilkan _MENU_ data",
+			"zeroRecords": "Maaf tidak ada data yang ditampilkan",
+			"info": "Menampilkan data _START_ sampai _END_ dari _TOTAL_ data",
+			"infoFiltered": "",
+			"infoEmpty": "Tidak ada data yang ditampilkan",
+			"search": "Cari :",
+			"loadingRecords": "Memuat Data...",
+			"processing": "Sedang Memproses...",
+			"paginate": {
+				"first": '<span class="glyphicon glyphicon-fast-backward"></span>',
+				"last": '<span class="glyphicon glyphicon-fast-forward"></span>',
+				"next": '<span class="glyphicon glyphicon-forward"></span>',
+				"previous": '<span class="glyphicon glyphicon-backward"></span>'
+			}
+		},
+		"columnDefs": [{
+				"data": null,
+				"searchable": false,
+				"orderable": false,
+				"className": "dt-center",
+				"targets": 0
+			},
+			{
+				"searchable": false,
+				"orderable": false,
+				"targets": 1
+			},
+			{
+				"className": "dt-center",
+				"targets": 2,
+				"visible": false,
+				"searchable": false
+			},
+		],
+		"order": [2, 'asc'],
+		"rowCallback": function(row, data, iDisplayIndex) {
+			var info = this.fnPagingInfo();
+			var page = info.iPage;
+			var length = info.iLength;
+			var index = page * length + (iDisplayIndex + 1);
+			$('td:eq(0)', row).html(index);
+		}
+	});
+</script>
 <script type="text/javascript">
 	$.fn.dataTableExt.oApi.fnPagingInfo = function(oSettings) {
 		return {

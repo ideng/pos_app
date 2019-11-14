@@ -55,15 +55,18 @@ $data = ['id' => $row->id, 'drug_view' => 'form', 'detail'];
                             <label for="drug_id">Barcode</label>
                         </div>
                         <div class="col-xs-2">
-                            <label for="drug_id">Nama Barang</label>
+                            <label for="drug_id">Select</label>
                         </div>
                         <div class="col-xs-2">
-                            <label for="drug_price">Harga</label>
+                            <label for="drug_subtotal">Nama Barang</label>
                         </div>
                         <div class="col-xs-2">
-                            <label for="drug_quantity">Jumlah</label>
+                            <label for="drug_subtotal">Harga</label>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-2">
+                            <label for="drug_subtotal">Jumlah</label>
+                        </div>
+                        <div class="col-xs-2">
                             <label for="drug_subtotal">Subtotal</label>
                         </div>
                     </div>

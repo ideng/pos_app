@@ -6,7 +6,6 @@ $drug_view = isset($drug_view) ? $drug_view : 'form';
 <div class="row drug-form-component" <?php echo $is_hidden ? 'style=\'display: none;\'' : ''; ?>>
     <div class="col-md-10 col-xs-12">
         <?php
-        //$this->load->view('pages/adminpanel/admission/components/drug_typeahead');
         if ($drug_view == 'form') {
             ?>
             <div class="col-xs-2 barcode">

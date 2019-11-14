@@ -38,31 +38,7 @@ class Mutasi extends CI_Model
                 }
             ),
             array(
-                'db' => 'COALESCE (e.quantity,0) AS retur_beli', 'dt' => 8, 'field' => 'retur_beli',
-                'formatter' => function ($d) {
-                    return empty_string($d, '0');
-                }
-            ),
-            array(
-                'db' => 'COALESCE (b.quantity,0) - COALESCE (e.quantity,0) AS total_beli', 'dt' => 9, 'field' => 'total_beli',
-                'formatter' => function ($d) {
-                    return empty_string($d, '0');
-                }
-            ),
-            array(
-                'db' => 'COALESCE (b.subtotal,0) AS nominal_beli', 'dt' => 10, 'field' => 'nominal_beli',
-                'formatter' => function ($d) {
-                    return number_format(empty_string($d, '0'), 2, ',', '.');
-                }
-            ),
-            array(
-                'db' => '(COALESCE (b.price,0) * COALESCE(e.quantity,0)) AS nominal_retur_beli', 'dt' => 11, 'field' => 'nominal_retur_beli',
-                'formatter' => function ($d) {
-                    return number_format(empty_string($d, '0'), 2, ',', '.');
-                }
-            ),
-            array(
-                'db' => '(COALESCE (b.subtotal,0) - (COALESCE (b.price,0) * COALESCE(e.quantity,0))) AS nominal_pembelian', 'dt' => 12, 'field' => 'nominal_pembelian',
+                'db' => 'b.subtotal AS nominal_pembelian', 'dt' => 8, 'field' => 'nominal_pembelian',
                 'formatter' => function ($d) {
                     return number_format(empty_string($d, '0'), 2, ',', '.');
                 }
@@ -77,7 +53,6 @@ class Mutasi extends CI_Model
         LEFT JOIN purchase_faktur b ON b.id_purchase = a.id
         LEFT JOIN supplier c ON c.id = a.supplier_id
         LEFT JOIN gudang d ON d.id = b.drug_id
-        LEFT JOIN purchase_return e ON e.drug_id = b.drug_id AND e.no_faktur_id = b.id_purchase
         ';
 
         $data['where'] = 'CURDATE() = DATE(a.created_at)';
@@ -117,14 +92,14 @@ class Mutasi extends CI_Model
             $this->db->from('gudang a')
                 ->join('purchase_faktur c', 'c.drug_id = a.id', 'left')
                 ->join('purchase b', 'b.id = c.id_purchase', 'left')
-                ->join('purchase_return d', 'd.drug_id = c.drug_id AND d.no_faktur_id = c.id_purchase', 'left')
+                ->join('purchase_return d', 'd.drug_id = c.drug_id', 'left')
                 ->join('supplier e', 'e.supplier_code = b.supplier_id', 'left');
         } elseif ($type == 'beli') {
             $this->db->from('gudang a')
                 ->join('sales_item c', 'c.drug_id = a.id', 'left')
                 ->join('sales b', 'b.id = c.drugpurchase_id', 'left')
                 ->join('gudang d', 'd.id = b.patient_id', 'left')
-                ->join('sales_return e', 'e.drug_id = c.drug_id AND e.no_faktur_id = c.drugpurchase_id', 'left');
+                ->join('sales_return e', 'e.drug_id = c.drug_id', 'left');
         }
         $this->db->where('DATE(b.created_at) BETWEEN "' . format_date($start, 'Y-m-d') . '" and "' . format_date($end, 'Y-m-d') . '"');
         $query = $this->db->get();
@@ -135,14 +110,13 @@ class Mutasi extends CI_Model
     public function get_mutasi_beli($start, $end)
     {
         $this->db->select('b.created_at AS tanggal, a.name AS nama_obat, b.no_faktur AS faktur_pembelian,
-        e.name AS supplier_name, c.price AS harga_beli, COALESCE (c.quantity,0) AS jml_beli, COALESCE (d.quantity,0) AS jml_retur_beli, COALESCE (c.quantity,0) - COALESCE (d.quantity,0) AS jml_pembelian,
-        COALESCE (c.subtotal,0) AS nominal_beli, c.price * COALESCE (d.quantity,0) AS nominal_retur_beli,
+        e.name AS supplier_name, c.price AS harga_beli, COALESCE (c.quantity,0) AS jml_beli, COALESCE (c.quantity,0) - COALESCE (d.quantity,0) AS jml_pembelian,
+        COALESCE (c.subtotal,0) AS nominal_beli,
         COALESCE (c.subtotal,0) - (c.price * COALESCE (d.quantity,0)) AS nominal_pembelian')
             ->from('gudang a')
             ->join('purchase_faktur c', 'c.drug_id = a.id', 'left')
             ->join('purchase b', 'b.id = c.id_purchase', 'left')
-            ->join('purchase_return d', 'd.drug_id = c.drug_id AND d.no_faktur_id = c.id_purchase', 'left')
-            ->join('supplier e', 'e.supplier_code = b.supplier_id', 'left')
+            ->join('supplier e', 'e.id = b.supplier_id', 'left')
             ->where('DATE(b.created_at) BETWEEN "' . format_date($start, 'Y-m-d') . '" and "' . format_date($end, 'Y-m-d') . '"');
         $query = $this->db->get();
         $result = $query->result();
@@ -166,7 +140,7 @@ class Mutasi extends CI_Model
             ->join('sales_item c', 'c.drug_id = a.id', 'left')
             ->join('sales b', 'b.id = c.drugpurchase_id', 'left')
             ->join('gudang d', 'd.id = b.patient_id', 'left')
-            ->join('sales_return e', 'e.drug_id = c.drug_id AND e.no_faktur_id = c.drugpurchase_id', 'left')
+            ->join('sales_return e', 'e.drug_id = c.drug_id', 'left')
             ->where('DATE(b.created_at) BETWEEN "' . format_date($start, 'Y-m-d') . '" and "' . format_date($end, 'Y-m-d') . '"');
         $query = $this->db->get();
         $result = $query->result();
@@ -181,7 +155,7 @@ class Mutasi extends CI_Model
             ->from('gudang a')
             ->join('purchase_faktur c', 'c.drug_id = a.id', 'left')
             ->join('purchase b', 'b.id = c.id_purchase', 'left')
-            ->join('purchase_return d', 'd.drug_id = c.drug_id AND d.no_faktur_id = c.id_purchase', 'left')
+            ->join('purchase_return d', 'd.drug_id = c.drug_id', 'left')
             ->where('DATE(b.created_at) BETWEEN "' . format_date($start, 'Y-m-d') . '" and "' . format_date($end, 'Y-m-d') . '"');
         $query = $this->db->get();
         $result = $query->row();
@@ -195,7 +169,7 @@ class Mutasi extends CI_Model
         (SUM(c.subtotal) - COALESCE(SUM(c.price * e.quantity),0)) AS nominal_penjualan')
             ->from('sales_item c')
             ->join('sales b', 'b.id = c.drugpurchase_id', 'left')
-            ->join('sales_return e', 'e.drug_id = c.drug_id AND e.no_faktur_id = c.drugpurchase_id', 'left')
+            ->join('sales_return e', 'e.drug_id = c.drug_id', 'left')
             ->where('DATE(b.created_at) BETWEEN "' . format_date($start, 'Y-m-d') . '" and "' . format_date($end, 'Y-m-d') . '"');
         $query = $this->db->get();
         $result = $query->row();
@@ -204,13 +178,21 @@ class Mutasi extends CI_Model
 
     public function get_mutasi_pembelian_now()
     {
-        $this->db->select('SUM(c.subtotal) AS nominal_beli,
-        COALESCE(SUM(c.price * d.quantity),0) AS nominal_retur_beli,
-        (SUM(c.subtotal) - COALESCE(SUM(c.price * d.quantity),0)) AS nominal_pembelian')
+        $this->db->select('SUM(c.subtotal) AS nominal_beli')
             ->from('gudang a')
             ->join('purchase_faktur c', 'c.drug_id = a.id', 'left')
             ->join('purchase b', 'b.id = c.id_purchase', 'left')
-            ->join('purchase_return d', 'd.drug_id = c.drug_id AND d.no_faktur_id = c.id_purchase', 'left')
+            ->where('CURDATE() = DATE(b.created_at)');
+        $query = $this->db->get();
+        $result = $query->row();
+        return $result;
+    }
+
+    public function get_mutasi_retur_beli_now()
+    {
+        $this->db->select('SUM(a.purchase_price * b.quantity) AS nominal_retur_beli')
+            ->from('gudang a')
+            ->join('purchase_return b', 'b.drug_id = a.id', 'left')
             ->where('CURDATE() = DATE(b.created_at)');
         $query = $this->db->get();
         $result = $query->row();
