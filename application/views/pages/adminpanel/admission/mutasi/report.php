@@ -62,7 +62,7 @@ defined('BASEPATH') or exit('No direct script access allowed!');
             <td>Keterangan</td>
             <td>Harga Jual</td>
             <td>Jumlah Retur</td>
-            <td>Nominal Pembelian</td>
+            <td>Nominal Retur</td>
         </tr>
     </thead>
     <tbody>

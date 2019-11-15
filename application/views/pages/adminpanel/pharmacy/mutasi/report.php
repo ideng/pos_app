@@ -18,11 +18,7 @@ defined('BASEPATH') or exit('No direct script access allowed!');
             <td>Nama Customer</td>
             <td>Harga Jual</td>
             <td>Jumlah Jual</td>
-            <td>Jumlah Retur Jual</td>
-            <td>Jumlah Penjualan</td>
             <td>Nominal Jual</td>
-            <td>Nominal Retur Jual</td>
-            <td>Nominal Penjualan</td>
         </tr>
     </thead>
     <tbody>
@@ -37,20 +33,59 @@ defined('BASEPATH') or exit('No direct script access allowed!');
                 echo '<td>' . $mutasi_jual->nama_obat . '</td>';
                 echo '<td>' . $mutasi_jual->faktur_penjualan . '</td>';
                 echo '<td>' . $mutasi_jual->nama_pasien . '</td>';
-                echo '<td>' . $mutasi_jual->harga_jual . '</td>';
+                echo '<td>' . number_format(empty_string($mutasi_jual->harga_jual, '0'), 2, ',', '.') . '</td>';
                 echo '<td>' . $mutasi_jual->jml_jual . '</td>';
-                echo '<td>' . $mutasi_jual->jml_retur_jual . '</td>';
-                echo '<td>' . $mutasi_jual->jml_penjualan . '</td>';
-                echo '<td>' . $mutasi_jual->nominal_jual . '</td>';
-                echo '<td>' . $mutasi_jual->numinal_retur . '</td>';
-                echo '<td>' . $mutasi_jual->nominal_penjualan . '</td>';
+                echo '<td>' . number_format(empty_string($mutasi_jual->nominal_jual, '0'), 2, ',', '.') . '</td>';
                 echo '</tr>';
             }
             echo '<tr>';
-            echo '<td colspan="9"><span style="font-weight:bold">' . 'Total Penjualan' . '</span></td>';
-            echo '<td><span style="font-weight:bold">' . $mutasi_penjualan->nominal_jual . '</span></td>';
-            echo '<td><span style="font-weight:bold">' . $mutasi_penjualan->numinal_retur . '</span></td>';
-            echo '<td><span style="font-weight:bold">' . $mutasi_penjualan->nominal_penjualan . '</span></td>';
+            echo '<td colspan="7"><span style="font-weight:bold">' . 'Total Penjualan' . '</span></td>';
+            echo '<td><span style="font-weight:bold">' . number_format(empty_string($mutasi_penjualan->nominal_jual, '0'), 2, ',', '.') . '</span></td>';
+            echo '</tr>';
+        } else {
+            echo '<tr>';
+            echo '<td colspan=\'19\'>Maaf tidak ada data yang ditampilkan!</td>';
+            echo '</tr>';
+        }
+        ?>
+    </tbody>
+</table>
+<div>
+    <H3 style="text-align:center">Mutasi Retur Pembelian</H3>
+</div>
+<table class="table table-bordered table-striped hover">
+    <thead>
+        <tr>
+            <td>No</td>
+            <td>Tanggal</td>
+            <td>No Retur</td>
+            <td>Nama Barang</td>
+            <td>Keterangan</td>
+            <td>Harga Jual</td>
+            <td>Jumlah Retur</td>
+            <td>Nominal Retur</td>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        if (!empty($mutasi_retur_juals)) {
+            $no = 0;
+            foreach ($mutasi_retur_juals as $mutasi_retur_jual) {
+                $no++;
+                echo '<tr>';
+                echo '<td>' . $no . '</td>';
+                echo '<td>' . $mutasi_retur_jual->created_at . '</td>';
+                echo '<td>' . $mutasi_retur_jual->no_retur . '</td>';
+                echo '<td>' . $mutasi_retur_jual->drug_name . '</td>';
+                echo '<td>' . $mutasi_retur_jual->description . '</td>';
+                echo '<td>' . number_format(empty_string($mutasi_retur_jual->purchase_price, '0'), 2, ',', '.') . '</td>';
+                echo '<td>' . $mutasi_retur_jual->quantity . '</td>';
+                echo '<td>' . number_format(empty_string($mutasi_retur_jual->sell_price_total, '0'), 2, ',', '.') . '</td>';
+                echo '</tr>';
+            }
+            echo '<tr>';
+            echo '<td colspan="7"><span style="font-weight:bold">' . 'Total Retur Penjualan' . '</span></td>';
+            echo '<td><span style="font-weight:bold">' . number_format(empty_string($mutasi_retur_penjualan->nominal_retur_jual, '0'), 2, ',', '.') . '</span></td>';
             echo '</tr>';
         } else {
             echo '<tr>';

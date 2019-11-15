@@ -37,37 +37,13 @@ class Mutasi_jual extends CI_Model
                 }
             ),
             array(
-                'db' => 'COALESCE (b.quantity,0) AS jml_jual', 'dt' => 7, 'field' => 'jml_jual',
+                'db' => 'b.quantity AS jml_jual', 'dt' => 7, 'field' => 'jml_jual',
                 'formatter' => function ($d) {
                     return empty_string($d, '0');
                 }
             ),
             array(
-                'db' => 'COALESCE (d.quantity,0) AS jml_retur', 'dt' => 8, 'field' => 'jml_retur',
-                'formatter' => function ($d) {
-                    return empty_string($d, '0');
-                }
-            ),
-            array(
-                'db' => 'COALESCE (b.quantity,0) - COALESCE (d.quantity,0) AS jml_penjualan', 'dt' => 9, 'field' => 'jml_penjualan',
-                'formatter' => function ($d) {
-                    return empty_string($d, '0');
-                }
-            ),
-            array(
-                'db' => 'b.subtotal AS nominal_jual', 'dt' => 10, 'field' => 'nominal_jual',
-                'formatter' => function ($d) {
-                    return number_format(empty_string($d, '0'), 2, ',', '.');
-                }
-            ),
-            array(
-                'db' => 'b.price * COALESCE (d.quantity,0) AS nominal_retur', 'dt' => 11, 'field' => 'nominal_retur',
-                'formatter' => function ($d) {
-                    return number_format(empty_string($d, '0'), 2, ',', '.');
-                }
-            ),
-            array(
-                'db' => 'b.subtotal - (b.price * COALESCE (d.quantity,0)) AS nominal_penjualan', 'dt' => 12, 'field' => 'nominal_penjualan',
+                'db' => 'b.subtotal AS nominal_jual', 'dt' => 8, 'field' => 'nominal_jual',
                 'formatter' => function ($d) {
                     return number_format(empty_string($d, '0'), 2, ',', '.');
                 }
@@ -81,7 +57,6 @@ class Mutasi_jual extends CI_Model
         sales a
         LEFT JOIN sales_item b ON b.drugpurchase_id = a.id
         LEFT JOIN customer c ON c.id = a.patient_id
-        LEFT JOIN sales_return d ON d.drug_id = b.drug_id AND d.no_faktur_id = b.drugpurchase_id
         LEFT JOIN gudang e ON e.id = b.drug_id
         ';
 

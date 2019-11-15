@@ -93,7 +93,7 @@ defined('BASEPATH') or exit('No direct script access allowed!');
 </table>
 <hr>
 <div>
-	<H3 style="text-align:center">Mutasi Data Retur Hari Ini</H3>
+	<H3 style="text-align:center">Mutasi Retur Pembelian Hari Ini</H3>
 </div>
 <table class="table table-bordered table-striped table-hover table3" style="width: 100%;">
 	<thead>
@@ -114,15 +114,16 @@ defined('BASEPATH') or exit('No direct script access allowed!');
 	<thead>
 		<tr>
 			<th colspan="11"></th>
-			<th>Nominal Retur Pembelian</th>
 			<th>Nominal Pembelian</th>
+			<th>Nominal Retur Pembelian</th>
+
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
 			<td colspan="11"><span style="font-weight:bold">Total Pembelian Hari ini</span></td>
-			<td><?php echo number_format(empty_string($mutasi_retur_now->nominal_retur_beli, '0'), 2, ',', '.'); ?></td>
 			<td><?php echo number_format(empty_string($mutasi_pembelian_now->nominal_beli, '0'), 2, ',', '.'); ?></td>
+			<td><?php echo number_format(empty_string($mutasi_retur_now->nominal_retur_beli, '0'), 2, ',', '.'); ?></td>
 		</tr>
 	</tbody>
 </table>

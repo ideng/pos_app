@@ -53,10 +53,12 @@ class Pharmacy extends MY_Controller
         $page = $this->input->get('page');
         $page_url = $this->input->get('page_url');
         $m = $this->mutasi->get_mutasi_penjualan_now();
+        $n = $this->mutasi->get_mutasi_retur_jual_now();
         $data = [
             'class_link' => $this->class_link,
             'page' => $page,
-            'mutasi_penjualan_now' => $m
+            'mutasi_penjualan_now' => $m,
+            'mutasi_retur_now' => $n
         ];
 
         $this->load->view('pages/' . $page_url . '/table', $data);
@@ -68,9 +70,10 @@ class Pharmacy extends MY_Controller
         $page_url = $this->input->get('page_url');
         $start = $this->input->get('start');
         $end = $this->input->get('end');
-        $data['mutasi_belis'] = $this->mutasi->get_mutasi_beli($start, $end);
         $data['mutasi_juals'] = $this->mutasi->get_mutasi_jual($start, $end);
+        $data['mutasi_retur_juals'] = $this->mutasi->get_retur_jual($start, $end);
         $data['mutasi_penjualan'] = $this->mutasi->get_mutasi_penjualan($start, $end);
+        $data['mutasi_retur_penjualan'] = $this->mutasi->get_mutasi_retur_penjualan_now($start, $end);
         $this->load->view('pages/' . $page_url . '/report', $data);
     }
 
@@ -112,9 +115,7 @@ class Pharmacy extends MY_Controller
             $this->load->model(['base_model', $this->class_name . '/' . $page]);
             $id = $this->input->get('id');
             $id = empty($id) ? '' : $this->input->get('id');
-            $id_mutasi = empty($id) ? '' : $this->input->get('id');
             $id_mutasi_jual = empty($id) ? '' : $this->input->get('id');
-            $id_mutasi_checkup = empty($id) ? '' : $this->input->get('id');
             $page_url = $this->input->get('page_url');
             $row = $this->{$page}->get_row($id);
         } else {
@@ -131,9 +132,7 @@ class Pharmacy extends MY_Controller
         if ($page == 'gudang') {
             $this->load->model(['pharmacy/gudang']);
             $data['drugs'] = $this->gudang->get_drugs($id);
-            $data['mutasi_beli'] = $this->gudang->get_mutasi_beli($id_mutasi);
             $data['mutasi_jual'] = $this->gudang->get_mutasi_jual($id_mutasi_jual);
-            $data['mutasi_checkup'] = $this->gudang->get_mutasi_checkup($id_mutasi_checkup);
         }
 
         $this->load->view('pages/' . $page_url . '/detail', $data);
@@ -168,8 +167,6 @@ class Pharmacy extends MY_Controller
         } elseif ($page == 'sales_return') {
             $this->load->model(['pharmacy/sales_return']);
             $data['drugs'] = $this->sales_return->get_drug();
-            $sales_return = $this->sales_return->get_faktur($row->no_faktur_id);
-            $data = array_merge($data, ['sales_return' => $sales_return]);
         } elseif ($page == 'sales') {
             $this->load->model(['pharmacy/sales']);
             $sales = $this->sales->patient_drug($row->patient_id);

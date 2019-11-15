@@ -30,16 +30,7 @@ $title = isset($page) ? ucwords($page) : 'Master';
                                 <input type="text" name="no_retur" id="no_retur" class="form-control" placeholder="No Retur" value="<?php echo $row->no_retur; ?>" readonly>
                             </div>
                         </div>
-                        <div class="col-md-5" style="margin-top: 15px;">
-                            <div class="form-group">
-                                <label for="no_faktur">No Faktur</label>
-                                <input type="hidden" name="no_faktur_id" id="no_faktur_id" value="<?php echo $row->no_faktur_id; ?>">
-                                <div id="scrollable-dropdown-menu">
-                                    <input type="text" name="no_faktur" id="no_faktur" class="form-control" placeholder="No Faktur" value="<?php echo $row->no_faktur_sales; ?>" required autofocus>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4" style="margin-top: 15px;">
+                        <div class="col-md-7" style="margin-top: 15px;">
                             <div class="form-group">
                                 <label for="drug_name">Nama Barang </label>
                                 <select name="drug_id" class="form-control" required>
@@ -53,7 +44,7 @@ $title = isset($page) ? ucwords($page) : 'Master';
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-3" style="margin-top: 15px;">
+                        <div class="col-md-5" style="margin-top: 15px;">
                             <div class="form-group">
                                 <label for="quantity">Jumlah</label>
                                 <input type="number" name="quantity" id="quantity" class="form-control" placeholder="Jumlah" value="<?php echo $row->quantity; ?>" required>
