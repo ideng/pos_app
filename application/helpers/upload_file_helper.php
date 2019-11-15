@@ -1,8 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed!');
 
-function upload_file($file_upload = '', $path = '', $exts = '', $err_id = '') {
-	$CI =& get_instance();
+function upload_file($file_upload = '', $path = '', $exts = '', $err_id = '')
+{
+	$CI = &get_instance();
 	$CI->load->library('upload', do_upload_config($path, $exts));
 	$CI->load->helper(['alert_helper']);
 	if (!$CI->upload->do_upload($file_upload)) :
@@ -13,7 +14,8 @@ function upload_file($file_upload = '', $path = '', $exts = '', $err_id = '') {
 	return $data;
 }
 
-function do_upload_config($path = '', $exts = '', $max_name = '50') {
+function do_upload_config($path = '', $exts = '', $max_name = '50')
+{
 	$config['upload_path'] = $path;
 	$config['allowed_types'] = $exts;
 	$config['encrypt_name'] = TRUE;
@@ -22,8 +24,9 @@ function do_upload_config($path = '', $exts = '', $max_name = '50') {
 	return $config;
 }
 
-function process_image_conf($path = '', $width = '') {
-	$CI =& get_instance();
+function process_image_conf($path = '', $width = '')
+{
+	$CI = &get_instance();
 	$config['image_library'] = 'gd2';
 	$config['source_image'] = $path;
 	$config['maintain_ratio'] = TRUE;

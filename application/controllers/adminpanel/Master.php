@@ -69,16 +69,23 @@ class Master extends MY_Controller
         $this->load->model(['base_model', 'master/' . $page]);
         $id = $this->input->get('id');
         $page_url = $this->input->get('page_url');
-
+        $row = $this->base_model->get_row($page, ['id' => $id]);
+        if ($page == 'supplier') {
+            $row = $this->{$page}->get_row($id);
+        }
         $data = [
             'csrf_name' => $this->security->get_csrf_token_name(),
             'csrf_value' => $this->security->get_csrf_hash(),
             'class_link' => $this->class_link,
             'page' => $page,
-            'row' => $this->base_model->get_row($page, ['id' => $id]),
+            'row' => $row,
         ];
         if ($page == 'users') {
             $data['row'] = $this->users->get_row($id);
+        } elseif ($page == 'supplier') {
+            $this->load->model(['master/supplier']);
+            $supplier = $this->supplier->get_city($row->city_id);
+            $data = array_merge($data, ['supplier' => $supplier]);
         }
         $this->load->view('pages/' . $page_url . '/detail', $data);
     }

@@ -163,7 +163,7 @@ class Base_model extends CI_Model
 
 	public function upload_file($file, $path, array $exts, $max_name)
 	{
-		$max_name = empty($max_name) ? '50' : $max_name;
+		$max_name = !empty($max_name) ? '50' : $max_name;
 		$exts = implode('|', $exts);
 		$config['upload_path'] = $path;
 		$config['allowed_types'] = $exts;

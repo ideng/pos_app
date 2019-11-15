@@ -74,9 +74,11 @@ class Admission extends MY_Controller
         $start = $this->input->get('start');
         $end = $this->input->get('end');
         $data['mutasi_belis'] = $this->mutasi->get_mutasi_beli($start, $end);
+        $data['mutasi_retur_belis'] = $this->mutasi->get_retur_beli($start, $end);
         $data['mutasi_juals'] = $this->mutasi->get_mutasi_jual($start, $end);
         $data['mutasi_pembelian'] = $this->mutasi->get_mutasi_pembelian($start, $end);
         $data['mutasi_penjualan'] = $this->mutasi->get_mutasi_penjualan($start, $end);
+        $data['mutasi_retur_pembelian'] = $this->mutasi->get_mutasi_retur_pembelian_now($start, $end);
         $this->load->view('pages/' . $page_url . '/report', $data);
     }
 

@@ -23,7 +23,7 @@ class MY_Controller extends CI_Controller
 			// Render doctors schedule Yearly
 
 			// Delete unused files in server
-			$this->base_model->delete_unused_files('assets/uploads/img/patients/', 'customer', 'image');
+			$this->base_model->delete_unused_files('assets/uploads/img/customer/', 'customer', 'image');
 			$this->base_model->delete_unused_files('assets/uploads/img/doctors/', 'doctors', 'image');
 			$this->base_model->delete_unused_files('assets/uploads/img/employees/', 'employees', 'image');
 

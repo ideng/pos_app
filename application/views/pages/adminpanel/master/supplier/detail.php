@@ -28,11 +28,15 @@ $title = isset($page) ? ucwords($page) : 'Master';
                 </div>
                 <div class="row">
                     <label for="name" class="col-xs-2">Nama Supplier :</label>
-                    <div class="col-xs-10"><?php echo $row->name; ?></div>
+                    <div class="col-xs-10"><?php echo $row->supplier_name; ?></div>
                 </div>
                 <div class="row">
                     <label for="address" class="col-xs-2">Alamat :</label>
                     <div class="col-xs-10"><?php echo $row->address; ?></div>
+                </div>
+                <div class="row">
+                    <label for="alamat" class="col-xs-2">Kota :</label>
+                    <div class="col-xs-10"><?php echo $row->city_name; ?></div>
                 </div>
                 <div class="row">
                     <label for="created_at" class="col-xs-2">Dibuat Pada :</label>

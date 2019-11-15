@@ -130,7 +130,7 @@ $title = isset($page) ? ucwords($page) : 'Master';
                             <div class="col-xs-12">
                                 <div class="form-group text-center">
                                     <?php
-                                    $img_dir = 'assets/uploads//img/' . $page . '/' . $row->image;
+                                    $img_dir = 'assets/uploads/img/' . $page . '/' . $row->image;
                                     $img = empty($row->image) || !file_exists($img_dir) ? 'assets/admin_lte/dist/img/avatar.png' : $img_dir;
                                     ?>
                                     <img src="<?php echo base_url($img); ?>" alt="" srcset="" class="img-thumbnail">

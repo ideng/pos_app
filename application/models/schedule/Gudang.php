@@ -261,8 +261,8 @@ class Gudang extends CI_Model
             ->from('gudang a')
             ->join('purchase_faktur c', 'c.drug_id = a.id', 'left')
             ->join('purchase b', 'b.id = c.id_purchase', 'left')
-            ->join('purchase_return d', 'd.drug_id = c.drug_id AND d.no_faktur_id = c.id_purchase', 'left')
-            ->join('supplier e', 'e.supplier_code = b.supplier_id', 'left')
+            ->join('purchase_return d', 'd.drug_id = c.drug_id', 'left')
+            ->join('supplier e', 'e.id = b.supplier_id', 'left')
             ->where(['a.id' => $id]);
         $query = $this->db->get();
         return $query->result();
@@ -285,7 +285,7 @@ class Gudang extends CI_Model
             ->join('sales_item c', 'c.drug_id = a.id', 'left')
             ->join('sales b', 'b.id = c.drugpurchase_id', 'left')
             ->join('customer d', 'd.id = b.patient_id', 'left')
-            ->join('sales_return e', 'e.drug_id = c.drug_id AND e.no_faktur_id = c.drugpurchase_id', 'left')
+            ->join('sales_return e', 'e.drug_id = c.drug_id', 'left')
             ->where(['a.id' => $id]);
         $query = $this->db->get();
         return $query->result();
