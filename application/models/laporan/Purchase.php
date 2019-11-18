@@ -87,6 +87,7 @@ class Purchase extends CI_Model
             'access' => $delete_access, 'title' => 'Hapus Data', 'icon' => 'trash',
             'onclick' => 'return confirm(\'Apakah Anda yakin untuk menghapus ' . $this->title . ' = ' . $var . '?\')?delete_data(\'' . $id . '\'):false'
         ]);
+        $btns[] = get_btn(['access' => $read_access, 'title' => 'Cetak Transaksi', 'icon' => 'print', 'onclick' => 'window.open(\'' . base_url('adminpanel/laporan/print_payment/' . $id) . '\')']);
         $btn_group = group_btns($btns);
 
         return $btn_group;
@@ -185,16 +186,86 @@ class Purchase extends CI_Model
 
         return $result;
     }
+    public function get_mutasi_beli($start, $end)
+    {
+        $this->db->select('b.created_at AS tanggal, a.name AS nama_obat, b.no_faktur AS faktur_pembelian,
+        e.name AS supplier_name, c.price AS harga_beli, COALESCE (c.quantity,0) AS jml_beli,
+        COALESCE (c.subtotal,0) AS nominal_beli')
+            ->from('gudang a')
+            ->join('purchase_faktur c', 'c.drug_id = a.id', 'left')
+            ->join('purchase b', 'b.id = c.id_purchase', 'left')
+            ->join('supplier e', 'e.id = b.supplier_id', 'left')
+            ->where('DATE(b.created_at) BETWEEN "' . format_date($start, 'Y-m-d') . '" and "' . format_date($end, 'Y-m-d') . '"');
+        $query = $this->db->get();
+        $result = $query->result();
+        return $result;
+    }
 
-    // public function get_drugs(string $drug_id)
-    // {
-    //     $this->db->select('a.id, b.name AS drug_name')
-    //         ->from('purchase a')
-    //         ->join('drugs b', 'b.id = a.drug_id')
-    //         ->where(['a.drug_id' => $drug_id]);
-    //     $query = $this->db->get();
-    //     $result = $query->result();
+    public function get_mutasi_pembelian($start, $end)
+    {
+        $this->db->select('SUM(c.subtotal) AS nominal_beli')
+            ->from('gudang a')
+            ->join('purchase_faktur c', 'c.drug_id = a.id', 'left')
+            ->join('purchase b', 'b.id = c.id_purchase', 'left')
+            ->where('DATE(b.created_at) BETWEEN "' . format_date($start, 'Y-m-d') . '" and "' . format_date($end, 'Y-m-d') . '"');
+        $query = $this->db->get();
+        $result = $query->row();
+        return $result;
+    }
 
-    //     return $result;
-    // }
+    public function get_mutasi_beli_byname($name)
+    {
+        $this->db->select('b.created_at AS tanggal, a.name AS nama_obat, b.no_faktur AS faktur_pembelian,
+        e.name AS supplier_name, c.price AS harga_beli, COALESCE (c.quantity,0) AS jml_beli,
+        COALESCE (c.subtotal,0) AS nominal_beli')
+            ->from('gudang a')
+            ->join('purchase_faktur c', 'c.drug_id = a.id', 'left')
+            ->join('purchase b', 'b.id = c.id_purchase', 'left')
+            ->join('supplier e', 'e.id = b.supplier_id', 'left')
+            ->where(['e.name' => $name]);
+        $query = $this->db->get();
+        $result = $query->result();
+        return $result;
+    }
+
+    public function get_mutasi_beli_sum_byname($name)
+    {
+        $this->db->select('SUM(c.subtotal) AS nominal_beli')
+            ->from('gudang a')
+            ->join('purchase_faktur c', 'c.drug_id = a.id', 'left')
+            ->join('purchase b', 'b.id = c.id_purchase', 'left')
+            ->join('supplier e', 'e.id = b.supplier_id', 'left')
+            ->where(['e.name' => $name]);
+        $query = $this->db->get();
+        $result = $query->row();
+        return $result;
+    }
+
+    public function get_mutasi_beli_faktur($faktur)
+    {
+        $this->db->select('b.created_at AS tanggal, a.name AS nama_obat, b.no_faktur AS faktur_pembelian,
+        e.name AS supplier_name, c.price AS harga_beli, COALESCE (c.quantity,0) AS jml_beli,
+        COALESCE (c.subtotal,0) AS nominal_beli')
+            ->from('gudang a')
+            ->join('purchase_faktur c', 'c.drug_id = a.id', 'left')
+            ->join('purchase b', 'b.id = c.id_purchase', 'left')
+            ->join('supplier e', 'e.id = b.supplier_id', 'left')
+            ->where(['b.no_faktur' => $faktur]);
+        $query = $this->db->get();
+        $result = $query->result();
+        return $result;
+    }
+
+    public function get_mutasi_beli_sum_faktur($faktur)
+    {
+        $this->db->select('SUM(c.subtotal) AS nominal_beli')
+            ->from('gudang a')
+            ->join('purchase_faktur c', 'c.drug_id = a.id', 'left')
+            ->join('purchase b', 'b.id = c.id_purchase', 'left')
+            ->join('supplier e', 'e.id = b.supplier_id', 'left')
+            ->where(['b.no_faktur' => $faktur]);
+        $query = $this->db->get();
+        $result = $query->row();
+        return $result;
+    }
 }

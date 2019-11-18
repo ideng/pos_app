@@ -327,4 +327,31 @@ class Gudang extends CI_Model
         $query = $this->db->get_where('gudang', array('barcode' => $id));
         return $query;
     }
+
+    public function get_name_barang($name)
+    {
+        $this->db->select('a.name AS obat, a.barcode,
+        a.purchase_price AS harga_beli,
+        COALESCE ( SUM( DISTINCT b.quantity ), 0 ) AS jml_beli,
+        COALESCE ( SUM( DISTINCT c.quantity ), 0 ) AS jml_retur_beli, ( COALESCE ( SUM( DISTINCT b.quantity ), 0 ) - COALESCE ( SUM( DISTINCT c.quantity ), 0 ) ) AS stock_beli, ( a.purchase_price * COALESCE ( SUM( DISTINCT b.quantity ), 0 ) ) AS nominal_beli,
+        ( a.purchase_price * COALESCE ( SUM( DISTINCT c.quantity ), 0 ) ) AS nominal_retur_beli,
+        ( a.purchase_price * COALESCE ( SUM( DISTINCT b.quantity ), 0 ) ) - ( a.purchase_price * COALESCE ( SUM( DISTINCT c.quantity ), 0 ) ) AS total_pembelian,
+        a.sell_price,
+        COALESCE ( SUM( DISTINCT d.quantity ), 0 ) AS jml_jual,
+        COALESCE ( SUM( DISTINCT e.quantity ), 0 ) AS jml_retur_jual,
+        (COALESCE ( SUM( DISTINCT d.quantity ), 0 ) - COALESCE ( SUM( DISTINCT e.quantity ), 0 ) ) AS stock_jual,
+        ( a.sell_price * COALESCE ( SUM( DISTINCT d.quantity ), 0 ) ) AS nominal_jual,
+        ( a.sell_price * COALESCE ( SUM( DISTINCT e.quantity ), 0 ) ) AS nominal_retur_jual,
+        ( a.sell_price * COALESCE ( SUM( DISTINCT d.quantity ), 0 ) ) - ( a.sell_price * COALESCE ( SUM( DISTINCT e.quantity ), 0 ) ) AS total_penjualan,
+        ( COALESCE ( SUM( DISTINCT b.quantity ), 0 ) - COALESCE ( SUM( DISTINCT c.quantity ), 0 ) ) - (COALESCE ( SUM( DISTINCT d.quantity ), 0 ) - COALESCE ( SUM( DISTINCT e.quantity ), 0 ) ) AS stock_akhir')
+            ->from('gudang a')
+            ->join('purchase_faktur b', 'b.drug_id = a.id', 'left')
+            ->join('purchase_return c', 'c.drug_id = a.id', 'left')
+            ->join('sales_item d', 'd.drug_id = a.id', 'left')
+            ->join('sales_return e', 'e.drug_id = a.id', 'left')
+            ->group_by('a.id')
+            ->where(['a.name' => $name]);
+        $query = $this->db->get();
+        return $query->result();
+    }
 }

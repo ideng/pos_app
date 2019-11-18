@@ -37,6 +37,10 @@ class Schedule extends MY_Controller
         ];
         $this->load->js('assets/admin_lte/custom/custom_js.js');
         $this->load->js('assets/admin_lte/custom/masters_js.js');
+        if ($method == 'gudang') {
+            $this->load->js('assets/admin_lte/custom/barang_name_js.js');
+            //$this->load->js('js/config_purchase_barang.js');
+        }
         $this->load->view('pages/' . $this->class_link . '/index', $data);
     }
 
@@ -171,5 +175,14 @@ class Schedule extends MY_Controller
         $this->output
             ->set_content_type('application/json', 'utf-8')
             ->set_output(json_encode($data));
+    }
+
+    public function barang_name()
+    {
+        $this->load->model(['schedule/gudang']);
+        $page_url = $this->input->get('page_url');
+        $name = $this->input->get('name');
+        $data['barangs'] = $this->gudang->get_name_barang($name);
+        $this->load->view('pages/' . $page_url . '/report', $data);
     }
 }

@@ -16,10 +16,39 @@ defined('BASEPATH') or exit('No direct script access allowed!');
 </style>
 <div class="table-responsive">
 	<div class="row">
-		<div class="input-daterange">
-			<div class="col-md-4">
+		<div class="input-name">
+			<!--<div class="col-md-2">
+				<label for="">&nbsp</label><br />
+				<label for="">Pilih Nama :</label>
+			</div>
+			<div class="col-md-3">
+				<label for="">Nama Barang</label>
+				<input type="text" name='name_view' id='name_view' class="form-control" value="" required>
+			</div>
+			<div class="col-md-3">
+				<label for="">&nbsp</label>
+				<input type="hidden" name='id_name' id='id_name' class="form-control date-picker" value="" required>
 			</div>
 			<div class="col-md-4">
+				<label for="">&nbsp</label>
+				<label for="">&nbsp</label>
+			</div>
+			<button type="button" id="btnDetailTransaksiName" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+				Detail
+			</button>-->
+			<?php
+			$this->load->view('pages/' . $class_link . '/components/drug_typeahead');
+			?>
+		</div>
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">Detail Transaksi</h4>
+					</div>
+					<div id="printThis2" class="modal-name"></div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -188,10 +217,5 @@ defined('BASEPATH') or exit('No direct script access allowed!');
 			var index = page * length + (iDisplayIndex + 1);
 			$('td:eq(0)', row).html(index);
 		}
-	});
-
-	$(document).ready(function() {
-		$('button,input[type="submit"],a').button();
-		$("#format").buttonset();
 	});
 </script>

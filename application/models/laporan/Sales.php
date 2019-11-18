@@ -62,7 +62,7 @@ class Sales extends CI_Model
 			LEFT JOIN customer AS b ON b.id = a.patient_id
 		';
 
-		$data['where'] = '';
+		$data['where'] = 'CURDATE() = DATE(a.created_at)';
 
 		$data['group_by'] = '';
 
@@ -87,6 +87,7 @@ class Sales extends CI_Model
 			'access' => $delete_access, 'title' => 'Hapus Data', 'icon' => 'trash',
 			'onclick' => 'return confirm(\'Apakah Anda yakin untuk menghapus ' . $this->title . ' = ' . $vars . '?\')?delete_data(\'' . $id . '\'):false'
 		]);
+		$btns[] = get_btn(['access' => $read_access, 'title' => 'Cetak Transaksi', 'icon' => 'print', 'onclick' => 'window.open(\'' . base_url('adminpanel/laporan/print_payment_jual/' . $id) . '\')']);
 		$btn_group = group_btns($btns);
 
 		return $btn_group;
@@ -174,6 +175,100 @@ class Sales extends CI_Model
 		$this->db->where('barcode', $barcode);
 		$result = $this->db->get('gudang')->row(); // Tampilkan data siswa berdasarkan NIS
 
+		return $result;
+	}
+
+	public function get_mutasi_jual($start, $end)
+	{
+		$this->db->select('b.created_at AS tanggal,
+        a.name AS nama_obat,
+        b.no_faktur AS faktur_penjualan,
+        d.name AS nama_pasien,
+        c.price AS harga_jual,
+        COALESCE (c.quantity,0) AS jml_jual,
+        c.subtotal AS nominal_jual,')
+			->from('gudang a')
+			->join('sales_item c', 'c.drug_id = a.id', 'left')
+			->join('sales b', 'b.id = c.drugpurchase_id', 'left')
+			->join('customer d', 'd.id = b.patient_id', 'left')
+			->where('DATE(b.created_at) BETWEEN "' . format_date($start, 'Y-m-d') . '" and "' . format_date($end, 'Y-m-d') . '"');
+		$query = $this->db->get();
+		$result = $query->result();
+		return $result;
+	}
+
+	public function get_mutasi_penjualan($start, $end)
+	{
+		$this->db->select('SUM(c.subtotal) AS nominal_jual')
+			->from('sales_item c')
+			->join('sales b', 'b.id = c.drugpurchase_id', 'left')
+			->where('DATE(b.created_at) BETWEEN "' . format_date($start, 'Y-m-d') . '" and "' . format_date($end, 'Y-m-d') . '"');
+		$query = $this->db->get();
+		$result = $query->row();
+		return $result;
+	}
+
+	public function get_mutasi_jual_byname($name)
+	{
+		$this->db->select('b.created_at AS tanggal,
+        a.name AS nama_obat,
+        b.no_faktur AS faktur_penjualan,
+        d.name AS nama_pasien,
+        c.price AS harga_jual,
+        COALESCE (c.quantity,0) AS jml_jual,
+        c.subtotal AS nominal_jual,')
+			->from('gudang a')
+			->join('sales_item c', 'c.drug_id = a.id', 'left')
+			->join('sales b', 'b.id = c.drugpurchase_id', 'left')
+			->join('customer d', 'd.id = b.patient_id', 'left')
+			->where(['d.name' => $name]);
+		$query = $this->db->get();
+		$result = $query->result();
+		return $result;
+	}
+
+	public function get_mutasi_jual_sum_byname($name)
+	{
+		$this->db->select('SUM(c.subtotal) AS nominal_jual')
+			->from('gudang a')
+			->join('sales_item c', 'c.drug_id = a.id', 'left')
+			->join('sales b', 'b.id = c.drugpurchase_id', 'left')
+			->join('customer d', 'd.id = b.patient_id', 'left')
+			->where(['d.name' => $name]);
+		$query = $this->db->get();
+		$result = $query->row();
+		return $result;
+	}
+
+	public function get_mutasi_jual_faktur($faktur)
+	{
+		$this->db->select('b.created_at AS tanggal,
+        a.name AS nama_obat,
+        b.no_faktur AS faktur_penjualan,
+        d.name AS nama_pasien,
+        c.price AS harga_jual,
+        COALESCE (c.quantity,0) AS jml_jual,
+        c.subtotal AS nominal_jual,')
+			->from('gudang a')
+			->join('sales_item c', 'c.drug_id = a.id', 'left')
+			->join('sales b', 'b.id = c.drugpurchase_id', 'left')
+			->join('customer d', 'd.id = b.patient_id', 'left')
+			->where(['b.no_faktur' => $faktur]);
+		$query = $this->db->get();
+		$result = $query->result();
+		return $result;
+	}
+
+	public function get_mutasi_jual_sum_faktur($faktur)
+	{
+		$this->db->select('SUM(c.subtotal) AS nominal_jual')
+			->from('gudang a')
+			->join('sales_item c', 'c.drug_id = a.id', 'left')
+			->join('sales b', 'b.id = c.drugpurchase_id', 'left')
+			->join('customer d', 'd.id = b.patient_id', 'left')
+			->where(['b.no_faktur' => $faktur]);
+		$query = $this->db->get();
+		$result = $query->row();
 		return $result;
 	}
 }
